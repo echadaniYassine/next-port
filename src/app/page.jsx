@@ -1,19 +1,40 @@
-import Hero from '../components/Hero'
-import About from '../components/About'
-import Skills from '../components/Skills'
-import Navbar from '../components/Navbar'
-import Projects from '../components/Projects'
-import Contact from '../components/Contact'
+import { Suspense } from "react"
+import dynamic from "next/dynamic"
+import Hero from "../components/Hero"
+import Navbar from "../components/Navbar"
+import Loading from "../app/Loading"
 
-export default function Home() {
+// Dynamic imports for better performance
+const About = dynamic(() => import("../components/About"), {
+  loading: () => <Loading />,
+})
+const Skills = dynamic(() => import("../components/Skills"), {
+  loading: () => <Loading />,
+})
+const Projects = dynamic(() => import("../components/Projects"), {
+  loading: () => <Loading />,
+})
+const Contact = dynamic(() => import("../components/Contact"), {
+  loading: () => <Loading />,
+})
+
+export default function HomePage() {
   return (
-    <main className="min-h-screen">
+    <main className="relative">
       <Navbar />
       <Hero />
-      <About />
-      <Skills />
-      <Projects />
-      <Contact />
+      <Suspense fallback={<Loading />}>
+        <About />
+      </Suspense>
+      <Suspense fallback={<Loading />}>
+        <Skills />
+      </Suspense>
+      <Suspense fallback={<Loading />}>
+        <Projects />
+      </Suspense>
+      <Suspense fallback={<Loading />}>
+        <Contact />
+      </Suspense>
     </main>
   )
 }
