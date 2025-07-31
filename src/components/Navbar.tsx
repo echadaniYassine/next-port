@@ -22,7 +22,6 @@ export default function Navbar() {
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50)
-
       // Update active section
       const sections = ["home", "about", "skills", "projects", "contact"]
       const currentSection = sections.find((section) => {
@@ -33,7 +32,6 @@ export default function Navbar() {
         }
         return false
       })
-
       if (currentSection) setActiveSection(currentSection)
     }
 
@@ -46,7 +44,6 @@ export default function Navbar() {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === "Escape") closeMenu()
     }
-
     if (isMenuOpen) {
       document.addEventListener("keydown", handleEscape)
       return () => document.removeEventListener("keydown", handleEscape)
@@ -65,45 +62,49 @@ export default function Navbar() {
       `}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          <Link
-            href="/"
-            className="text-2xl font-bold bg-gradient-to-r from-purple-500 via-pink-500 to-indigo-500 bg-clip-text text-transparent drop-shadow-2xl hover:scale-105 transition-transform duration-200 focus:outline-none focus:ring-2 focus:ring-primary/50 rounded-lg px-2 py-1"
-          >
-            Portfolio
-          </Link>
-
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex space-x-1">
-            {NAV_ITEMS.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`
-                  px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 relative focus:outline-none focus:ring-2 focus:ring-primary/50
-                  ${
-                    activeSection === item.href.slice(1)
-                      ? "text-primary bg-accent"
-                      : "text-muted-foreground hover:text-foreground hover:bg-accent"
-                  }
-                `}
-              >
-                {item.label}
-                {activeSection === item.href.slice(1) && (
-                  <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-primary rounded-full" />
-                )}
-              </Link>
-            ))}
+        <div className="flex items-center h-16">
+          {/* Logo - Fixed width for consistent spacing */}
+          <div className="flex-shrink-0 w-40">
+            <Link
+              href="/"
+              className="text-2xl font-bold bg-gradient-to-r from-purple-500 via-pink-500 to-indigo-500 bg-clip-text text-transparent drop-shadow-2xl hover:scale-105 transition-transform duration-200 focus:outline-none focus:ring-2 focus:ring-primary/50 rounded-lg px-2 py-1"
+            >
+              Portfolio
+            </Link>
           </div>
 
-          {/* Desktop Controls */}
-          <div className="hidden md:flex items-center space-x-4">
+          {/* Desktop Navigation - Centered with flex-1 */}
+          <div className="hidden md:flex flex-1 justify-center">
+            <div className="flex space-x-2">
+              {NAV_ITEMS.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`
+                    px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 relative focus:outline-none focus:ring-2 focus:ring-primary/50
+                    ${
+                      activeSection === item.href.slice(1)
+                        ? "text-primary bg-accent"
+                        : "text-muted-foreground hover:text-foreground hover:bg-accent"
+                    }
+                  `}
+                >
+                  {item.label}
+                  {activeSection === item.href.slice(1) && (
+                    <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-primary rounded-full" />
+                  )}
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          {/* Desktop Controls - Fixed width for balance */}
+          <div className="hidden md:flex justify-end w-40">
             <ThemeToggle />
           </div>
 
           {/* Mobile Controls */}
-          <div className="md:hidden flex items-center space-x-2">
+          <div className="md:hidden flex items-center space-x-3 ml-auto">
             <ThemeToggle />
             <button
               onClick={toggleMenu}
