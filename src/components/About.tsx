@@ -67,6 +67,9 @@ export default function About() {
             <div className="inline-block">
               <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">About Me</h2>
               <div className="w-24 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto rounded-full" />
+               {/* <div className="flex justify-center">
+                <div className="w-32 md:w-48 h-1 bg-gradient-to-r from-transparent via-gray-800 dark:via-white to-transparent animate-pulse rounded-full shadow-lg shadow-gray-800/30 dark:shadow-white/20" />
+              </div> */}
             </div>
           </SectionDecorator>
           <p className="mt-6 text-lg text-muted-foreground max-w-2xl mx-auto">

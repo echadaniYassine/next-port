@@ -75,8 +75,8 @@ export default function Hero() {
               </h1>
 
               <div className="flex justify-center">
-          <div className="w-32 md:w-48 h-1 bg-gradient-to-r from-transparent via-gray-800 dark:via-white to-transparent animate-pulse rounded-full shadow-lg shadow-gray-800/30 dark:shadow-white/20" />
-        </div>
+                <div className="w-32 md:w-48 h-1 bg-gradient-to-r from-transparent via-gray-800 dark:via-white to-transparent animate-pulse rounded-full shadow-lg shadow-gray-800/30 dark:shadow-white/20" />
+              </div>
             </div>
 
 
@@ -120,20 +120,57 @@ export default function Hero() {
             </p>
           </div>
 
-          {/* CTA Buttons */}
+          { /* CTA Buttons */}
+
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center pt-8 animate-fade-in [animation-delay:0.8s]">
             <SectionDecorator variant="card">
               <button
                 onClick={scrollToProjects}
-                className="group relative px-10 py-5 bg-gradient-to-r from-primary via-purple-600 to-indigo-600 text-primary-foreground font-bold text-lg rounded-2xl shadow-2xl transition-all duration-500 hover:shadow-primary/25 hover:shadow-2xl hover:scale-105 focus:outline-none focus:ring-4 focus:ring-primary/30 min-w-[220px] overflow-hidden"
+                className="
+        group 
+        relative 
+        px-10 py-5 
+        border-2 border-purple-500 
+        font-bold text-lg rounded-2xl 
+        shadow-2xl transition-all duration-500 
+        hover:shadow-purple-500/25 hover:shadow-2xl hover:scale-105 
+        focus:outline-none focus:ring-4 focus:ring-purple-500/30 
+        min-w-[220px] overflow-hidden
+      "
                 aria-label="View my projects"
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-primary/80 via-purple-600/80 to-indigo-600/80 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <div className="absolute inset-0 -skew-x-12 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 group-hover:animate-shimmer" />
+                {/* This div is the gradient background. It starts visible and fades to transparent on hover. */}
+                <div
+                  className="
+          absolute inset-0 
+          bg-gradient-to-r from-purple-500 via-pink-500 to-indigo-500 
+          opacity-100 group-hover:opacity-0 
+          transition-opacity duration-500
+        "
+                />
+
+                {/* The content container must be relative and have a z-index to appear on top. */}
                 <span className="relative z-10 flex items-center justify-center">
-                  View My Work
+
+                  {/* The text starts as white and transitions to a gradient on hover. */}
+                  <span className="
+          text-white 
+          group-hover:bg-gradient-to-r group-hover:from-purple-500 group-hover:via-pink-500 group-hover:to-indigo-500 
+          group-hover:bg-clip-text group-hover:text-transparent 
+          transition-colors duration-300
+        ">
+                    View My Work
+                  </span>
+
+                  {/* The SVG also starts white and transitions to a color from the gradient on hover. */}
                   <svg
-                    className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1"
+                    className="
+            w-5 h-5 ml-2 
+            text-white 
+            group-hover:text-purple-500 
+            transition-transform group-hover:translate-x-1 
+            transition-colors duration-300
+          "
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -148,14 +185,17 @@ export default function Hero() {
             <SectionDecorator variant="card">
               <button
                 onClick={scrollToContact}
-                className="group relative px-10 py-5 border-2 border-foreground text-foreground font-bold text-lg rounded-2xl hover:bg-foreground hover:text-background transition-all duration-500 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-foreground/30 min-w-[220px] overflow-hidden backdrop-blur-sm bg-background/10"
+                className=" group relative px-10 py-5 border-2 border-purple-500 font-bold text-lg rounded-2xl hover:scale-105 focus:outline-none focus:ring-4 focus:ring-purple-500/30 min-w-[220px] overflow-hidden backdrop-blur-sm bg-white/50 transition-all duration-500"
                 aria-label="Get in touch with me"
               >
-                <div className="absolute inset-0 bg-foreground transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
+                <div className="absolute inset-0 bg-gradient-to-r from-purple-500 via-pink-500 to-indigo-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
                 <span className="relative z-10 flex items-center justify-center">
-                  Get In Touch
+                  <span className="bg-gradient-to-r from-purple-500 via-pink-500 to-indigo-500 bg-clip-text text-transparent group-hover:text-white transition-colors duration-300">
+                    Get In Touch
+                  </span>
+
                   <svg
-                    className="w-5 h-5 ml-2 transition-transform group-hover:rotate-12"
+                    className="w-5 h-5 ml-2 text-purple-500 group-hover:text-white transition-transform group-hover:rotate-12 transition-colors duration-300"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -171,9 +211,8 @@ export default function Hero() {
                 </span>
               </button>
             </SectionDecorator>
+
           </div>
-
-
         </div>
       </div>
 
