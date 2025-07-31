@@ -1,18 +1,73 @@
 "use client"
 
+/**
+ * A shared, animated background component that adapts to light and dark themes.
+ * It features soft, animated blobs, a subtle grid pattern, and a gradient overlay
+ * to create a modern and visually pleasing backdrop for any page.
+ *
+ * It uses Tailwind's `dark:` variants to seamlessly switch between themes.
+ */
 export default function SharedBackground() {
   return (
-    <div className="fixed inset-0 -z-10 overflow-hidden">
-      {/* Animated background blobs */}
-      <div className="absolute top-0 -left-4 w-72 h-72 bg-purple-300/30 dark:bg-purple-700/20 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-xl animate-blob" />
-      <div className="absolute top-0 -right-4 w-72 h-72 bg-yellow-300/30 dark:bg-yellow-700/20 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-xl animate-blob [animation-delay:2s]" />
-      <div className="absolute bottom-0 -left-4 w-72 h-72 bg-pink-300/30 dark:bg-pink-700/20 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-xl animate-blob [animation-delay:4s]" />
+    <div
+      className="fixed inset-0 -z-50 h-full w-full"
+      aria-hidden="true"
+    >
+      {/* Container for the animated blobs */}
+      <div className="relative h-full w-full">
+        {/* 
+          Each blob has a base style for the light theme and a `dark:` variant for the dark theme.
+          - Light theme: Softer, pastel colors with `mix-blend-multiply`.
+          - Dark theme: More vibrant, luminous colors with `mix-blend-lighten` for a glow effect.
+        */}
 
-      {/* Subtle grid pattern */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,var(--border)_1px,transparent_1px),linear-gradient(to_bottom,var(--border)_1px,transparent_1px)] bg-[size:4rem_4rem] opacity-20" />
+        {/* Top-Left Blob */}
+        <div
+          className="
+            absolute -top-16 -left-16 h-72 w-72 rounded-full
+            bg-sky-200/50
+            mix-blend-multiply filter blur-3xl
+            animate-blob
+            dark:bg-sky-500/30 dark:mix-blend-lighten
+          "
+        />
 
-      {/* Gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-background/50 via-transparent to-background/50" />
+        {/* Bottom-Right Blob */}
+        <div
+          className="
+            absolute -bottom-16 -right-16 h-80 w-80 rounded-full
+            bg-violet-200/50
+            mix-blend-multiply filter blur-3xl
+            animate-blob [animation-delay:2s]
+            dark:bg-violet-500/30 dark:mix-blend-lighten
+          "
+        />
+
+        {/* Bottom-Left Blob */}
+        <div
+          className="
+            absolute -bottom-24 left-8 h-64 w-64 rounded-full
+            bg-rose-200/50
+            mix-blend-multiply filter blur-3xl
+            animate-blob [animation-delay:4s]
+            dark:bg-rose-500/30 dark:mix-blend-lighten
+          "
+        />
+      </div>
+      
+      {/* Subtle grid pattern - opacity is adjusted for light/dark themes */}
+      <div
+        className="
+          absolute inset-0 bg-[size:4rem_4rem] opacity-[0.03]
+          [background-image:linear-gradient(to_right,hsl(var(--foreground)),transparent_1px),linear-gradient(to_bottom,hsl(var(--foreground)),transparent_1px)]
+          dark:opacity-[0.05]
+        "
+      />
+      
+      {/* Gradient overlay to soften the edges and create a vignette effect */}
+      <div
+        className="absolute inset-0 bg-gradient-to-b from-background/30 via-transparent to-background/90"
+      />
     </div>
   )
 }

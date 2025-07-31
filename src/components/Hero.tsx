@@ -4,10 +4,10 @@ import { useState, useEffect, useCallback, useMemo } from "react"
 import { SectionDecorator } from "./SectionDecorator"
 
 const ROLES = [
-  { text: "Full Stack Developer", gradient: "from-blue-600 via-purple-600 to-indigo-600" },
-  { text: "React Specialist", gradient: "from-emerald-600 via-teal-600 to-cyan-600" },
-  { text: "UI/UX Enthusiast", gradient: "from-pink-600 via-rose-600 to-red-600" },
-  { text: "Problem Solver", gradient: "from-orange-600 via-amber-600 to-yellow-600" },
+  { text: "Full Stack Developer", gradient: "from-purple-500 via-pink-500 to-indigo-500 bg-clip-text text-transparent drop-shadow-2xl" },
+  { text: "React Specialist", gradient: "from-blue-600 via-teal-500 to-cyan-500 bg-clip-text text-transparent drop-shadow-2xl" },
+  { text: "UI/UX Enthusiast", gradient: "from-purple-500 via-pink-500 to-indigo-500 bg-clip-text text-transparent drop-shadow-2xl" },
+  { text: "Problem Solver", gradient: "from-blue-600 via-teal-500 to-cyan-500 bg-clip-text text-transparent drop-shadow-2xl" },
 ] as const
 
 const STATS = [
@@ -63,22 +63,23 @@ export default function Hero() {
             </SectionDecorator>
 
             {/* Name */}
-            <div className="relative">
-              <h1 className="text-5xl md:text-7xl lg:text-8xl font-black leading-tight animate-fade-in [animation-delay:0.2s]">
-                <span className="relative inline-block">
-                  <span className="bg-gradient-to-r from-foreground via-primary to-purple-600 bg-clip-text text-transparent bg-300% animate-gradient-x">
-                    Echadani Yassine
-                  </span>
-                  <span
-                    className="absolute inset-0 bg-gradient-to-r from-foreground/10 via-primary/10 to-purple-600/10 bg-clip-text text-transparent blur-sm -z-10"
-                    aria-hidden="true"
-                  >
-                    Echadani Yassine
-                  </span>
+            {/* Enhanced Name with better typography */}
+            <div className="relative space-y-4">
+              <h1 className="text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-black leading-tight text-center animate-fade-in [animation-delay:0.2s] space-y-2">
+                <span className="block bg-gradient-to-r from-purple-500 via-pink-500 to-indigo-500 bg-clip-text text-transparent drop-shadow-2xl">
+                  Echadani Yassine
+                </span>
+                <span className="block bg-gradient-to-r from-blue-600 via-teal-500 to-cyan-500 bg-clip-text text-transparent drop-shadow-2xl">
+                  Full Stack Developer
                 </span>
               </h1>
-              <div className="absolute -bottom-4 left-1/2 transform -translate-x-1/2 w-32 h-1 bg-gradient-to-r from-transparent via-primary to-transparent animate-pulse" />
+
+              <div className="flex justify-center">
+          <div className="w-32 md:w-48 h-1 bg-gradient-to-r from-transparent via-gray-800 dark:via-white to-transparent animate-pulse rounded-full shadow-lg shadow-gray-800/30 dark:shadow-white/20" />
+        </div>
             </div>
+
+
           </div>
 
           {/* Role */}
@@ -96,11 +97,10 @@ export default function Hero() {
               {ROLES.map((_, index) => (
                 <div
                   key={index}
-                  className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                    index === currentRole
-                      ? "bg-primary scale-125 shadow-lg shadow-primary/50"
-                      : "bg-muted-foreground/30"
-                  }`}
+                  className={`w-2 h-2 rounded-full transition-all duration-300 ${index === currentRole
+                    ? "bg-primary scale-125 shadow-lg shadow-primary/50"
+                    : "bg-muted-foreground/30"
+                    }`}
                 />
               ))}
             </div>
@@ -173,7 +173,7 @@ export default function Hero() {
             </SectionDecorator>
           </div>
 
-        
+
         </div>
       </div>
 

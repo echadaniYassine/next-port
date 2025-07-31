@@ -2,7 +2,7 @@ import { Suspense } from "react"
 import dynamic from "next/dynamic"
 import Hero from "../components/Hero"
 import Navbar from "../components/Navbar"
-import Loading from "../app/Loading"
+import Loading from "./Loading"
 
 // Dynamic imports for better performance
 const About = dynamic(() => import("../components/About"), {

@@ -1,41 +1,33 @@
 "use client"
 
-import { useTheme } from "../contexts/ThemeContext"
+import { useTheme } from "next-themes"
 import { useEffect, useState } from "react"
 
 export function ThemeToggle() {
-  const { theme, setTheme, resolvedTheme, isLoading } = useTheme()
   const [mounted, setMounted] = useState(false)
+  const { theme, setTheme, resolvedTheme } = useTheme()
 
   useEffect(() => {
     setMounted(true)
   }, [])
 
-  if (!mounted || isLoading) {
+  if (!mounted) {
     return null
   }
 
-  const handleThemeChange = (newTheme: "light" | "dark" | "system") => {
-    setTheme(newTheme)
-  }
 
-  const isDark = resolvedTheme === "dark"
+  const toggleTheme = () => {
+    setTheme(resolvedTheme === "dark" ? "light" : "dark")
+  }
 
   return (
     <button
-      onClick={() => {
-        if (theme === "light") {
-          handleThemeChange("dark")
-        } else if (theme === "dark") {
-          handleThemeChange("system")
-        } else {
-          handleThemeChange("light")
-        }
-      }}
+      onClick={toggleTheme}
       className="p-2 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-primary/50"
       aria-label="Toggle theme"
     >
-      {isDark ? (
+      {resolvedTheme === "dark" ? (
+        // Moon icon (dark mode)
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="24"
@@ -51,6 +43,7 @@ export function ThemeToggle() {
           <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9 9 6 6 0 0 0 0-12z" />
         </svg>
       ) : (
+        // Sun icon (light mode)
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="24"
