@@ -150,7 +150,7 @@ export default function Skills() {
           <SectionDecorator variant="default">
             <div className="inline-block">
               <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">My Skills</h2>
-              <div className="w-24 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto rounded-full" />
+              <div className="w-24 h-1 mx-auto animate-gradient-x10" />
             </div>
           </SectionDecorator>
           <p className="mt-6 text-lg text-muted-foreground max-w-2xl mx-auto">
@@ -165,14 +165,13 @@ export default function Skills() {
               key={category.category}
               onClick={() => handleCategoryChange(index)}
               className={`
-                cursor-pointer px-6 py-3 rounded-xl font-medium transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-primary/30
-                ${
-                  activeCategory === index
-                    ? `${getColorClasses(category.color, "light")} ${getColorClasses(
-                        category.color,
-                        "text",
-                      )} shadow-lg ring-2 ${getColorClasses(category.color, "border")}`
-                    : "bg-card text-muted-foreground hover:bg-accent hover:text-foreground border border-border"
+                cursor-pointer px-6 py-3 rounded-xl font-medium transition-all duration-300 transform hover:scale-105
+                ${activeCategory === index
+                  ? `${getColorClasses(category.color, "light")} ${getColorClasses(
+                    category.color,
+                    "text",
+                  )} shadow-lg ring-2 ${getColorClasses(category.color, "border")}`
+                  : "bg-card text-muted-foreground hover:bg-accent hover:text-foreground border border-border"
                 }
               `}
               aria-pressed={activeCategory === index}
@@ -265,9 +264,9 @@ export default function Skills() {
               <div
                 className={`
                   absolute inset-0 bg-gradient-to-r ${getColorClasses(
-                    currentCategory.color,
-                    "light",
-                  )} rounded-2xl opacity-0 group-hover:opacity-10 transition-opacity duration-500 pointer-events-none
+                  currentCategory.color,
+                  "light",
+                )} rounded-2xl opacity-0 group-hover:opacity-10 transition-opacity duration-500 pointer-events-none
                 `}
               />
             </div>
@@ -292,7 +291,11 @@ export default function Skills() {
                 <div className="text-sm text-muted-foreground font-medium">{stat.label}</div>
 
                 {/* Decorative element */}
-                <div className={`w-12 h-1 ${getColorClasses(stat.color, "bg")} mx-auto mt-3 rounded-full opacity-50`} />
+                <div
+                  className={`w-12 h-1 ${getColorClasses(stat.color, "bg")} mx-auto mt-3 rounded-full shadow-lg
+                  ${isVisible ? "animate-pulse" : ""}
+                `}
+                />
               </div>
             </SectionDecorator>
           ))}
@@ -309,10 +312,11 @@ export default function Skills() {
               </p>
               <button
                 onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
-                className="cursor-pointer px-8 py-3 bg-gradient-to-r from-purple-600 to-red-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-primary/30"
+                className="cursor-pointer px-8 py-3 bg-gradient-to-r from-purple-600 to-red-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-purple-500/40 hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-primary/30"
               >
                 Let&apos;s Connect
               </button>
+
             </div>
           </SectionDecorator>
         </div>

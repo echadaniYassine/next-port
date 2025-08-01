@@ -198,7 +198,7 @@ export default function Projects() {
           <SectionDecorator variant="default">
             <div className="inline-block">
               <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">My Projects</h2>
-              <div className="w-24 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto rounded-full" />
+              <div className="w-24 h-1 mx-auto animate-gradient-x10" />
             </div>
           </SectionDecorator>
           <p className="mt-6 text-lg text-muted-foreground max-w-2xl mx-auto">
@@ -291,7 +291,7 @@ export default function Projects() {
                         href={project.liveLink}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex-1 inline-flex items-center justify-center px-4 py-2 bg-gradient-to-r from-blue-600 via-teal-500 to-cyan-500 text-white font-medium rounded-lg hover:shadow-lg transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300/50"
+                        className="flex-1 inline-flex items-center justify-center px-4 py-2 bg-gradient-to-r from-blue-600 via-teal-500 to-cyan-500 text-white font-medium rounded-lg shadow-lg hover:shadow-cyan-500/40 transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300/50"
                         aria-label={`View ${project.title} live demo`}
                       >
                         <span>Live Demo</span>
@@ -308,7 +308,7 @@ export default function Projects() {
                         href={project.githubLink}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="px-4 py-2 border-2 border-foreground text-foreground font-medium rounded-lg hover:bg-foreground hover:text-background transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-foreground/30"
+                        className="px-4 py-2 border-2 border-foreground text-foreground font-medium rounded-lg shadow-lg hover:shadow-cyan-500/40 transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-foreground/30"
                         aria-label={`View ${project.title} source code`}
                       >
                         <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -402,7 +402,7 @@ export default function Projects() {
                         href={project.liveLink}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex-1 bg-gradient-to-r from-blue-600 via-teal-500 to-cyan-500 text-white px-3 py-2 rounded-lg text-sm font-medium text-center transition-transform duration-200 hover:scale-105 shadow-md"
+                        className="flex-1 bg-gradient-to-r from-blue-600 via-teal-500 to-cyan-500 text-white px-3 py-2 rounded-lg text-sm font-medium text-center transition-transform duration-200 hover:scale-105 shadow-md hover:shadow-cyan-500/40"
                         aria-label={`View ${project.title} live demo`}
                       >
                         Live Demo
@@ -411,7 +411,7 @@ export default function Projects() {
                         href={project.githubLink}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="bg-gray-900/80 text-white px-3 py-2 rounded-lg hover:bg-gray-900 transition-colors duration-200"
+                        className="bg-gray-900/80 text-white px-3 py-2 rounded-lg hover:bg-gray-900 transition-colors duration-200 hover:shadow-cyan-500/40 hover:scale-105"
                         aria-label={`View ${project.title} source code`}
                       >
                         <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -521,16 +521,18 @@ export default function Projects() {
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <button
                   onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
-                  className="cursor-pointer px-8 py-3 bg-gradient-to-r from-purple-600 to-red-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-blue-300/50"
+                  className="cursor-pointer px-8 py-3 bg-gradient-to-r from-purple-600 to-red-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-purple-500/40 hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-blue-300/50"
                 >
                   Get In Touch
                 </button>
+
                 <a
                   href="mailto:yassinechadani113@gmail.com"
-                  className="px-8 py-3 border-2 border-foreground text-foreground font-semibold rounded-xl hover:bg-foreground hover:text-background transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-foreground/30"
+                  className="px-8 py-3 border-2 border-foreground text-foreground font-semibold rounded-xl shadow-lg hover:shadow-purple-500/40 hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-foreground/30"
                 >
                   Send Email
                 </a>
+
               </div>
             </div>
           </SectionDecorator>

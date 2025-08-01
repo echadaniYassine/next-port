@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-/* Root Variables - Simplified and Consistent */
+/* Root Variables - Optimized for performance */
 :root {
   /* Light Theme Colors */
   --background: 0 0% 100%;
@@ -23,10 +23,6 @@
   --input: 214.3 31.8% 91.4%;
   --ring: 221.2 83.2% 53.3%;
   --radius: 0.5rem;
-
-  /* Animation Variables */
-  --animation-duration: 300ms;
-  --animation-timing: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Dark Theme Colors */
@@ -52,24 +48,34 @@
   --ring: 224.3 76.3% 94.1%;
 }
 
-/* Base Styles */
-* {
-  border-color: hsl(var(--border));
+/* Optimized base styles - CRITICAL for smooth transitions */
+html {
+  color-scheme: light dark;
 }
 
-body {
-  color: hsl(var(--foreground));
-  background: hsl(var(--background));
-  transition: color 0.3s ease, background-color 0.3s ease;
+html.dark {
+  color-scheme: dark;
 }
 
-/* Smooth transitions for theme switching */
+/* Optimized transitions - Only target necessary properties */
 *,
 *::before,
 *::after {
-  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+  transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 300ms;
+  transition-duration: 150ms;
+}
+
+/* Body with optimized transitions */
+body {
+  color: hsl(var(--foreground));
+  background-color: hsl(var(--background));
+  font-feature-settings: "rlig" 1, "calt" 1;
+}
+
+/* Remove conflicting transitions from border-color */
+* {
+  border-color: hsl(var(--border));
 }
 
 /* Selection styles */
@@ -78,7 +84,7 @@ body {
   color: hsl(var(--primary));
 }
 
-/* Scrollbar styles */
+/* Optimized scrollbar styles */
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -90,6 +96,7 @@ body {
 ::-webkit-scrollbar-thumb {
   background: hsl(var(--muted-foreground) / 0.3);
   border-radius: 4px;
+  transition: background-color 150ms ease;
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -102,12 +109,13 @@ body {
   outline-offset: 2px;
 }
 
-/* Animations */
+/* Optimized animations - Keep your existing keyframes but add will-change */
 @keyframes fade-in {
   from {
     opacity: 0;
     transform: translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -119,6 +127,7 @@ body {
     opacity: 0;
     transform: translateY(30px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -129,22 +138,27 @@ body {
   0% {
     transform: translate(0px, 0px) scale(1);
   }
+
   33% {
     transform: translate(30px, -50px) scale(1.1);
   }
+
   66% {
     transform: translate(-20px, 20px) scale(0.9);
   }
+
   100% {
     transform: translate(0px, 0px) scale(1);
   }
 }
 
 @keyframes float {
+
   0%,
   100% {
     transform: translateY(0px) rotate(0deg);
   }
+
   50% {
     transform: translateY(-20px) rotate(5deg);
   }
@@ -154,110 +168,98 @@ body {
   0% {
     background-position: -200px 0;
   }
+
   100% {
     background-position: calc(200px + 100%) 0;
   }
 }
-@keyframes glitch1 {
-  0% {
-    transform: translate(0);
-    opacity: 1;
-  }
-  20% {
-    transform: translate(-2px, -1px);
-    opacity: 0.8;
-  }
-  40% {
-    transform: translate(2px, 1px);
-    opacity: 0.6;
-  }
-  60% {
-    transform: translate(-1px, 2px);
-    opacity: 0.4;
-  }
-  80% {
-    transform: translate(1px, -2px);
-    opacity: 0.8;
-  }
-  100% {
-    transform: translate(0);
-    opacity: 1;
-  }
-}
 
-@keyframes glitch2 {
-  0% {
-    transform: translate(0);
-    opacity: 1;
+@keyframes gradient-x {
+
+  0%,
+  100% {
+    background-position: 0% 50%;
   }
-  25% {
-    transform: translate(1px, 1px);
-    opacity: 0.6;
-  }
+
   50% {
-    transform: translate(-2px, -1px);
-    opacity: 0.4;
-  }
-  75% {
-    transform: translate(2px, 2px);
-    opacity: 0.7;
-  }
-  100% {
-    transform: translate(0);
-    opacity: 1;
+    background-position: 100% 50%;
   }
 }
 
-.animate-glitch1 {
-  animation: glitch1 1s infinite;
-}
-
-.animate-glitch2 {
-  animation: glitch2 1.5s infinite;
-}
-
-/* Utility classes */
+/* Utility classes with will-change for better performance */
 .animate-fade-in {
   animation: fade-in 0.6s ease-out forwards;
   opacity: 0;
+  will-change: opacity, transform;
 }
 
 .animate-slide-up {
   animation: slide-up 0.6s ease-out forwards;
   opacity: 0;
+  will-change: opacity, transform;
 }
 
 .animate-blob {
   animation: blob 7s infinite;
+  will-change: transform;
 }
 
 .animate-float {
   animation: float 3s ease-in-out infinite;
+  will-change: transform;
 }
 
 .animate-shimmer {
   animation: shimmer 2s linear infinite;
-}
-
-@keyframes gradient-x {
-  0%,
-  100% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
+  will-change: background-position;
 }
 
 @layer utilities {
   .animate-gradient-x {
     background-size: 200% 200%;
     animation: gradient-x 4s ease-in-out infinite;
+    will-change: background-position;
   }
+
+  .animate-gradient-x10 {
+    background: linear-gradient(90deg,
+        #8b5cf6,
+        /* purple-500 */
+        #ec4899,
+        /* pink-500 */
+        #ef4444,
+        /* red-500 */
+        #2563eb,
+        /* blue-600 */
+        #14b8a6,
+        /* teal-500 */
+        #06b6d4
+        /* cyan-500 */
+      );
+    background-size: 300% 100%;
+    animation: gradient-x 4s ease-in-out infinite;
+    will-change: background-position;
+    border-radius: 9999px;
+    /* same as rounded-full */
+  }
+
+  @keyframes gradient-x {
+
+    0%,
+    100% {
+      background-position: 0% 50%;
+    }
+
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+
 }
 
 /* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {
@@ -265,6 +267,17 @@ body {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+
+  .animate-fade-in,
+  .animate-slide-up,
+  .animate-blob,
+  .animate-float,
+  .animate-shimmer,
+  .animate-gradient-x {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
   }
 }
 
@@ -274,6 +287,7 @@ body {
     --border: 0 0% 0%;
     --ring: 0 0% 0%;
   }
+
   .dark {
     --border: 0 0% 100%;
     --ring: 0 0% 100%;
@@ -285,6 +299,7 @@ body {
   .no-print {
     display: none !important;
   }
+
   body {
     background: white !important;
     color: black !important;

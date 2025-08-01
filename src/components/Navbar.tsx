@@ -2,15 +2,7 @@
 
 import Link from "next/link"
 import { useState, useEffect, useCallback } from "react"
-
-// Simple ThemeToggle for demo
-const ThemeToggle = () => (
-  <button className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">
-    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-    </svg>
-  </button>
-)
+import { ThemeToggle } from "./ThemeToggle"
 
 const NAV_ITEMS = [
   { href: "#about", label: "About" },
@@ -71,7 +63,7 @@ export default function Navbar() {
         fixed top-4 left-1/2 transform -translate-x-1/2 z-50 transition-all duration-500 ease-out
         ${
           isScrolled
-            ? "w-[95%] md:w-[60%] lg:w-[50%] rounded-2xl shadow-2xl backdrop-blur-md bg-white/80 dark:bg-gray-900/80 border border-gray-200/20 dark:border-gray-700/20"
+            ? "w-[95%] md:w-[60%] lg:w-[50%] rounded-2xl shadow-2xl backdrop-blur-xl bg-white/50 dark:bg-gray-900/50 border border-gray-200/20 dark:border-gray-700/20"
             : "w-full rounded-none bg-transparent backdrop-blur-none shadow-none border-none"
         }
       `}
@@ -95,7 +87,7 @@ export default function Navbar() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="group relative px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500/50 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800/50"
+                  className="group relative px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500/50 text-gray-800 dark:text-gray-200 hover:text-gray-950 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800/50"
                 >
                   {item.label}
                   
@@ -120,7 +112,7 @@ export default function Navbar() {
             <ThemeToggle />
             <button
               onClick={toggleMenu}
-              className="p-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500/50"
+              className="p-2 text-gray-700 dark:text-gray-300 hover:text-gray-950 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500/50"
               aria-label={isMenuOpen ? "Close menu" : "Open menu"}
               aria-expanded={isMenuOpen}
             >
@@ -138,13 +130,13 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="md:hidden mt-2 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md rounded-2xl shadow-2xl border border-gray-200/20 dark:border-gray-700/20 mx-4 overflow-hidden">
+        <div className="md:hidden mt-2 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl rounded-2xl shadow-2xl border border-gray-200/20 dark:border-gray-700/20 mx-4 overflow-hidden">
           <div className="px-4 py-3 space-y-1">
             {NAV_ITEMS.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className="group relative block px-4 py-3 rounded-lg text-base font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500/50 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800/50"
+                className="group relative block px-4 py-3 rounded-lg text-base font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500/50 text-gray-900 dark:text-gray-200 hover:text-black dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800/50"
                 onClick={closeMenu}
               >
                 {item.label}

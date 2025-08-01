@@ -68,10 +68,7 @@ export default function About() {
           <SectionDecorator variant="default">
             <div className="inline-block">
               <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">About Me</h2>
-              <div className="w-24 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto rounded-full" />
-              {/* <div className="flex justify-center">
-                <div className="w-32 md:w-48 h-1 bg-gradient-to-r from-transparent via-gray-800 dark:via-white to-transparent animate-pulse rounded-full shadow-lg shadow-gray-800/30 dark:shadow-white/20" />
-              </div> */}
+              <div className="w-24 h-1 mx-auto animate-gradient-x10" />
             </div>
           </SectionDecorator>
           <p className="mt-6 text-lg text-muted-foreground max-w-2xl mx-auto">
@@ -152,27 +149,15 @@ export default function About() {
               ))}
             </div>
 
-            {/* Stats
-            <div className="grid grid-cols-3 gap-6 pt-8 border-t border-border">
-              {STATS.map((stat, index) => (
-                <SectionDecorator key={stat.key} variant="minimal">
-                  <div className="text-center">
-                    <div className="text-2xl md:text-3xl font-bold text-primary mb-1">{counters[stat.key]}+</div>
-                    <div className="text-sm text-muted-foreground">{stat.label}</div>
-                  </div>
-                </SectionDecorator>
-              ))}
-            </div> */}
-
             {/* Call to Action */}
-            <div className="flex flex-col sm:flex-row gap-4 pt-6">
+            <div className="flex flex-row flex-wrap gap-4 pt-6 justify-center sm:justify-start">
               <SectionDecorator variant="card">
-                <button className="cursor-pointer px-6 py-3 bg-gradient-to-r from-purple-600 to-red-600 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300/50">
+                <button className="cursor-pointer px-6 py-3 bg-gradient-to-r from-purple-600 to-red-600 text-white font-semibold rounded-lg shadow-lg hover:shadow-purple-500/40 hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-blue-300/50">
                   Download CV
                 </button>
               </SectionDecorator>
               <SectionDecorator variant="card">
-                <button className="cursor-pointer px-6 py-3 border-2 border-foreground text-foreground font-semibold rounded-lg hover:bg-foreground hover:text-background transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-foreground/30">
+                <button className="cursor-pointer px-6 py-3 border-2 border-foreground text-foreground font-semibold rounded-lg shadow-lg hover:shadow-purple-500/40 hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-foreground/30">
                   Contact Me
                 </button>
               </SectionDecorator>

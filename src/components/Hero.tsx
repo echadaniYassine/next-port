@@ -128,19 +128,15 @@ export default function Hero() {
                 className="cursor-pointer group relative w-full sm:w-auto px-6 sm:px-8 lg:px-10 py-3 sm:py-4 lg:py-5 border-2 border-purple-500 font-bold text-sm sm:text-base lg:text-lg rounded-xl sm:rounded-2xl shadow-lg transition-all duration-500 hover:shadow-purple-500/25 hover:shadow-xl hover:scale-105 focus:outline-none focus:ring-4 focus:ring-purple-500/30 min-w-[200px] sm:min-w-[220px] overflow-hidden"
                 aria-label="View my projects"
               >
-                {/* This div is the gradient background. It starts visible and fades to transparent on hover. */}
                 <div
                   className="absolute inset-0 bg-gradient-to-r from-purple-600 to-red-600 opacity-100 group-hover:opacity-0 transition-opacity duration-500"
                 />
-
-                {/* The content container must be relative and have a z-index to appear on top. */}
                 <span className="relative z-10 flex items-center justify-center">
 
                   <span className="text-white group-hover:bg-gradient-to-r group-hover:from-purple-600 group-hover:to-red-600 group-hover:bg-clip-text group-hover:text-transparent transition-colors duration-300">
                     View My Work
                   </span>
 
-                  {/* The SVG also starts white and transitions to a color from the gradient on hover. */}
                   <svg
                     className="w-5 h-5 ml-2 text-white group-hover:text-purple-500 transition-transform group-hover:translate-x-1 transition-colors duration-300"
                     fill="none"
@@ -157,20 +153,18 @@ export default function Hero() {
             <SectionDecorator variant="card">
               <button
                 onClick={scrollToContact}
-                className="cursor-pointer group relative w-full sm:w-auto overflow-hidden rounded-xl sm:rounded-2xl px-6 sm:px-8 lg:px-10 py-3 sm:py-4 lg:py-5 font-bold text-sm sm:text-base lg:text-lg transition-transform duration-300 hover:scale-105 backdrop-blur-md bg-white/20 dark:bg-white/10 border border-white/30 dark:border-white/20 shadow-lg min-w-[200px] sm:min-w-[220px]"
+                className="cursor-pointer group relative w-full sm:w-auto px-6 sm:px-8 lg:px-10 py-3 sm:py-4 lg:py-5 border-2 border-purple-500 font-bold text-sm sm:text-base lg:text-lg rounded-xl sm:rounded-2xl shadow-lg transition-all duration-500 hover:shadow-purple-500/25 hover:shadow-xl hover:scale-105 focus:outline-none focus:ring-4 focus:ring-purple-500/30 min-w-[200px] sm:min-w-[220px] overflow-hidden"
                 aria-label="Get in touch with me"
               >
-                {/* Hover background fill effect */}
-                <div className="absolute inset-0 scale-x-0 origin-left bg-gradient-to-r from-purple-600 to-red-600 transition-transform duration-500 group-hover:scale-x-100 z-0" />
-
-                {/* Button content */}
+                <div
+                  className="absolute inset-0 bg-gradient-to-r from-purple-600 to-red-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                />
                 <span className="relative z-10 flex items-center justify-center">
-                  <span className="bg-gradient-to-r from-purple-500 to-red-500 bg-clip-text text-transparent group-hover:text-white transition-colors duration-300">
+                  <span className="bg-gradient-to-r from-purple-600 to-red-600 bg-clip-text text-transparent transition-all duration-300 group-hover:text-white group-hover:bg-none">
                     Get In Touch
                   </span>
-
                   <svg
-                    className="w-5 h-5 ml-2 text-purple-500 group-hover:text-white transition-all duration-300 group-hover:rotate-12"
+                    className="w-5 h-5 ml-2 text-purple-500 transition-all duration-300 group-hover:text-white group-hover:translate-x-1"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -186,6 +180,7 @@ export default function Hero() {
                 </span>
               </button>
             </SectionDecorator>
+
           </div>
         </div>
       </div>
