@@ -7,9 +7,11 @@ import { SectionDecorator } from "./SectionDecorator"
 const FINAL_COUNTS = { experience: 5, projects: 50, clients: 30 } as const
 const SKILLS = [
   { name: "Frontend Development", level: 95 },
-  { name: "Backend Development", level: 88 },
-  { name: "UI/UX Design", level: 85 },
-  { name: "Mobile Development", level: 80 },
+  { name: "Backend Development", level: 95 },
+  { name: "UI/UX Design", level: 80 },
+  { name: "CMS", level: 90 },
+  { name: "Mobile Development", level: 75 },
+
 ] as const
 
 const STATS = [
@@ -67,7 +69,7 @@ export default function About() {
             <div className="inline-block">
               <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">About Me</h2>
               <div className="w-24 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto rounded-full" />
-               {/* <div className="flex justify-center">
+              {/* <div className="flex justify-center">
                 <div className="w-32 md:w-48 h-1 bg-gradient-to-r from-transparent via-gray-800 dark:via-white to-transparent animate-pulse rounded-full shadow-lg shadow-gray-800/30 dark:shadow-white/20" />
               </div> */}
             </div>
@@ -80,9 +82,8 @@ export default function About() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           {/* Image Section */}
           <div
-            className={`relative transition-all duration-1000 ${
-              isVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-10"
-            }`}
+            className={`relative transition-all duration-1000 ${isVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-10"
+              }`}
           >
             <SectionDecorator variant="card">
               <div className="relative">
@@ -110,21 +111,24 @@ export default function About() {
 
           {/* Content Section */}
           <div
-            className={`space-y-8 transition-all duration-1000 delay-300 ${
-              isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-10"
-            }`}
+            className={`space-y-8 transition-all duration-1000 delay-300 ${isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-10"
+              }`}
           >
             {/* Description */}
             <div className="space-y-6">
               <p className="text-lg text-muted-foreground leading-relaxed">
-                I&apos;m a <span className="font-semibold text-blue-600 dark:text-blue-400">Full Stack Developer</span>{" "}
-                driven by a passion for building efficient, user-focused applications.
+                I&apos;m a{" "}
+                <span className="font-semibold bg-gradient-to-r from-purple-600 to-red-600 bg-clip-text text-transparent dark:from-red-500 dark:to-purple-500">
+                  Full Stack Developer
+                </span>{" "}
+                Skilled in both frontend and backend, driven by a passion for building efficient, user-focused applications.
               </p>
-              <p className="text-lg text-muted-foreground leading-relaxed">
+              {/* <p className="text-lg text-muted-foreground leading-relaxed">
                 Skilled in both frontend and backend, I enjoy solving problems with clean, scalable code and continually
                 exploring new technologies.
-              </p>
+              </p> */}
             </div>
+
 
             {/* Skills Progress Bars */}
             <div className="space-y-4">
@@ -137,7 +141,7 @@ export default function About() {
                   </div>
                   <div className="w-full bg-muted rounded-full h-2.5 overflow-hidden">
                     <div
-                      className="bg-gradient-to-r from-blue-600 to-purple-600 h-2.5 rounded-full transition-all duration-1000 ease-out"
+                      className="bg-gradient-to-r from-transparent via-purple-600 to-red-600 h-2.5 rounded-full transition-all duration-1000 ease-out"
                       style={{
                         width: isVisible ? `${skill.level}%` : "0%",
                         transitionDelay: `${index * 200}ms`,
@@ -148,7 +152,7 @@ export default function About() {
               ))}
             </div>
 
-            {/* Stats */}
+            {/* Stats
             <div className="grid grid-cols-3 gap-6 pt-8 border-t border-border">
               {STATS.map((stat, index) => (
                 <SectionDecorator key={stat.key} variant="minimal">
@@ -158,17 +162,17 @@ export default function About() {
                   </div>
                 </SectionDecorator>
               ))}
-            </div>
+            </div> */}
 
             {/* Call to Action */}
             <div className="flex flex-col sm:flex-row gap-4 pt-6">
               <SectionDecorator variant="card">
-                <button className="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300/50">
+                <button className="cursor-pointer px-6 py-3 bg-gradient-to-r from-purple-600 to-red-600 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300/50">
                   Download CV
                 </button>
               </SectionDecorator>
               <SectionDecorator variant="card">
-                <button className="px-6 py-3 border-2 border-foreground text-foreground font-semibold rounded-lg hover:bg-foreground hover:text-background transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-foreground/30">
+                <button className="cursor-pointer px-6 py-3 border-2 border-foreground text-foreground font-semibold rounded-lg hover:bg-foreground hover:text-background transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-foreground/30">
                   Contact Me
                 </button>
               </SectionDecorator>

@@ -57,8 +57,8 @@ const SKILL_CATEGORIES = [
 
 const SUMMARY_STATS = [
   { label: "Technologies Mastered", value: "20+", icon: "🚀", color: "blue" },
-  { label: "Years of Experience", value: "5+", icon: "⏰", color: "green" },
-  { label: "Projects Completed", value: "50+", icon: "✅", color: "purple" },
+  { label: "Years of Experience", value: "2+", icon: "⏰", color: "green" },
+  { label: "Projects Completed", value: "24+", icon: "✅", color: "purple" },
   { label: "Always Learning", value: "∞", icon: "📚", color: "orange" },
 ] as const
 
@@ -165,7 +165,7 @@ export default function Skills() {
               key={category.category}
               onClick={() => handleCategoryChange(index)}
               className={`
-                px-6 py-3 rounded-xl font-medium transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-primary/30
+                cursor-pointer px-6 py-3 rounded-xl font-medium transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-primary/30
                 ${
                   activeCategory === index
                     ? `${getColorClasses(category.color, "light")} ${getColorClasses(
@@ -309,7 +309,7 @@ export default function Skills() {
               </p>
               <button
                 onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
-                className="px-8 py-3 bg-gradient-to-r from-primary to-purple-600 text-primary-foreground font-semibold rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-primary/30"
+                className="cursor-pointer px-8 py-3 bg-gradient-to-r from-purple-600 to-red-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-primary/30"
               >
                 Let&apos;s Connect
               </button>

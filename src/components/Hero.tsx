@@ -2,11 +2,12 @@
 
 import { useState, useEffect, useCallback, useMemo } from "react"
 import { SectionDecorator } from "./SectionDecorator"
+import Loading from "../app/Loading"
 
 const ROLES = [
-  { text: "Full Stack Developer", gradient: "from-purple-500 via-pink-500 to-indigo-500 bg-clip-text text-transparent drop-shadow-2xl" },
+  { text: "Full Stack Developer", gradient: "from-purple-500 via-pink-500 to-red-500 bg-clip-text text-transparent drop-shadow-2xl" },
   { text: "React Specialist", gradient: "from-blue-600 via-teal-500 to-cyan-500 bg-clip-text text-transparent drop-shadow-2xl" },
-  { text: "UI/UX Enthusiast", gradient: "from-purple-500 via-pink-500 to-indigo-500 bg-clip-text text-transparent drop-shadow-2xl" },
+  { text: "UI/UX Enthusiast", gradient: "from-purple-500 via-pink-500 to-red-500 bg-clip-text text-transparent drop-shadow-2xl" },
   { text: "Problem Solver", gradient: "from-blue-600 via-teal-500 to-cyan-500 bg-clip-text text-transparent drop-shadow-2xl" },
 ] as const
 
@@ -40,16 +41,14 @@ export default function Hero() {
 
   if (!mounted) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
-      </div>
+      <Loading />
     )
   }
 
   return (
     <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Main Content */}
-      <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 text-center z-10">
+      <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 text-center z-10 mt-16 sm:mt-0">
         <div className="space-y-8">
           {/* Greeting */}
           <div className="space-y-6">
@@ -65,13 +64,28 @@ export default function Hero() {
             {/* Name */}
             {/* Enhanced Name with better typography */}
             <div className="relative space-y-4">
-              <h1 className="text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-black leading-tight text-center animate-fade-in [animation-delay:0.2s] space-y-2">
-                <span className="block bg-gradient-to-r from-purple-500 via-pink-500 to-indigo-500 bg-clip-text text-transparent drop-shadow-2xl">
+              <h1 className="text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-black leading-tight text-center animate-fade-in [animation-delay:0.2s] space-y-2 break-words leading-tight">
+                <span className="block animate-gradient-x bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 bg-clip-text text-transparent drop-shadow-2xl">
                   Echadani Yassine
                 </span>
-                <span className="block bg-gradient-to-r from-blue-600 via-teal-500 to-cyan-500 bg-clip-text text-transparent drop-shadow-2xl">
-                  Full Stack Developer
-                </span>
+
+                <div className="relative inline-block glitch-wrapper">
+                  {/* Base Layer */}
+                  <span className="block relative z-10 bg-gradient-to-r from-blue-600 via-teal-500 to-cyan-500 bg-clip-text text-transparent drop-shadow-2xl">
+                    Full Stack Developer
+                  </span>
+
+                  {/* Glitch Layer 1 */}
+                  <span className="absolute top-0 left-0 w-full h-full z-0 text-transparent bg-gradient-to-r from-blue-600 via-teal-500 to-cyan-500 bg-clip-text animate-glitch1 pointer-events-none">
+                    Full Stack Developer
+                  </span>
+
+                  {/* Glitch Layer 2 */}
+                  <span className="absolute top-0 left-0 w-full h-full z-0 text-transparent bg-gradient-to-r from-blue-600 via-teal-500 to-cyan-500 bg-clip-text animate-glitch2 pointer-events-none">
+                    Full Stack Developer
+                  </span>
+                </div>
+
               </h1>
 
               <div className="flex justify-center">
@@ -83,27 +97,12 @@ export default function Hero() {
           </div>
 
           {/* Role */}
-          <div className="h-24 flex items-center justify-center animate-fade-in [animation-delay:0.4s]">
+          <div className="min-h-[60px] sm:min-h-[80px] flex flex-col items-center justify-center animate-fade-in space-y-3">
             <SectionDecorator variant="default">
-              <p
-                className={`text-2xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r ${currentRoleData.gradient} bg-clip-text text-transparent transition-all duration-1000 ease-in-out`}
-              >
+              <p className={`text-xl sm:text-2xl md:text-4xl font-bold bg-gradient-to-r ${currentRoleData.gradient} transition-all duration-1000 ease-in-out`}>
                 {currentRoleData.text}
               </p>
             </SectionDecorator>
-
-            {/* Role indicators */}
-            <div className="flex justify-center space-x-2 mt-4">
-              {ROLES.map((_, index) => (
-                <div
-                  key={index}
-                  className={`w-2 h-2 rounded-full transition-all duration-300 ${index === currentRole
-                    ? "bg-primary scale-125 shadow-lg shadow-primary/50"
-                    : "bg-muted-foreground/30"
-                    }`}
-                />
-              ))}
-            </div>
           </div>
 
           {/* Description */}
@@ -111,7 +110,7 @@ export default function Hero() {
             <p className="text-xl md:text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
               Passionate about creating{" "}
               <span className="relative inline-block">
-                <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent font-semibold">
+                <span className="bg-gradient-to-r from-red-600 to-purple-600 bg-clip-text text-transparent font-semibold">
                   amazing web experiences
                 </span>
                 <span className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 transform scale-x-0 animate-scale-x animation-delay-2000" />
@@ -122,55 +121,28 @@ export default function Hero() {
 
           { /* CTA Buttons */}
 
-          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center pt-8 animate-fade-in [animation-delay:0.8s]">
+          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center pt-6 sm:pt-8 animate-fade-in px-4">
             <SectionDecorator variant="card">
               <button
                 onClick={scrollToProjects}
-                className="
-        group 
-        relative 
-        px-10 py-5 
-        border-2 border-purple-500 
-        font-bold text-lg rounded-2xl 
-        shadow-2xl transition-all duration-500 
-        hover:shadow-purple-500/25 hover:shadow-2xl hover:scale-105 
-        focus:outline-none focus:ring-4 focus:ring-purple-500/30 
-        min-w-[220px] overflow-hidden
-      "
+                className="cursor-pointer group relative w-full sm:w-auto px-6 sm:px-8 lg:px-10 py-3 sm:py-4 lg:py-5 border-2 border-purple-500 font-bold text-sm sm:text-base lg:text-lg rounded-xl sm:rounded-2xl shadow-lg transition-all duration-500 hover:shadow-purple-500/25 hover:shadow-xl hover:scale-105 focus:outline-none focus:ring-4 focus:ring-purple-500/30 min-w-[200px] sm:min-w-[220px] overflow-hidden"
                 aria-label="View my projects"
               >
                 {/* This div is the gradient background. It starts visible and fades to transparent on hover. */}
                 <div
-                  className="
-          absolute inset-0 
-          bg-gradient-to-r from-purple-500 via-pink-500 to-indigo-500 
-          opacity-100 group-hover:opacity-0 
-          transition-opacity duration-500
-        "
+                  className="absolute inset-0 bg-gradient-to-r from-purple-600 to-red-600 opacity-100 group-hover:opacity-0 transition-opacity duration-500"
                 />
 
                 {/* The content container must be relative and have a z-index to appear on top. */}
                 <span className="relative z-10 flex items-center justify-center">
 
-                  {/* The text starts as white and transitions to a gradient on hover. */}
-                  <span className="
-          text-white 
-          group-hover:bg-gradient-to-r group-hover:from-purple-500 group-hover:via-pink-500 group-hover:to-indigo-500 
-          group-hover:bg-clip-text group-hover:text-transparent 
-          transition-colors duration-300
-        ">
+                  <span className="text-white group-hover:bg-gradient-to-r group-hover:from-purple-600 group-hover:to-red-600 group-hover:bg-clip-text group-hover:text-transparent transition-colors duration-300">
                     View My Work
                   </span>
 
                   {/* The SVG also starts white and transitions to a color from the gradient on hover. */}
                   <svg
-                    className="
-            w-5 h-5 ml-2 
-            text-white 
-            group-hover:text-purple-500 
-            transition-transform group-hover:translate-x-1 
-            transition-colors duration-300
-          "
+                    className="w-5 h-5 ml-2 text-white group-hover:text-purple-500 transition-transform group-hover:translate-x-1 transition-colors duration-300"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -185,17 +157,20 @@ export default function Hero() {
             <SectionDecorator variant="card">
               <button
                 onClick={scrollToContact}
-                className=" group relative px-10 py-5 border-2 border-purple-500 font-bold text-lg rounded-2xl hover:scale-105 focus:outline-none focus:ring-4 focus:ring-purple-500/30 min-w-[220px] overflow-hidden backdrop-blur-sm bg-white/50 transition-all duration-500"
+                className="cursor-pointer group relative w-full sm:w-auto overflow-hidden rounded-xl sm:rounded-2xl px-6 sm:px-8 lg:px-10 py-3 sm:py-4 lg:py-5 font-bold text-sm sm:text-base lg:text-lg transition-transform duration-300 hover:scale-105 backdrop-blur-md bg-white/20 dark:bg-white/10 border border-white/30 dark:border-white/20 shadow-lg min-w-[200px] sm:min-w-[220px]"
                 aria-label="Get in touch with me"
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-purple-500 via-pink-500 to-indigo-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
+                {/* Hover background fill effect */}
+                <div className="absolute inset-0 scale-x-0 origin-left bg-gradient-to-r from-purple-600 to-red-600 transition-transform duration-500 group-hover:scale-x-100 z-0" />
+
+                {/* Button content */}
                 <span className="relative z-10 flex items-center justify-center">
-                  <span className="bg-gradient-to-r from-purple-500 via-pink-500 to-indigo-500 bg-clip-text text-transparent group-hover:text-white transition-colors duration-300">
+                  <span className="bg-gradient-to-r from-purple-500 to-red-500 bg-clip-text text-transparent group-hover:text-white transition-colors duration-300">
                     Get In Touch
                   </span>
 
                   <svg
-                    className="w-5 h-5 ml-2 text-purple-500 group-hover:text-white transition-transform group-hover:rotate-12 transition-colors duration-300"
+                    className="w-5 h-5 ml-2 text-purple-500 group-hover:text-white transition-all duration-300 group-hover:rotate-12"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -211,19 +186,18 @@ export default function Hero() {
                 </span>
               </button>
             </SectionDecorator>
-
           </div>
         </div>
       </div>
 
-      {/* Scroll Indicator */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-fade-in [animation-delay:1.2s]">
+      {/* Scroll Indicator - Hidden on mobile */}
+      <div className="hidden sm:block absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-fade-in">
         <SectionDecorator variant="minimal">
           <div className="flex flex-col items-center space-y-3 animate-bounce">
-            <span className="text-sm text-muted-foreground font-medium">Scroll to explore</span>
+            <span className="text-sm text-gray-500 dark:text-gray-400 font-medium">Scroll to explore</span>
             <div className="relative">
               <svg
-                className="w-6 h-6 text-muted-foreground"
+                className="w-6 h-6 text-gray-500 dark:text-gray-400"
                 fill="none"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -234,7 +208,7 @@ export default function Hero() {
               >
                 <path d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
               </svg>
-              <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-primary rounded-full animate-ping" />
+              <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-purple-500 rounded-full animate-ping" />
             </div>
           </div>
         </SectionDecorator>

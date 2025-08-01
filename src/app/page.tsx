@@ -20,7 +20,7 @@ const Contact = dynamic(() => import("../components/Contact"), {
 
 export default function HomePage() {
   return (
-    <main className="relative">
+    <main className="relative w-full min-h-screen overflow-x-hidden">
       <Navbar />
       <Hero />
       <Suspense fallback={<Loading />}>
@@ -35,6 +35,7 @@ export default function HomePage() {
       <Suspense fallback={<Loading />}>
         <Contact />
       </Suspense>
+      {/* mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm */}
     </main>
   )
 }

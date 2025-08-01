@@ -263,9 +263,8 @@ export default function Contact() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
           {/* Contact Information */}
           <div
-            className={`lg:col-span-1 space-y-8 transition-all duration-1000 ${
-              isVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-10"
-            }`}
+            className={`lg:col-span-1 space-y-8 transition-all duration-1000 ${isVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-10"
+              }`}
           >
             <div>
               <h3 className="text-2xl font-bold text-foreground mb-6">Let&apos;s Connect</h3>
@@ -281,6 +280,8 @@ export default function Contact() {
                 <a
                   key={info.title}
                   href={info.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className={`
                     flex items-center p-4 bg-card rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 border border-border group
                     ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}
@@ -327,9 +328,8 @@ export default function Contact() {
 
           {/* Contact Form */}
           <div
-            className={`lg:col-span-2 transition-all duration-1000 delay-300 ${
-              isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-10"
-            }`}
+            className={`lg:col-span-2 transition-all duration-1000 delay-300 ${isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-10"
+              }`}
           >
             <div className="bg-card p-8 rounded-2xl shadow-2xl border border-border">
               <form onSubmit={handleSubmit} className="space-y-6" noValidate>
@@ -487,7 +487,7 @@ export default function Contact() {
                   <button
                     type="submit"
                     disabled={submitStatus === "submitting"}
-                    className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-xl font-semibold shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center space-x-2 focus:outline-none focus:ring-4 focus:ring-primary/30"
+                    className="cursor-pointer w-full bg-gradient-to-r from-purple-600 to-red-600 text-white px-8 py-4 rounded-xl font-semibold shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center space-x-2 focus:outline-none focus:ring-4 focus:ring-primary/30"
                     aria-label={submitStatus === "submitting" ? "Sending message..." : "Send message"}
                   >
                     {submitStatus === "submitting" ? (

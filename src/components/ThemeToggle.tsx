@@ -23,7 +23,7 @@ export function ThemeToggle() {
   return (
     <button
       onClick={toggleTheme}
-      className="p-2 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-primary/50"
+      className="cursor-pointer p-2 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors"
       aria-label="Toggle theme"
     >
       {resolvedTheme === "dark" ? (
@@ -40,7 +40,7 @@ export function ThemeToggle() {
           strokeLinejoin="round"
           className="h-5 w-5"
         >
-          <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9 9 6 6 0 0 0 0-12z" />
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
         </svg>
       ) : (
         // Sun icon (light mode)

@@ -61,10 +61,10 @@ export default function NotFound() {
             Oops! Page Not Found
           </h2>
           <p className="text-lg text-gray-600 dark:text-gray-400 animate-slide-up" style={{ animationDelay: '0.1s' }}>
-            The page you're looking for seems to have vanished into the digital void.
+            The page you&apos;re looking for seems to have vanished into the digital void.
           </p>
           <p className="text-gray-500 dark:text-gray-500 animate-slide-up" style={{ animationDelay: '0.2s' }}>
-            Don't worry, even the best explorers get lost sometimes!
+            Don&apos;t worry, even the best explorers get lost sometimes!
           </p>
         </div>
 
@@ -115,7 +115,7 @@ export default function NotFound() {
           </h3>
           <p className="text-gray-600 dark:text-gray-400 text-sm">
             The 404 error code was named after room 404 at CERN, where the original web servers were located. 
-            When researchers couldn't find a file, they'd get a "room 404: file not found" error!
+            When researchers couldn&apos;t find a file, they&apos;d get a &quot;room 404: file not found&quot; error!
           </p>
         </div>
       </div>

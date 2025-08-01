@@ -158,6 +158,63 @@ body {
     background-position: calc(200px + 100%) 0;
   }
 }
+@keyframes glitch1 {
+  0% {
+    transform: translate(0);
+    opacity: 1;
+  }
+  20% {
+    transform: translate(-2px, -1px);
+    opacity: 0.8;
+  }
+  40% {
+    transform: translate(2px, 1px);
+    opacity: 0.6;
+  }
+  60% {
+    transform: translate(-1px, 2px);
+    opacity: 0.4;
+  }
+  80% {
+    transform: translate(1px, -2px);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate(0);
+    opacity: 1;
+  }
+}
+
+@keyframes glitch2 {
+  0% {
+    transform: translate(0);
+    opacity: 1;
+  }
+  25% {
+    transform: translate(1px, 1px);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translate(-2px, -1px);
+    opacity: 0.4;
+  }
+  75% {
+    transform: translate(2px, 2px);
+    opacity: 0.7;
+  }
+  100% {
+    transform: translate(0);
+    opacity: 1;
+  }
+}
+
+.animate-glitch1 {
+  animation: glitch1 1s infinite;
+}
+
+.animate-glitch2 {
+  animation: glitch2 1.5s infinite;
+}
 
 /* Utility classes */
 .animate-fade-in {
@@ -180,6 +237,23 @@ body {
 
 .animate-shimmer {
   animation: shimmer 2s linear infinite;
+}
+
+@keyframes gradient-x {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@layer utilities {
+  .animate-gradient-x {
+    background-size: 200% 200%;
+    animation: gradient-x 4s ease-in-out infinite;
+  }
 }
 
 /* Reduced motion support */

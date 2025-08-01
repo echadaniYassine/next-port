@@ -291,7 +291,7 @@ export default function Projects() {
                         href={project.liveLink}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex-1 inline-flex items-center justify-center px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium rounded-lg hover:shadow-lg transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300/50"
+                        className="flex-1 inline-flex items-center justify-center px-4 py-2 bg-gradient-to-r from-blue-600 via-teal-500 to-cyan-500 text-white font-medium rounded-lg hover:shadow-lg transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300/50"
                         aria-label={`View ${project.title} live demo`}
                       >
                         <span>Live Demo</span>
@@ -333,11 +333,10 @@ export default function Projects() {
                 key={filter.key}
                 onClick={() => handleFilterChange(filter.key)}
                 className={`
-                  px-6 py-3 rounded-xl font-medium transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-primary/30
-                  ${
-                    activeFilter === filter.key
-                      ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg"
-                      : "bg-card text-muted-foreground hover:bg-accent hover:text-foreground border border-border"
+                  cursor-pointer px-6 py-3 rounded-xl font-medium transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-primary/30
+                  ${activeFilter === filter.key
+                    ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg"
+                    : "bg-card text-muted-foreground hover:bg-accent hover:text-foreground border border-border"
                   }
                 `}
                 aria-pressed={activeFilter === filter.key}
@@ -348,9 +347,8 @@ export default function Projects() {
                 </span>
                 {filter.label}
                 <span
-                  className={`ml-2 px-2 py-1 rounded-full text-xs ${
-                    activeFilter === filter.key ? "bg-white/20 text-white" : "bg-muted text-muted-foreground"
-                  }`}
+                  className={`ml-2 px-2 py-1 rounded-full text-xs ${activeFilter === filter.key ? "bg-white/20 text-white" : "bg-muted text-muted-foreground"
+                    }`}
                 >
                   {count}
                 </span>
@@ -404,7 +402,7 @@ export default function Projects() {
                         href={project.liveLink}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex-1 bg-white/90 text-gray-900 px-3 py-2 rounded-lg text-sm font-medium text-center hover:bg-white transition-colors duration-200"
+                        className="flex-1 bg-gradient-to-r from-blue-600 via-teal-500 to-cyan-500 text-white px-3 py-2 rounded-lg text-sm font-medium text-center transition-transform duration-200 hover:scale-105 shadow-md"
                         aria-label={`View ${project.title} live demo`}
                       >
                         Live Demo
@@ -523,7 +521,7 @@ export default function Projects() {
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <button
                   onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
-                  className="px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300/50"
+                  className="cursor-pointer px-8 py-3 bg-gradient-to-r from-purple-600 to-red-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-blue-300/50"
                 >
                   Get In Touch
                 </button>
