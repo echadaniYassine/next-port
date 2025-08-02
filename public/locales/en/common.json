@@ -1,0 +1,140 @@
+{
+  "site": {
+    "name": "Echadani Yassine",
+    "title": "Full Stack Developer Portfolio",
+    "description": "Full Stack Developer passionate about creating amazing web experiences with modern technologies."
+  },
+  "nav": {
+     "home": "Home",
+    "about": "About",
+    "skills": "Skills",
+    "projects": "Projects",
+    "contact": "Contact",
+    "openMenu": "Open navigation menu",
+    "closeMenu": "Close navigation menu",
+    "languageSelector": "Language selector",
+    "switchTo": "Switch to"
+  },
+  "about": {
+    "title": "About Me",
+    "subtitle": "Passionate developer with a love for creating exceptional digital experiences",
+    "description": "I'm a <span>Full Stack Developer</span> Skilled in both frontend and backend, driven by a passion for building efficient, user-focused applications.",
+    "coreSkills": "Core Skills",
+    "skills": {
+      "frontendDevelopment": "Frontend Development",
+      "backendDevelopment": "Backend Development",
+      "uiUxDesign": "UI/UX Design",
+      "cms": "CMS",
+      "mobileDevelopment": "Mobile Development"
+    }
+  },
+  "hero": {
+    "greeting": "Hello, I'm",
+    "name": "Echadani Yassine",
+    "title": "Full Stack Developer",
+    "roles": {
+      "fullStackDeveloper": "Full Stack Developer",
+      "reactSpecialist": "React Specialist",
+      "uiUxEnthusiast": "UI/UX Enthusiast",
+      "problemSolver": "Problem Solver"
+    },
+    "description": "Passionate about creating <span>amazing web experiences</span> with modern technologies. I transform ideas into beautiful, functional, and user-friendly applications."
+  },
+  "skills": {
+    "title": "Skills",
+    "categories": {
+      "Frontend": "Frontend",
+      "Backend": "Backend",
+      "Database": "Database",
+      "Tools & Others": "Tools & Others"
+    },
+    "descriptions": {
+      "HTML5": "Semantic markup and accessibility",
+      "CSS3": "Modern styling and animations",
+      "JavaScript": "ES6+ and modern features",
+      "React": "Hooks, Context, and performance",
+      "Next.js": "SSR, SSG, and App Router",
+      "Tailwind CSS": "Utility-first styling",
+      "Laravel": "MVC architecture and APIs",
+      "Node.js": "Server-side JavaScript",
+      "Express": "Web application framework",
+      "Python": "Scripting and automation",
+      "RESTful APIs": "API design and integration",
+      "MongoDB": "NoSQL document database",
+      "PostgreSQL": "Relational database",
+      "MySQL": "Popular SQL database",
+      "Redis": "In-memory data structure",
+      "Git": "Version control system",
+      "Docker": "Containerization platform",
+      "AWS": "Cloud computing services",
+      "Firebase": "Backend-as-a-Service",
+      "WordPress": "CMS and custom themes",
+      "cPanel": "Web hosting control panel"
+    }
+  },
+  "projects": {
+    "title": "Projects",
+    "categories": {
+      "fullstack": "Full-Stack",
+      "frontend": "Frontend",
+      "wordpress": "WordPress",
+      "mobile": "Mobile",
+      "landingPage": "Landing Page"
+    },
+    "status": {
+      "completed": "Completed",
+      "in-progress": "In Progress",
+      "planning": "Planning"
+    },
+    "featured": "Featured Project",
+    "viewLive": "View Live",
+    "viewCode": "View Code"
+  },
+  "contact": {
+    "title": "Get In Touch",
+    "subtitle": "Have a project in mind or just want to chat? I'd love to hear from you. Let's create something amazing together!",
+    "letsConnect": "Let's Connect",
+    "description": "I'm always excited to work on new projects and meet interesting people. Drop me a line and let's start a conversation.",
+    "followMe": "Follow Me",
+    "form": {
+      "fullName": "Full Name",
+      "emailAddress": "Email Address",
+      "subject": "Subject",
+      "message": "Message",
+      "placeholders": {
+        "name": "Enter your full name",
+        "email": "Enter your email address",
+        "subject": "What's this about?",
+        "message": "Tell me about your project or just say hello..."
+      },
+      "charactersCount": "characters",
+      "required": "*",
+      "responseTime": "I typically respond within 24 hours"
+    },
+    "contactInfo": {
+      "email": "Email",
+      "phone": "Phone",
+      "location": "Location",
+      "linkedin": "LinkedIn"
+    },
+    "messages": {
+      "success": "Message sent successfully! I'll get back to you soon.",
+      "error": "Something went wrong. Please try again later."
+    },
+    "errors": {
+      "nameRequired": "Name is required",
+      "nameMinLength": "Name must be at least 2 characters",
+      "emailRequired": "Email is required",
+      "emailInvalid": "Please enter a valid email address",
+      "subjectRequired": "Subject is required",
+      "subjectMinLength": "Subject must be at least 5 characters",
+      "messageRequired": "Message is required",
+      "messageMinLength": "Message must be at least 10 characters",
+      "messageMaxLength": "Message must be less than 1000 characters"
+    },
+    "directApproach": {
+      "title": "Prefer a direct approach?",
+      "description": "Sometimes it's easier to just pick up the phone or send a quick email"
+    }
+  }
+}

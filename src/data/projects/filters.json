@@ -1,0 +1,22 @@
+[
+  {
+    "key": "all",
+    "label": "🎯 All Projects"
+  },
+  {
+    "key": "fullstack",
+    "label": "🧩 Full-Stack Applications"
+  },
+  {
+    "key": "landingPage",
+    "label": "🎨 Landing Pages"
+  },
+  {
+    "key": "wordpress",
+    "label": "📝 WordPress Sites"
+  },
+  {
+    "key": "mobile",
+    "label": "📱 Mobile Applications"
+  }
+]

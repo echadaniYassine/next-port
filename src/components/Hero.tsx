@@ -2,22 +2,23 @@
 
 import { useState, useEffect, useCallback, useMemo } from "react"
 import { SectionDecorator } from "./SectionDecorator"
-import Loading from "../app/Loading"
+import { useTranslation } from "../lib/i18n/client"
+import { type Language } from "../lib/i18n-config"
+import Loading from "../app/[locale]/Loading"
 
 const ROLES = [
-  { text: "Full Stack Developer", gradient: "from-purple-500 via-pink-500 to-red-500 bg-clip-text text-transparent drop-shadow-2xl" },
-  { text: "React Specialist", gradient: "from-blue-600 via-teal-500 to-cyan-500 bg-clip-text text-transparent drop-shadow-2xl" },
-  { text: "UI/UX Enthusiast", gradient: "from-purple-500 via-pink-500 to-red-500 bg-clip-text text-transparent drop-shadow-2xl" },
-  { text: "Problem Solver", gradient: "from-blue-600 via-teal-500 to-cyan-500 bg-clip-text text-transparent drop-shadow-2xl" },
+  { textKey: "hero.roles.fullStackDeveloper", gradient: "from-purple-500 via-pink-500 to-red-500 bg-clip-text text-transparent drop-shadow-2xl" },
+  { textKey: "hero.roles.reactSpecialist", gradient: "from-blue-600 via-teal-500 to-cyan-500 bg-clip-text text-transparent drop-shadow-2xl" },
+  { textKey: "hero.roles.uiUxEnthusiast", gradient: "from-purple-500 via-pink-500 to-red-500 bg-clip-text text-transparent drop-shadow-2xl" },
+  { textKey: "hero.roles.problemSolver", gradient: "from-blue-600 via-teal-500 to-cyan-500 bg-clip-text text-transparent drop-shadow-2xl" },
 ] as const
 
-const STATS = [
-  { number: "5+", label: "Years Experience", icon: "⏰" },
-  { number: "50+", label: "Projects Completed", icon: "🚀" },
-  { number: "30+", label: "Happy Clients", icon: "😊" },
-] as const
+interface HeroProps {
+  locale: Language
+}
 
-export default function Hero() {
+export default function Hero({ locale }: HeroProps) {
+  const { t } = useTranslation(locale, 'common')
   const [mounted, setMounted] = useState(false)
   const [currentRole, setCurrentRole] = useState(0)
 
@@ -40,9 +41,7 @@ export default function Hero() {
   const currentRoleData = useMemo(() => ROLES[currentRole], [currentRole])
 
   if (!mounted) {
-    return (
-      <Loading />
-    )
+    return <Loading />
   }
 
   return (
@@ -57,86 +56,60 @@ export default function Hero() {
                 <span className="inline-block animate-bounce" role="img" aria-label="waving hand">
                   👋
                 </span>{" "}
-                Hello, I&apos;m
+                {t('hero.greeting')}
               </p>
             </SectionDecorator>
 
             {/* Name */}
-            {/* Enhanced Name with better typography */}
             <div className="relative space-y-4">
-              <h1 className="text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-black leading-tight text-center animate-fade-in [animation-delay:0.2s] space-y-2 break-words leading-tight">
+              <h1 className="text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-black leading-tight text-center animate-fade-in [animation-delay:0.2s] space-y-2 break-words">
                 <span className="block animate-gradient-x bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 bg-clip-text text-transparent drop-shadow-2xl">
-                  Echadani Yassine
+                  {t('hero.name')}
                 </span>
 
                 <div className="relative inline-block glitch-wrapper">
-                  {/* Base Layer */}
                   <span className="block relative z-10 bg-gradient-to-r from-blue-600 via-teal-500 to-cyan-500 bg-clip-text text-transparent drop-shadow-2xl">
-                    Full Stack Developer
-                  </span>
-
-                  {/* Glitch Layer 1 */}
-                  <span className="absolute top-0 left-0 w-full h-full z-0 text-transparent bg-gradient-to-r from-blue-600 via-teal-500 to-cyan-500 bg-clip-text animate-glitch1 pointer-events-none">
-                    Full Stack Developer
-                  </span>
-
-                  {/* Glitch Layer 2 */}
-                  <span className="absolute top-0 left-0 w-full h-full z-0 text-transparent bg-gradient-to-r from-blue-600 via-teal-500 to-cyan-500 bg-clip-text animate-glitch2 pointer-events-none">
-                    Full Stack Developer
+                    {t('hero.title')}
                   </span>
                 </div>
-
               </h1>
 
               <div className="flex justify-center">
                 <div className="w-32 md:w-48 h-1 bg-gradient-to-r from-transparent via-gray-800 dark:via-white to-transparent animate-pulse rounded-full shadow-lg shadow-gray-800/30 dark:shadow-white/20" />
               </div>
             </div>
-
-
           </div>
 
           {/* Role */}
           <div className="min-h-[60px] sm:min-h-[80px] flex flex-col items-center justify-center animate-fade-in space-y-3">
             <SectionDecorator variant="default">
               <p className={`text-xl sm:text-2xl md:text-4xl font-bold bg-gradient-to-r ${currentRoleData.gradient} transition-all duration-1000 ease-in-out`}>
-                {currentRoleData.text}
+                {t(currentRoleData.textKey)}
               </p>
             </SectionDecorator>
           </div>
 
           {/* Description */}
           <div className="relative animate-fade-in [animation-delay:0.6s]">
-            <p className="text-xl md:text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
-              Passionate about creating{" "}
-              <span className="relative inline-block">
-                <span className="bg-gradient-to-r from-red-600 to-purple-600 bg-clip-text text-transparent font-semibold">
-                  amazing web experiences
-                </span>
-                <span className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 transform scale-x-0 animate-scale-x animation-delay-2000" />
-              </span>{" "}
-              with modern technologies. I transform ideas into beautiful, functional, and user-friendly applications.
-            </p>
+            <div 
+              className="text-xl md:text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed"
+              dangerouslySetInnerHTML={{ __html: t('hero.description') }}
+            />
           </div>
 
-          { /* CTA Buttons */}
-
+          {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center pt-6 sm:pt-8 animate-fade-in px-4">
             <SectionDecorator variant="card">
               <button
                 onClick={scrollToProjects}
                 className="cursor-pointer group relative w-full sm:w-auto px-6 sm:px-8 lg:px-10 py-3 sm:py-4 lg:py-5 border-2 border-purple-500 font-bold text-sm sm:text-base lg:text-lg rounded-xl sm:rounded-2xl shadow-lg transition-all duration-500 hover:shadow-purple-500/25 hover:shadow-xl hover:scale-105 focus:outline-none focus:ring-4 focus:ring-purple-500/30 min-w-[200px] sm:min-w-[220px] overflow-hidden"
-                aria-label="View my projects"
+                aria-label={t('projects.title')}
               >
-                <div
-                  className="absolute inset-0 bg-gradient-to-r from-purple-600 to-red-600 opacity-100 group-hover:opacity-0 transition-opacity duration-500"
-                />
+                <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-red-600 opacity-100 group-hover:opacity-0 transition-opacity duration-500" />
                 <span className="relative z-10 flex items-center justify-center">
-
                   <span className="text-white group-hover:bg-gradient-to-r group-hover:from-purple-600 group-hover:to-red-600 group-hover:bg-clip-text group-hover:text-transparent transition-colors duration-300">
-                    View My Work
+                    {t('projects.viewLive')}
                   </span>
-
                   <svg
                     className="w-5 h-5 ml-2 text-white group-hover:text-purple-500 transition-transform group-hover:translate-x-1 transition-colors duration-300"
                     fill="none"
@@ -154,14 +127,12 @@ export default function Hero() {
               <button
                 onClick={scrollToContact}
                 className="cursor-pointer group relative w-full sm:w-auto px-6 sm:px-8 lg:px-10 py-3 sm:py-4 lg:py-5 border-2 border-purple-500 font-bold text-sm sm:text-base lg:text-lg rounded-xl sm:rounded-2xl shadow-lg transition-all duration-500 hover:shadow-purple-500/25 hover:shadow-xl hover:scale-105 focus:outline-none focus:ring-4 focus:ring-purple-500/30 min-w-[200px] sm:min-w-[220px] overflow-hidden"
-                aria-label="Get in touch with me"
+                aria-label={t('contact.title')}
               >
-                <div
-                  className="absolute inset-0 bg-gradient-to-r from-purple-600 to-red-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                />
+                <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-red-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 <span className="relative z-10 flex items-center justify-center">
                   <span className="bg-gradient-to-r from-purple-600 to-red-600 bg-clip-text text-transparent transition-all duration-300 group-hover:text-white group-hover:bg-none">
-                    Get In Touch
+                    {t('contact.title')}
                   </span>
                   <svg
                     className="w-5 h-5 ml-2 text-purple-500 transition-all duration-300 group-hover:text-white group-hover:translate-x-1"
@@ -180,16 +151,15 @@ export default function Hero() {
                 </span>
               </button>
             </SectionDecorator>
-
           </div>
         </div>
       </div>
 
-      {/* Scroll Indicator - Hidden on mobile */}
+      {/* Scroll Indicator */}
       <div className="hidden sm:block absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-fade-in">
         <SectionDecorator variant="minimal">
           <div className="flex flex-col items-center space-y-3 animate-bounce">
-            <span className="text-sm text-gray-500 dark:text-gray-400 font-medium">Scroll to explore</span>
+            <span className="text-sm text-gray-500 dark:text-gray-400 font-medium">Scroll Down</span>
             <div className="relative">
               <svg
                 className="w-6 h-6 text-gray-500 dark:text-gray-400"

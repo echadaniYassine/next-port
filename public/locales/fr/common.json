@@ -1,0 +1,140 @@
+{
+  "site": {
+    "name": "Echadani Yassine",
+    "title": "Portfolio Développeur Full Stack",
+    "description": "Développeur Full Stack passionné par la création d'expériences web extraordinaires avec des technologies modernes."
+  },
+  "nav": {
+    "home": "Accueil",
+    "about": "À Propos",
+    "skills": "Compétences",
+    "projects": "Projets",
+    "contact": "Contact",
+    "openMenu": "Ouvrir le menu de navigation",
+    "closeMenu": "Fermer le menu de navigation",
+    "languageSelector": "Sélecteur de langue",
+    "switchTo": "Passer à"
+  },
+  "about": {
+    "title": "À Propos de Moi",
+    "subtitle": "Développeur passionné avec l'amour de créer des expériences numériques exceptionnelles",
+    "description": "Je suis un <span>Développeur Full Stack</span> Compétent à la fois en frontend et backend, animé par une passion pour construire des applications efficaces et centrées sur l'utilisateur.",
+    "coreSkills": "Compétences Principales",
+    "skills": {
+      "frontendDevelopment": "Développement Frontend",
+      "backendDevelopment": "Développement Backend",
+      "uiUxDesign": "Design UI/UX",
+      "cms": "CMS",
+      "mobileDevelopment": "Développement Mobile"
+    }
+  },
+  "hero": {
+    "greeting": "Bonjour, je suis",
+    "name": "Echadani Yassine",
+    "title": "Développeur Full Stack",
+    "roles": {
+      "fullStackDeveloper": "Développeur Full Stack",
+      "reactSpecialist": "Spécialiste React",
+      "uiUxEnthusiast": "Passionné UI/UX",
+      "problemSolver": "Résolveur de Problèmes"
+    },
+    "description": "Passionné par la création d'<span>expériences web extraordinaires</span> avec des technologies modernes. Je transforme les idées en applications belles, fonctionnelles et conviviales."
+  },
+  "skills": {
+    "title": "Compétences",
+    "categories": {
+      "Frontend": "Frontend",
+      "Backend": "Backend",
+      "Database": "Base de données",
+      "Tools & Others": "Outils et autres"
+    },
+    "descriptions": {
+      "HTML5": "Balisage sémantique et accessibilité",
+      "CSS3": "Styles modernes et animations",
+      "JavaScript": "ES6+ et fonctionnalités modernes",
+      "React": "Hooks, Context et performance",
+      "Next.js": "SSR, SSG et App Router",
+      "Tailwind CSS": "Styling orienté utilitaire",
+      "Laravel": "Architecture MVC et APIs",
+      "Node.js": "JavaScript côté serveur",
+      "Express": "Framework pour applications web",
+      "Python": "Scripts et automatisation",
+      "RESTful APIs": "Conception et intégration d'API",
+      "MongoDB": "Base de données NoSQL",
+      "PostgreSQL": "Base de données relationnelle",
+      "MySQL": "Base de données SQL populaire",
+      "Redis": "Structure de données en mémoire",
+      "Git": "Système de gestion de version",
+      "Docker": "Plateforme de conteneurisation",
+      "AWS": "Services cloud",
+      "Firebase": "Backend en tant que service",
+      "WordPress": "CMS et thèmes personnalisés",
+      "cPanel": "Panneau de contrôle d'hébergement"
+    }
+  },
+  "projects": {
+    "title": "Projets",
+    "categories": {
+      "fullstack": "Full Stack",
+      "frontend": "Frontend",
+      "wordpress": "WordPress",
+      "mobile": "Mobile",
+      "landingPage": "Page d'accueil"
+    },
+    "status": {
+      "completed": "Terminé",
+      "in-progress": "En cours",
+      "planning": "Planifié"
+    },
+    "featured": "Projet en vedette",
+    "viewLive": "Voir le site",
+    "viewCode": "Voir le code"
+  },
+  "contact": {
+    "title": "Contactez-Moi",
+    "subtitle": "Avez-vous un projet en tête ou voulez-vous simplement discuter ? J'aimerais avoir de vos nouvelles. Créons quelque chose d'extraordinaire ensemble !",
+    "letsConnect": "Connectons-Nous",
+    "description": "Je suis toujours enthousiaste à l'idée de travailler sur de nouveaux projets et de rencontrer des personnes intéressantes. Envoyez-moi un message et commençons une conversation.",
+    "followMe": "Suivez-Moi",
+    "form": {
+      "fullName": "Nom Complet",
+      "emailAddress": "Adresse Email",
+      "subject": "Sujet",
+      "message": "Message",
+      "placeholders": {
+        "name": "Entrez votre nom complet",
+        "email": "Entrez votre adresse email",
+        "subject": "De quoi s'agit-il ?",
+        "message": "Parlez-moi de votre projet ou dites simplement bonjour..."
+      },
+      "charactersCount": "caractères",
+      "required": "*",
+      "responseTime": "Je réponds généralement dans les 24 heures"
+    },
+    "contactInfo": {
+      "email": "Email",
+      "phone": "Téléphone",
+      "location": "Localisation",
+      "linkedin": "LinkedIn"
+    },
+    "messages": {
+      "success": "Message envoyé avec succès ! Je vous répondrai bientôt.",
+      "error": "Quelque chose s'est mal passé. Veuillez réessayer plus tard."
+    },
+    "errors": {
+      "nameRequired": "Le nom est obligatoire",
+      "nameMinLength": "Le nom doit contenir au moins 2 caractères",
+      "emailRequired": "L'email est obligatoire",
+      "emailInvalid": "Veuillez entrer une adresse email valide",
+      "subjectRequired": "Le sujet est obligatoire",
+      "subjectMinLength": "Le sujet doit contenir au moins 5 caractères",
+      "messageRequired": "Le message est obligatoire",
+      "messageMinLength": "Le message doit contenir au moins 10 caractères",
+      "messageMaxLength": "Le message doit contenir moins de 1000 caractères"
+    },
+    "directApproach": {
+      "title": "Vous préférez une approche directe ?",
+      "description": "Parfois, il est plus facile de décrocher le téléphone ou d'envoyer un email rapide"
+    }
+  }
+}
