@@ -316,7 +316,6 @@ export default function Contact() {
         p-3 bg-card rounded-lg shadow-lg hover:shadow-purple-500/40 transition-all duration-300 transform hover:scale-110 border border-border text-muted-foreground hover:text-primary
         ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}
       `}
-                    style={{ transitionDelay: `${(index + 4) * 100}ms` }}
                     aria-label={`Follow me on ${social.name}`}
                   >
                     {social.icon}

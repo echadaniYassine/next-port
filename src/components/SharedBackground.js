@@ -1,12 +1,5 @@
 "use client"
 
-/**
- * A shared, animated background component that adapts to light and dark themes.
- * It features soft, animated blobs, a subtle grid pattern, and a gradient overlay
- * to create a modern and visually pleasing backdrop for any page.
- *
- * It uses Tailwind's `dark:` variants to seamlessly switch between themes.
- */
 export default function SharedBackground() {
   return (
     <div
@@ -15,11 +8,6 @@ export default function SharedBackground() {
     >
       {/* Container for the animated blobs */}
       <div className="relative h-full w-full">
-        {/* 
-          Each blob has a base style for the light theme and a `dark:` variant for the dark theme.
-          - Light theme: Softer, pastel colors with `mix-blend-multiply`.
-          - Dark theme: More vibrant, luminous colors with `mix-blend-lighten` for a glow effect.
-        */}
 
         {/* Top-Left Blob */}
         <div

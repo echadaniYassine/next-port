@@ -5,7 +5,7 @@ import { useState, useEffect, useRef, useCallback, useMemo } from "react"
 import { SectionDecorator } from "./SectionDecorator"
 
 type ProjectStatus = "completed" | "in-progress" | "planning"
-type ProjectCategory = "fullstack" | "frontend" | "wordpress" | "mobile"
+type ProjectCategory = "fullstack" | "frontend" | "wordpress" | "mobile" | "landingPage"
 
 interface Project {
   id: number
@@ -24,97 +24,154 @@ interface Project {
 const PROJECTS: readonly Project[] = [
   {
     id: 1,
-    title: "OKY WebCraft",
+    title: "OKY WebCraft — Digital Agency Showcase",
     description:
       "A modern React-based website for Oky WebCraft Agency, designed to showcase the agency's services, with a user-friendly interface, smooth animations, and responsive design for an engaging client experience.",
-    image: "/placeholder.svg?height=400&width=600&text=OKY+WebCraft",
-    category: "frontend",
-    tech: ["HTML5", "CSS3", "React", "Framer Motion"],
-    liveLink: "https://project1.com",
+    image: "/img5.png",
+    category: "landingPage",
+    tech: ["React", "CSS3", "I18n", "Framer Motion"],
+    liveLink: "https://oky-webcraft.vercel.app/",
     githubLink: "https://github.com/echadaniYassine/project1",
     featured: true,
     status: "completed",
-    year: "2024",
+    year: "2025",
   },
   {
     id: 2,
-    title: "Real-time Chat App",
-    description:
-      "A comprehensive chat application with video calling capabilities, file sharing, group chats, and real-time notifications. Built with Socket.io for seamless communication.",
-    image: "/placeholder.svg?height=400&width=600&text=Chat+App",
-    category: "fullstack",
-    tech: ["React", "Socket.io", "WebRTC", "Firebase", "Material-UI"],
-    liveLink: "https://project2.com",
-    githubLink: "https://github.com/echadaniYassine/project2",
-    featured: true,
-    status: "completed",
-    year: "2024",
-  },
-  {
-    id: 3,
-    title: "School Management Learn",
+    title: "Shopping Store",
     description:
       "An intuitive project management tool with drag-and-drop functionality, team collaboration features, time tracking, and detailed analytics for productivity insights.",
-    image: "/placeholder.svg?height=400&width=600&text=School+Management",
-    category: "fullstack",
-    tech: ["React.js", "Laravel", "TailwindCSS", "MySQL", "shadCN"],
+    image: "/img3.png",
+    category: "wordpress",
+    tech: ["WordPress", "Elementor", "MySQL", "PHP"],
     liveLink: "https://project3.com",
     githubLink: "https://github.com/echadaniYassine/project3",
     featured: false,
     status: "completed",
-    year: "2023",
+    year: "2025",
+  },
+  {
+    id: 3,
+    title: "Trone Game — Multiplayer Gaming Platform",
+    description:
+      "A comprehensive chat application with video calling capabilities, file sharing, group chats, and real-time notifications. Built with Socket.io for seamless communication.",
+    image: "/img8.png",
+    category: "fullstack",
+    tech: ["React", "Socket.io", "WebRTC", "Firebase", "Material-UI"],
+    liveLink: "https://trone-game.vercel.app/",
+    githubLink: "https://github.com/echadaniYassine/project2",
+    featured: false,
+    status: "in-progress",
+    year: "2025",
   },
   {
     id: 4,
-    title: "Trendify Store",
+    title: "School Management — Education Platform",
     description:
-      "A modern e-commerce web application built with React and Node.js, featuring a sleek user interface, real-time product management, and secure, scalable checkout functionality.",
-    image: "/placeholder.svg?height=400&width=600&text=Trendify+Store",
+      "A comprehensive platform for managing educational institutions, featuring student enrollment, course management, and performance tracking.",
+    image: "/img9.png",
     category: "fullstack",
-    tech: ["React.js", "CSS3", "Node.js", "Express", "MongoDB"],
-    liveLink: "https://project4.com",
-    githubLink: "https://github.com/echadaniYassine/project4",
-    featured: false,
+    tech: ["React", "Laravel", "MySQL", "Tailwind", "Shadcn"],
+    liveLink: "https://project6.com",
+    githubLink: "https://github.com/echadaniYassine/project6",
+    featured: true,
     status: "in-progress",
-    year: "2024",
+    year: "2025",
   },
   {
     id: 5,
     title: "Interstellar Tours",
     description:
       "A WordPress-based website offering tailored transportation services in Tangier, including VIP transport, business tourism, and a diverse fleet of vehicles for every need.",
-    image: "/placeholder.svg?height=400&width=600&text=Interstellar+Tours",
+    image: "/img1.png",
     category: "wordpress",
     tech: ["WordPress", "Elementor", "PHP", "MySQL"],
     liveLink: "https://project5.com",
     githubLink: "https://github.com/echadaniYassine/project5",
     featured: false,
     status: "completed",
-    year: "2023",
+    year: "2025",
   },
   {
     id: 6,
-    title: "Asian Tasty",
+    title: "Asian Taste — Dish Showcase Landing Page",
     description:
       "A visually engaging and responsive landing page built with React, inspired by Asian design aesthetics, optimized for fast performance and lead conversion.",
-    image: "/placeholder.svg?height=400&width=600&text=Asian+Tasty",
-    category: "frontend",
-    tech: ["HTML5", "CSS3", "React", "GSAP"],
-    liveLink: "https://project6.com",
+    image: "/img7.png",
+    category: "landingPage",
+    tech: ["React", "CSS3", "Framer Motion"],
+    liveLink: "https://asian-taste-one.vercel.app/",
     githubLink: "https://github.com/echadaniYassine/project6",
     featured: false,
     status: "completed",
-    year: "2023",
+    year: "2024",
+  },
+  {
+    id: 7,
+    title: "Twareg eSports — Esports Organization Website",
+    description:
+      "A sleek and informative platform developed for Twareg eSports, a leading Moroccan esports team. The website highlights their history, achievements, and game divisions like League of Legends, FIFA, and PUBG. Built with a focus on performance, modern design, and user engagement.",
+    image: "/img10.png",
+    category: "wordpress",
+    tech: ["WordPress", "Elementor", "PHP", "MySQL"],
+    liveLink: "https://twaregesports.com/site/",
+    githubLink: "",
+    featured: false,
+    status: "completed",
+    year: "2025",
+  },
+  {
+    id: 8,
+    title: "Twiza Pack1 — Artisan E-commerce Platform",
+    description:
+      "An online storefront solution for Moroccan artisans and small businesses. This project enables users to showcase and sell handmade products through a simple, localized, and mobile-friendly interface.",
+    image: "/img11.png",
+    category: "wordpress",
+    tech: ["WordPress", "Elementor", "MySQL"],
+    liveLink: "https://artisanat.twiza.ma/pack1/",
+    githubLink: "",
+    featured: false,
+    status: "completed",
+    year: "2025",
+  },
+  {
+    id: 9,
+    title: "Trendify — E‑Commerce Platform",
+    description:
+      "A modern e-commerce web application built with React and Node.js, featuring a sleek user interface, real-time product management, and secure, scalable checkout functionality.",
+    image: "/img6.png",
+    category: "fullstack",
+    tech: ["React.js", "Express", "MongoDB", "CSS3", "NodeJS"],
+    liveLink: "https://trendify-frontend-nine.vercel.app/",
+    githubLink: "https://github.com/echadaniYassine/project4",
+    featured: false,
+    status: "completed",
+    year: "2024",
+  },
+  {
+    id: 10,
+    title: "Mirriah.pro — Personal Portfolio Website",
+    description:
+      "A refined, professional portfolio site developed to showcase projects, skills, and branding for Mirriah. Featuring a clean layout, intuitive navigation, and responsive design, the site highlights personal achievements and creative work in a polished and compelling way.",
+    image: "/img12.png",
+    category: "wordpress",
+    tech: ["WordPress", "Elementor", "MySQL"],
+    liveLink: "https://mirriah.pro/",
+    githubLink: "",
+    featured: false,
+    status: "completed",
+    year: "2025",
   },
 ] as const
 
 const FILTERS = [
-  { key: "all" as const, label: "All Projects", icon: "🎯" },
-  { key: "fullstack" as const, label: "Full Stack", icon: "⚡" },
-  { key: "frontend" as const, label: "Frontend", icon: "🎨" },
-  { key: "wordpress" as const, label: "WordPress", icon: "📝" },
-  { key: "mobile" as const, label: "Mobile", icon: "📱" },
-] as const
+  { key: "all" as const, label: "🎯 All Projects" },
+  { key: "fullstack" as const, label: "🧩 Full-Stack Applications" },
+  { key: "landingPage" as const, label: "🎨 Landing Pages" },
+  { key: "wordpress" as const, label: "📝 WordPress Sites" },
+  { key: "mobile" as const, label: "📱 Mobile Applications" },
+] as const;
+
 
 export default function Projects() {
   const [isVisible, setIsVisible] = useState(false)
@@ -333,7 +390,7 @@ export default function Projects() {
                 key={filter.key}
                 onClick={() => handleFilterChange(filter.key)}
                 className={`
-                  cursor-pointer px-6 py-3 rounded-xl font-medium transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-primary/30
+                  cursor-pointer px-6 py-3 rounded-xl font-medium transition-all duration-300 transform hover:scale-105
                   ${activeFilter === filter.key
                     ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg"
                     : "bg-card text-muted-foreground hover:bg-accent hover:text-foreground border border-border"
@@ -342,9 +399,9 @@ export default function Projects() {
                 aria-pressed={activeFilter === filter.key}
                 aria-label={`Filter by ${filter.label}`}
               >
-                <span className="mr-2" role="img" aria-label={filter.label}>
+                {/* <span className="mr-2" role="img" aria-label={filter.label}>
                   {filter.icon}
-                </span>
+                </span> */}
                 {filter.label}
                 <span
                   className={`ml-2 px-2 py-1 rounded-full text-xs ${activeFilter === filter.key ? "bg-white/20 text-white" : "bg-muted text-muted-foreground"

@@ -27,7 +27,7 @@ export function ThemeToggle() {
   return (
     <button
       onClick={toggleTheme}
-      className="group relative p-2 text-muted-foreground hover:text-foreground hover:bg-accent/50 rounded-lg transition-all duration-200 ease-out hover:scale-105 active:scale-95"
+      className="cursor-pointer group relative p-2 text-muted-foreground hover:text-foreground hover:bg-accent/50 rounded-lg transition-all duration-200 ease-out hover:scale-105 active:scale-95"
       aria-label={`Switch to ${resolvedTheme === "dark" ? "light" : "dark"} mode`}
     >
       <div className="relative w-5 h-5">
