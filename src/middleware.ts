@@ -1,5 +1,5 @@
 // ===========================================
-// 11. middleware.ts - Route Middleware
+// 4. src/middleware.ts - Route Middleware
 // ===========================================
 import { NextRequest, NextResponse } from 'next/server'
 import { fallbackLng, languages } from './lib/i18n-config'
@@ -12,7 +12,9 @@ export function middleware(request: NextRequest) {
     pathname.startsWith('/_next') ||
     pathname.startsWith('/api') ||
     pathname.startsWith('/favicon.ico') ||
-    pathname.includes('.')
+    pathname.includes('.') ||
+    pathname.startsWith('/robots.txt') ||
+    pathname.startsWith('/sitemap.xml')
   ) {
     return NextResponse.next()
   }
@@ -25,7 +27,10 @@ export function middleware(request: NextRequest) {
   // Redirect if there is no locale
   if (pathnameIsMissingLocale) {
     return NextResponse.redirect(
-      new URL(`/${fallbackLng}${pathname.startsWith('/') ? '' : '/'}${pathname}`, request.url)
+      new URL(
+        `/${fallbackLng}${pathname.startsWith('/') ? '' : '/'}${pathname}`,
+        request.url
+      )
     )
   }
 
@@ -34,6 +39,6 @@ export function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    '/((?!api|_next/static|_next/image|favicon.ico|dictionaries).*)',
+    '/((?!api|_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml).*)',
   ],
 }

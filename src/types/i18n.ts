@@ -1,7 +1,6 @@
 // ===========================================
-// 15. Types for better TypeScript support
+// 9. src/types/i18n.ts - TypeScript Types
 // ===========================================
-// types/i18n.ts
 import { type Language } from '../lib/i18n-config'
 
 export interface TranslationProps {

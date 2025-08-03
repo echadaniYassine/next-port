@@ -1,5 +1,5 @@
 // ===========================================
-// 7. components/Navbar.tsx - Updated Navbar
+// 8. src/components/Navbar.tsx - Updated
 // ===========================================
 'use client'
 
@@ -58,7 +58,7 @@ export default function Navbar({ locale }: NavbarProps) {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape') closeMenu()
     }
-    
+
     if (isMenuOpen) {
       document.addEventListener('keydown', handleEscape)
       document.body.style.overflow = 'hidden'
@@ -80,8 +80,10 @@ export default function Navbar({ locale }: NavbarProps) {
         }
       `}
       style={{
-        backgroundColor: isScrolled ? 'hsl(var(--background) / 0.9)' : 'transparent',
-        borderColor: isScrolled ? 'hsl(var(--border) / 0.3)' : 'transparent'
+        backgroundColor: isScrolled
+          ? 'hsl(var(--background) / 0.70)'
+          : 'transparent',
+        borderColor: isScrolled ? 'hsl(var(--border) / 0.3)' : 'transparent',
       }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -91,9 +93,9 @@ export default function Navbar({ locale }: NavbarProps) {
             <Link
               href={`/${locale}`}
               className="text-2xl font-bold bg-gradient-to-r from-purple-500 via-pink-500 to-indigo-500 bg-clip-text text-transparent hover:scale-105 transition-transform duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500/50 rounded-lg px-2 py-1"
-              aria-label={t('nav.home')}
+              aria-label={t('nav.name')}
             >
-              {t('nav.logo')}
+              {t('site.logo')}
             </Link>
           </div>
 
@@ -108,12 +110,12 @@ export default function Navbar({ locale }: NavbarProps) {
                   style={{ color: 'hsl(var(--foreground))' }}
                 >
                   {t(item.labelKey)}
-                  <div 
+                  <div
                     className={`absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-purple-600 to-red-600 transition-transform duration-300 origin-left rounded-full ${
                       activeSection === item.href.slice(1)
                         ? 'scale-x-100'
                         : 'scale-x-0 group-hover:scale-x-100'
-                    }`} 
+                    }`}
                   />
                 </Link>
               ))}
@@ -136,11 +138,26 @@ export default function Navbar({ locale }: NavbarProps) {
               aria-label={isMenuOpen ? t('nav.closeMenu') : t('nav.openMenu')}
               aria-expanded={isMenuOpen}
             >
-              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg
+                className="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
                 {isMenuOpen ? (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
                 ) : (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
                 )}
               </svg>
             </button>
@@ -151,17 +168,17 @@ export default function Navbar({ locale }: NavbarProps) {
       {/* Mobile Menu */}
       {isMenuOpen && (
         <>
-          <div 
+          <div
             className="fixed inset-0 bg-black/20 backdrop-blur-sm md:hidden"
             onClick={closeMenu}
             aria-hidden="true"
           />
-          
-          <div 
+
+          <div
             className="md:hidden mt-2 backdrop-blur-md rounded-2xl shadow-2xl border mx-4 overflow-hidden relative"
             style={{
               backgroundColor: 'hsl(var(--background) / 0.95)',
-              borderColor: 'hsl(var(--border) / 0.3)'
+              borderColor: 'hsl(var(--border) / 0.3)',
             }}
           >
             <div className="px-4 py-3 space-y-1">
@@ -174,16 +191,16 @@ export default function Navbar({ locale }: NavbarProps) {
                   onClick={closeMenu}
                 >
                   {t(item.labelKey)}
-                  <div 
+                  <div
                     className={`absolute bottom-0 left-4 right-4 h-0.5 bg-gradient-to-r from-purple-600 to-red-600 transition-transform duration-300 origin-left rounded-full ${
                       activeSection === item.href.slice(1)
                         ? 'scale-x-100'
                         : 'scale-x-0 group-hover:scale-x-100'
-                    }`} 
+                    }`}
                   />
                 </Link>
               ))}
-              
+
               <div className="px-4 py-3 border-t border-border/20 mt-2">
                 <LanguageSwitcher locale={locale} />
               </div>

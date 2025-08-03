@@ -1,9 +1,13 @@
 "use client"
 
 import type React from "react"
-
 import { useState, useEffect, useRef, useCallback } from "react"
 import { SectionDecorator } from "./SectionDecorator"
+import { useTranslation } from '../lib/i18n/client'
+import { type Language } from '../lib/i18n-config'
+import contactData from '../data/contact/contactData.json'
+
+const { contactInfo: CONTACT_INFO, socialLinks: SOCIAL_LINKS } = contactData
 
 interface FormData {
   name: string
@@ -21,109 +25,12 @@ interface FormErrors {
 
 type SubmitStatus = "idle" | "submitting" | "success" | "error"
 
-const CONTACT_INFO = [
-  {
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="2"
-          d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-        />
-      </svg>
-    ),
-    title: "Email",
-    value: "yassinechadani113@gmail.com",
-    href: "mailto:yassinechadani113@gmail.com",
-    color: "blue" as const,
-  },
-  {
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="2"
-          d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
-        />
-      </svg>
-    ),
-    title: "Phone",
-    value: "+212 601 714 706",
-    href: "tel:+212601714706",
-    color: "green" as const,
-  },
-  {
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="2"
-          d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-        />
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-      </svg>
-    ),
-    title: "Location",
-    value: "Temara, Morocco",
-    href: "#",
-    color: "purple" as const,
-  },
-  {
-    icon: (
-      <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-      </svg>
-    ),
-    title: "LinkedIn",
-    value: "yassine-echadani",
-    href: "https://www.linkedin.com/in/yassine-echadani-5904b8268/",
-    color: "blue" as const,
-  },
-] as const
+interface ContactProps {
+  locale: Language
+}
 
-const SOCIAL_LINKS = [
-  {
-    name: "GitHub",
-    url: "https://github.com/echadaniYassine",
-    icon: (
-      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-      </svg>
-    ),
-  },
-  {
-    name: "Twitter",
-    url: "https://x.com/SNICKER49194247",
-    icon: (
-      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z" />
-      </svg>
-    ),
-  },
-  {
-    name: "LinkedIn",
-    url: "https://www.linkedin.com/in/yassine-echadani-5904b8268/",
-    icon: (
-      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-      </svg>
-    ),
-  },
-  {
-    name: "Instagram",
-    url: "https://www.instagram.com/yassine_echadani",
-    icon: (
-      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.899 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.899-.421-.419-.69-.824-.9-1.38-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.861.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06l.045.03zm0 3.678c-3.405 0-6.162 2.76-6.162 6.162 0 3.405 2.76 6.162 6.162 6.162 3.405 0 6.162-2.76 6.162-6.162 0-3.405-2.76-6.162-6.162-6.162zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405c0 .795-.646 1.44-1.44 1.44-.795 0-1.44-.646-1.44-1.44 0-.794.646-1.439 1.44-1.439.793-.001 1.44.645 1.44 1.439z" />
-      </svg>
-    ),
-  },
-] as const
-
-export default function Contact() {
+export default function Contact({ locale }: ContactProps) {
+  const { t } = useTranslation(locale, 'common')
   const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",
@@ -148,34 +55,34 @@ export default function Contact() {
     const newErrors: FormErrors = {}
 
     if (!formData.name.trim()) {
-      newErrors.name = "Name is required"
+      newErrors.name = t('contact.errors.nameRequired')
     } else if (formData.name.trim().length < 2) {
-      newErrors.name = "Name must be at least 2 characters"
+      newErrors.name = t('contact.errors.nameMinLength')
     }
 
     if (!formData.email.trim()) {
-      newErrors.email = "Email is required"
+      newErrors.email = t('contact.errors.emailRequired')
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = "Please enter a valid email address"
+      newErrors.email = t('contact.errors.emailInvalid')
     }
 
     if (!formData.subject.trim()) {
-      newErrors.subject = "Subject is required"
+      newErrors.subject = t('contact.errors.subjectRequired')
     } else if (formData.subject.trim().length < 5) {
-      newErrors.subject = "Subject must be at least 5 characters"
+      newErrors.subject = t('contact.errors.subjectMinLength')
     }
 
     if (!formData.message.trim()) {
-      newErrors.message = "Message is required"
+      newErrors.message = t('contact.errors.messageRequired')
     } else if (formData.message.trim().length < 10) {
-      newErrors.message = "Message must be at least 10 characters"
+      newErrors.message = t('contact.errors.messageMinLength')
     } else if (formData.message.trim().length > 1000) {
-      newErrors.message = "Message must be less than 1000 characters"
+      newErrors.message = t('contact.errors.messageMaxLength')
     }
 
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
-  }, [formData])
+  }, [formData, t])
 
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {
@@ -250,13 +157,14 @@ export default function Contact() {
         <header className="text-center mb-16">
           <SectionDecorator variant="default">
             <div className="inline-block">
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Get In Touch</h2>
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+                {t('contact.title')}
+              </h2>
               <div className="w-24 h-1 mx-auto animate-gradient-x10" />
             </div>
           </SectionDecorator>
           <p className="mt-6 text-lg text-muted-foreground max-w-2xl mx-auto">
-            Have a project in mind or just want to chat? I&apos;d love to hear from you. Let&apos;s create something
-            amazing together!
+            {t('contact.subtitle')}
           </p>
         </header>
 
@@ -267,10 +175,11 @@ export default function Contact() {
               }`}
           >
             <div>
-              <h3 className="text-2xl font-bold text-foreground mb-6">Let&apos;s Connect</h3>
+              <h3 className="text-2xl font-bold text-foreground mb-6">
+                {t('contact.letsConnect')}
+              </h3>
               <p className="text-muted-foreground mb-8">
-                I&apos;m always excited to work on new projects and meet interesting people. Drop me a line and
-                let&apos;s start a conversation.
+                {t('contact.description')}
               </p>
             </div>
 
@@ -287,15 +196,16 @@ export default function Contact() {
                     ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}
                   `}
                   style={{ transitionDelay: `${index * 100}ms` }}
-                  aria-label={`Contact via ${info.title}: ${info.value}`}
+                  aria-label={`${t('nav.contact')} via ${t(`contact.contactInfo.${info.title.toLowerCase()}`)}: ${info.value}`}
                 >
                   <div
-                    className={`p-3 rounded-lg ${getColorClasses(info.color)} group-hover:scale-110 transition-transform duration-200`}
-                  >
-                    {info.icon}
-                  </div>
+                    className={`p-3 rounded-lg ${getColorClasses(info.color as "blue" | "green" | "purple")} group-hover:scale-110 transition-transform duration-200`}
+                    dangerouslySetInnerHTML={{ __html: info.icon }}
+                  />
                   <div className="ml-4">
-                    <h4 className="text-lg font-semibold text-foreground">{info.title}</h4>
+                    <h4 className="text-lg font-semibold text-foreground">
+                      {t(`contact.contactInfo.${info.title.toLowerCase()}`)}
+                    </h4>
                     <p className="text-muted-foreground">{info.value}</p>
                   </div>
                 </a>
@@ -304,7 +214,9 @@ export default function Contact() {
 
             {/* Social Links */}
             <div>
-              <h4 className="text-lg font-semibold text-foreground mb-4">Follow Me</h4>
+              <h4 className="text-lg font-semibold text-foreground mb-4">
+                {t('contact.followMe')}
+              </h4>
               <div className="flex space-x-4">
                 {SOCIAL_LINKS.map((social, index) => (
                   <a
@@ -313,16 +225,14 @@ export default function Contact() {
                     target="_blank"
                     rel="noopener noreferrer"
                     className={`
-        p-3 bg-card rounded-lg shadow-lg hover:shadow-purple-500/40 transition-all duration-300 transform hover:scale-110 border border-border text-muted-foreground hover:text-primary
-        ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}
-      `}
-                    aria-label={`Follow me on ${social.name}`}
-                  >
-                    {social.icon}
-                  </a>
+                      p-3 bg-card rounded-lg shadow-lg hover:shadow-purple-500/40 transition-all duration-300 transform hover:scale-110 border border-border text-muted-foreground hover:text-primary
+                      ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}
+                    `}
+                    aria-label={`${t('contact.followMe')} ${social.name}`}
+                    dangerouslySetInnerHTML={{ __html: social.icon }}
+                  />
                 ))}
               </div>
-
             </div>
           </div>
 
@@ -347,7 +257,7 @@ export default function Contact() {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                       </svg>
                       <span className="text-green-800 dark:text-green-400 font-medium">
-                        Message sent successfully! I&apos;ll get back to you soon.
+                        {t('contact.messages.success')}
                       </span>
                     </div>
                   </div>
@@ -366,7 +276,7 @@ export default function Contact() {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
                       </svg>
                       <span className="text-red-800 dark:text-red-400 font-medium">
-                        Something went wrong. Please try again later.
+                        {t('contact.messages.error')}
                       </span>
                     </div>
                   </div>
@@ -377,7 +287,7 @@ export default function Contact() {
                   {/* Name Field */}
                   <div>
                     <label htmlFor="name" className="block text-sm font-medium text-foreground/80 mb-2">
-                      Full Name *
+                      {t('contact.form.fullName')} <span className="text-red-500">{t('contact.form.required')}</span>
                     </label>
                     <input
                       type="text"
@@ -389,7 +299,7 @@ export default function Contact() {
                         w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-200 bg-background text-foreground placeholder-muted-foreground
                         ${errors.name ? "border-red-500 dark:border-red-400" : "border-border hover:border-border/80"}
                       `}
-                      placeholder="Enter your full name"
+                      placeholder={t('contact.form.placeholders.name')}
                       aria-invalid={!!errors.name}
                       aria-describedby={errors.name ? "name-error" : undefined}
                     />
@@ -403,7 +313,7 @@ export default function Contact() {
                   {/* Email Field */}
                   <div>
                     <label htmlFor="email" className="block text-sm font-medium text-foreground/80 mb-2">
-                      Email Address *
+                      {t('contact.form.emailAddress')} <span className="text-red-500">{t('contact.form.required')}</span>
                     </label>
                     <input
                       type="email"
@@ -415,7 +325,7 @@ export default function Contact() {
                         w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-200 bg-background text-foreground placeholder-muted-foreground
                         ${errors.email ? "border-red-500 dark:border-red-400" : "border-border hover:border-border/80"}
                       `}
-                      placeholder="Enter your email address"
+                      placeholder={t('contact.form.placeholders.email')}
                       aria-invalid={!!errors.email}
                       aria-describedby={errors.email ? "email-error" : undefined}
                     />
@@ -430,7 +340,7 @@ export default function Contact() {
                 {/* Subject Field */}
                 <div>
                   <label htmlFor="subject" className="block text-sm font-medium text-foreground/80 mb-2">
-                    Subject *
+                    {t('contact.form.subject')} <span className="text-red-500">{t('contact.form.required')}</span>
                   </label>
                   <input
                     type="text"
@@ -442,7 +352,7 @@ export default function Contact() {
                       w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-200 bg-background text-foreground placeholder-muted-foreground
                       ${errors.subject ? "border-red-500 dark:border-red-400" : "border-border hover:border-border/80"}
                     `}
-                    placeholder="What's this about?"
+                    placeholder={t('contact.form.placeholders.subject')}
                     aria-invalid={!!errors.subject}
                     aria-describedby={errors.subject ? "subject-error" : undefined}
                   />
@@ -456,7 +366,7 @@ export default function Contact() {
                 {/* Message Field */}
                 <div>
                   <label htmlFor="message" className="block text-sm font-medium text-foreground/80 mb-2">
-                    Message *
+                    {t('contact.form.message')} <span className="text-red-500">{t('contact.form.required')}</span>
                   </label>
                   <textarea
                     id="message"
@@ -468,7 +378,7 @@ export default function Contact() {
                       w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-200 bg-background text-foreground placeholder-muted-foreground resize-vertical
                       ${errors.message ? "border-red-500 dark:border-red-400" : "border-border hover:border-border/80"}
                     `}
-                    placeholder="Tell me about your project or just say hello..."
+                    placeholder={t('contact.form.placeholders.message')}
                     aria-invalid={!!errors.message}
                     aria-describedby={errors.message ? "message-error" : "message-help"}
                   />
@@ -478,7 +388,7 @@ export default function Contact() {
                     </p>
                   )}
                   <p id="message-help" className="mt-1 text-xs text-muted-foreground">
-                    {formData.message.length}/1000 characters
+                    {formData.message.length}/1000 {t('contact.form.charactersCount')}
                   </p>
                 </div>
 
@@ -506,11 +416,12 @@ export default function Contact() {
                             d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                           />
                         </svg>
-                        <span>Sending Message...</span>
+
+                        <span>{t('contact.form.sendMessageRealTime')}</span>
                       </>
                     ) : (
                       <>
-                        <span>Send Message</span>
+                        <span>{t('contact.form.sendMessage')}</span>
                         <svg
                           className="w-5 h-5"
                           fill="none"
@@ -532,7 +443,7 @@ export default function Contact() {
 
                 {/* Additional Info */}
                 <div className="text-center text-sm text-muted-foreground">
-                  <p>I typically respond within 24 hours</p>
+                  <p>{t('contact.form.responseTime')}</p>
                 </div>
               </form>
             </div>
@@ -543,9 +454,11 @@ export default function Contact() {
         <div className="mt-20 text-center">
           <SectionDecorator variant="hero">
             <div className="bg-gradient-to-r from-primary/5 to-purple-600/5 rounded-2xl p-8 border border-primary/20">
-              <h3 className="text-2xl font-bold text-foreground mb-4">Prefer a direct approach?</h3>
+              <h3 className="text-2xl font-bold text-foreground mb-4">
+                {t('contact.directApproach.title')}
+              </h3>
               <p className="text-muted-foreground mb-6">
-                Sometimes it&apos;s easier to just pick up the phone or send a quick email
+                {t('contact.directApproach.description')}
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <a
@@ -566,7 +479,7 @@ export default function Contact() {
                       d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
                     />
                   </svg>
-                  Send Email
+                  {t('contact.directApproach.sendMessage')}
                 </a>
 
                 <a
@@ -587,7 +500,7 @@ export default function Contact() {
                       d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
                     />
                   </svg>
-                  Call Me
+                  {t('contact.directApproach.callMe')}
                 </a>
               </div>
             </div>

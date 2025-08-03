@@ -1,8 +1,12 @@
+// ===========================================
+// 7. src/components/LanguageSwitcher.tsx - Updated
+// ===========================================
 'use client'
 
 import { useRouter, usePathname } from 'next/navigation'
 import { useTranslation } from '../lib/i18n/client'
 import { languages, type Language } from '../lib/i18n-config'
+import { useState, useTransition } from 'react'
 
 interface LanguageSwitcherProps {
   locale: Language
@@ -16,56 +20,74 @@ const languageNames: Record<Language, string> = {
 export default function LanguageSwitcher({ locale }: LanguageSwitcherProps) {
   const router = useRouter()
   const pathname = usePathname()
-  const { t } = useTranslation(locale)
+  const { t, i18n } = useTranslation(locale)
+  const [isPending, startTransition] = useTransition()
+  const [isChanging, setIsChanging] = useState(false)
 
-  const switchLanguage = (lng: Language) => {
-    // Get current pathname
-    const segments = pathname.split('/').filter(Boolean)
-    
-    // Check if the first segment is a language code
-    const currentLangInPath = segments[0]
-    const isCurrentLangInPath = languages.includes(currentLangInPath as Language)
-    
-    let newPath: string
-    
-    if (isCurrentLangInPath) {
-      // Replace the existing language with the new one
-      segments[0] = lng
-      newPath = '/' + segments.join('/')
-    } else {
-      // Add the new language at the beginning
-      newPath = '/' + lng + (pathname === '/' ? '' : pathname)
+  const switchLanguage = async (lng: Language) => {
+    if (lng === locale || isChanging) return
+
+    setIsChanging(true)
+
+    try {
+      // Get current pathname
+      const segments = pathname.split('/').filter(Boolean)
+
+      // Check if the first segment is a language code
+      const currentLangInPath = segments[0]
+      const isCurrentLangInPath = languages.includes(
+        currentLangInPath as Language
+      )
+
+      let newPath: string
+
+      if (isCurrentLangInPath) {
+        // Replace the existing language with the new one
+        segments[0] = lng
+        newPath = '/' + segments.join('/')
+      } else {
+        // Add the new language at the beginning
+        newPath = '/' + lng + (pathname === '/' ? '' : pathname)
+      }
+
+      // Change i18n language first
+      await i18n.changeLanguage(lng)
+
+      // Then navigate
+      startTransition(() => {
+        router.push(newPath)
+      })
+
+      // Force a small delay to ensure proper state update
+      setTimeout(() => {
+        setIsChanging(false)
+      }, 100)
+
+    } catch (error) {
+      console.error('Language switch failed:', error)
+      setIsChanging(false)
     }
-
-    // Debug logging (remove in production)
-    console.log('Current pathname:', pathname)
-    console.log('Current locale:', locale)
-    console.log('Switching to:', lng)
-    console.log('New path:', newPath)
-
-    // Navigate to the new path
-    router.push(newPath)
-    
-    // Optional: Force refresh if needed (uncomment if navigation doesn't work)
-    // window.location.href = newPath
   }
 
   return (
     <div className="flex gap-2" role="group" aria-label={t('nav.languageSelector')}>
       {languages.map((lng) => (
-        <button
-          key={lng}
-          onClick={() => switchLanguage(lng)}
-          className={`px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500/50 ${
-            locale === lng
-              ? 'bg-purple-500 text-white shadow-md'
-              : 'bg-muted text-muted-foreground hover:bg-accent hover:text-accent-foreground'
-          }`}
-          aria-label={`${t('nav.switchTo')} ${languageNames[lng]}`}
-          aria-pressed={locale === lng}
-        >
-          {lng.toUpperCase()}
-        </button>
+        locale === lng && (
+          <button
+            key={lng}
+            onClick={() => switchLanguage(lng === 'en' ? 'fr' : 'en')}
+            disabled={isChanging || isPending}
+            className="bg-transparent text-foreground px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500/50 disabled:opacity-50 cursor-pointer"
+             aria-label={`${t('nav.switchTo')} ${languageNames[lng === 'en' ? 'fr' : 'en']}`}
+            aria-pressed={true}
+          >
+            {isChanging ? (
+              <span className="animate-spin">⟳</span>
+            ) : (
+              lng.toUpperCase()
+            )}
+          </button>
+        )
       ))}
     </div>
   )

@@ -3,27 +3,35 @@
 import Image from "next/image"
 import { useState, useEffect, useRef, useCallback } from "react"
 import { SectionDecorator } from "./SectionDecorator"
+import { useTranslation } from '../lib/i18n/client'
+import { type Language } from '../lib/i18n-config'
 
 const FINAL_COUNTS = { experience: 5, projects: 50, clients: 30 } as const
-const SKILLS = [
-  { name: "Frontend Development", level: 95 },
-  { name: "Backend Development", level: 95 },
-  { name: "UI/UX Design", level: 80 },
-  { name: "CMS", level: 90 },
-  { name: "Mobile Development", level: 75 },
 
-] as const
+interface AboutProps {
+  locale: Language
+}
 
-const STATS = [
-  { key: "experience" as const, label: "Years Experience", color: "blue" },
-  { key: "projects" as const, label: "Projects Completed", color: "purple" },
-  { key: "clients" as const, label: "Happy Clients", color: "green" },
-] as const
-
-export default function About() {
+export default function About({ locale }: AboutProps) {
+  const { t } = useTranslation(locale, 'common')
   const [isVisible, setIsVisible] = useState(false)
   const [counters, setCounters] = useState({ experience: 0, projects: 0, clients: 0 })
   const aboutRef = useRef<HTMLElement>(null)
+
+  // Get skills data from translations
+  const SKILLS = [
+    { name: t('about.skills.frontendDevelopment'), level: 95 },
+    { name: t('about.skills.backendDevelopment'), level: 95 },
+    { name: t('about.skills.uiUxDesign'), level: 80 },
+    { name: t('about.skills.cms'), level: 90 },
+    { name: t('about.skills.mobileDevelopment'), level: 75 },
+  ] as const
+
+  const STATS = [
+    { key: "experience" as const, label: "Years Experience", color: "blue" },
+    { key: "projects" as const, label: "Projects Completed", color: "purple" },
+    { key: "clients" as const, label: "Happy Clients", color: "green" },
+  ] as const
 
   const animateCounters = useCallback(() => {
     Object.entries(FINAL_COUNTS).forEach(([key, end]) => {
@@ -67,12 +75,14 @@ export default function About() {
         <header className="text-center mb-16">
           <SectionDecorator variant="default">
             <div className="inline-block">
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">About Me</h2>
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+                {t('about.title')}
+              </h2>
               <div className="w-24 h-1 mx-auto animate-gradient-x10" />
             </div>
           </SectionDecorator>
           <p className="mt-6 text-lg text-muted-foreground max-w-2xl mx-auto">
-            Passionate developer with a love for creating exceptional digital experiences
+            {t('about.subtitle')}
           </p>
         </header>
 
@@ -91,15 +101,15 @@ export default function About() {
                 {/* Main Image Container */}
                 <div className="relative h-80 md:h-96 bg-gradient-to-br from-muted/50 to-muted rounded-2xl shadow-2xl overflow-hidden border border-border">
                   <Image
-                    src="/placeholder.svg?height=400&width=400&text=Profile"
-                    alt="Echadani Yassine - Full Stack Developer"
+                    src="/img1.png"
+                    alt={`${t('site.name')} - ${t('hero.title')}`}
                     fill
                     className="object-contain p-8 transition-transform duration-300 hover:scale-105"
                     priority
                   />
                   {/* Status Badge */}
                   <div className="absolute top-4 right-4 bg-green-500 text-white px-3 py-1 rounded-full text-sm font-medium shadow-lg">
-                    Available for work
+                    {t('about.status')}
                   </div>
                 </div>
               </div>
@@ -113,23 +123,17 @@ export default function About() {
           >
             {/* Description */}
             <div className="space-y-6">
-              <p className="text-lg text-muted-foreground leading-relaxed">
-                I&apos;m a{" "}
-                <span className="font-semibold bg-gradient-to-r from-purple-600 to-red-600 bg-clip-text text-transparent dark:from-red-500 dark:to-purple-500">
-                  Full Stack Developer
-                </span>{" "}
-                Skilled in both frontend and backend, driven by a passion for building efficient, user-focused applications.
-              </p>
-              {/* <p className="text-lg text-muted-foreground leading-relaxed">
-                Skilled in both frontend and backend, I enjoy solving problems with clean, scalable code and continually
-                exploring new technologies.
-              </p> */}
+              <div
+                className="text-lg text-muted-foreground leading-relaxed"
+                dangerouslySetInnerHTML={{ __html: t('about.description') }}
+              />
             </div>
-
 
             {/* Skills Progress Bars */}
             <div className="space-y-4">
-              <h3 className="text-xl font-semibold text-foreground">Core Skills</h3>
+              <h3 className="text-xl font-semibold text-foreground">
+                {t('about.coreSkills')}
+              </h3>
               {SKILLS.map((skill, index) => (
                 <div key={skill.name} className="space-y-2">
                   <div className="flex justify-between">
@@ -153,13 +157,16 @@ export default function About() {
             <div className="flex flex-row flex-wrap gap-4 pt-6 justify-center sm:justify-start">
               <SectionDecorator variant="card">
                 <button className="cursor-pointer px-6 py-3 bg-gradient-to-r from-purple-600 to-red-600 text-white font-semibold rounded-lg shadow-lg hover:shadow-purple-500/40 hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-blue-300/50">
-                  Download CV
+                  {t('about.Download')}
                 </button>
               </SectionDecorator>
               <SectionDecorator variant="card">
-                <button className="cursor-pointer px-6 py-3 border-2 border-foreground text-foreground font-semibold rounded-lg shadow-lg hover:shadow-purple-500/40 hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-foreground/30">
-                  Contact Me
-                </button>
+                <a
+                  href="#contact"
+                  className="cursor-pointer inline-block px-6 py-3 border-2 border-foreground text-foreground font-semibold rounded-lg shadow-lg hover:shadow-purple-500/40 hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-foreground/30"
+                >
+                  {t('nav.contact')}
+                </a>
               </SectionDecorator>
             </div>
           </div>

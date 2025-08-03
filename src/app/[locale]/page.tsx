@@ -1,5 +1,5 @@
 // ===========================================
-// 5. app/[locale]/page.tsx - Main Page
+// 6. src/app/[locale]/page.tsx - Home Page
 // ===========================================
 import { getTranslation } from '../../lib/i18n/server'
 import { Suspense } from 'react'

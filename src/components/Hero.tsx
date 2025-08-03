@@ -108,7 +108,7 @@ export default function Hero({ locale }: HeroProps) {
                 <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-red-600 opacity-100 group-hover:opacity-0 transition-opacity duration-500" />
                 <span className="relative z-10 flex items-center justify-center">
                   <span className="text-white group-hover:bg-gradient-to-r group-hover:from-purple-600 group-hover:to-red-600 group-hover:bg-clip-text group-hover:text-transparent transition-colors duration-300">
-                    {t('projects.viewLive')}
+                    {t('hero.button1')}
                   </span>
                   <svg
                     className="w-5 h-5 ml-2 text-white group-hover:text-purple-500 transition-transform group-hover:translate-x-1 transition-colors duration-300"
@@ -127,7 +127,7 @@ export default function Hero({ locale }: HeroProps) {
               <button
                 onClick={scrollToContact}
                 className="cursor-pointer group relative w-full sm:w-auto px-6 sm:px-8 lg:px-10 py-3 sm:py-4 lg:py-5 border-2 border-purple-500 font-bold text-sm sm:text-base lg:text-lg rounded-xl sm:rounded-2xl shadow-lg transition-all duration-500 hover:shadow-purple-500/25 hover:shadow-xl hover:scale-105 focus:outline-none focus:ring-4 focus:ring-purple-500/30 min-w-[200px] sm:min-w-[220px] overflow-hidden"
-                aria-label={t('contact.title')}
+                aria-label={t('hero.button2')}
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-red-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 <span className="relative z-10 flex items-center justify-center">

@@ -1,5 +1,5 @@
 // ===========================================
-// 3. lib/i18n/client.ts - Client-side i18n
+// 3. src/lib/i18n/client.ts - Client-side i18n
 // ===========================================
 'use client'
 
@@ -8,33 +8,44 @@ import i18next from 'i18next'
 import {
   initReactI18next,
   useTranslation as useTranslationOrg,
-  UseTranslationOptions
+  UseTranslationOptions,
 } from 'react-i18next'
 import resourcesToBackend from 'i18next-resources-to-backend'
 import LanguageDetector from 'i18next-browser-languagedetector'
-import { getOptions, languages, cookieName, type Language, type Namespace } from '../i18n-config'
+import {
+  getOptions,
+  languages,
+  cookieName,
+  type Language,
+  type Namespace,
+} from '../i18n-config'
 
 const runsOnServerSide = typeof window === 'undefined'
 
 // Initialize i18next for client side
-i18next
-  .use(initReactI18next)
-  .use(LanguageDetector)
-  .use(
-    resourcesToBackend((language: string, namespace: string) =>
-      import(`../../../public/locales/${language}/${namespace}.json`)
+if (!i18next.isInitialized) {
+  i18next
+    .use(initReactI18next)
+    .use(LanguageDetector)
+    .use(
+      resourcesToBackend((language: string, namespace: string) =>
+        import(`../../../public/locales/${language}/${namespace}.json`)
+      )
     )
-  )
-  .init({
-    ...getOptions(),
-    lng: undefined, // Let detect the language on client side
-    detection: {
-      order: ['path', 'htmlTag', 'cookie', 'navigator'],
-      caches: ['cookie'],
-      cookieName,
-    },
-    preload: runsOnServerSide ? languages : []
-  })
+    .init({
+      ...getOptions(),
+      lng: undefined, // Let detect the language on client side
+      detection: {
+        order: ['path', 'htmlTag', 'cookie', 'navigator'],
+        caches: ['cookie'],
+        cookieName,
+      },
+      preload: runsOnServerSide ? languages : [],
+      react: {
+        useSuspense: false, // Disable suspense to avoid hydration issues
+      },
+    })
+}
 
 export function useTranslation(
   lng: Language,
@@ -45,12 +56,27 @@ export function useTranslation(
   const { i18n } = ret
   const [activeLng, setActiveLng] = useState<string>(lng)
 
-  // Handle language changes
+  // Handle language changes with proper resource loading
   useEffect(() => {
-    if (activeLng === lng) return
-    setActiveLng(lng)
-    i18n.changeLanguage(lng)
-  }, [lng, i18n, activeLng])
+    if (!lng || i18n.resolvedLanguage === lng) return
+    
+    // Change language and reload resources
+    const changeLanguage = async () => {
+      try {
+        await i18n.changeLanguage(lng)
+        setActiveLng(lng)
+        
+        // Force reload of namespace if needed
+        if (!i18n.hasResourceBundle(lng, ns)) {
+          await i18n.reloadResources(lng, ns)
+        }
+      } catch (error) {
+        console.error('Failed to change language:', error)
+      }
+    }
+    
+    changeLanguage()
+  }, [lng, i18n, ns, activeLng])
 
   return ret
 }

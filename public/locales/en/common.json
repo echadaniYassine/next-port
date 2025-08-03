@@ -1,11 +1,12 @@
 {
   "site": {
+    "logo": "Yassine",
     "name": "Echadani Yassine",
     "title": "Full Stack Developer Portfolio",
     "description": "Full Stack Developer passionate about creating amazing web experiences with modern technologies."
   },
   "nav": {
-     "home": "Home",
+    "home": "Home",
     "about": "About",
     "skills": "Skills",
     "projects": "Projects",
@@ -26,7 +27,9 @@
       "uiUxDesign": "UI/UX Design",
       "cms": "CMS",
       "mobileDevelopment": "Mobile Development"
-    }
+    },
+    "Download": "Download CV",
+    "status": "Available for work"
   },
   "hero": {
     "greeting": "Hello, I'm",
@@ -38,7 +41,9 @@
       "uiUxEnthusiast": "UI/UX Enthusiast",
       "problemSolver": "Problem Solver"
     },
-    "description": "Passionate about creating <span>amazing web experiences</span> with modern technologies. I transform ideas into beautiful, functional, and user-friendly applications."
+    "description": "Passionate about creating <span>amazing web experiences</span> with modern technologies. I transform ideas into beautiful, functional, and user-friendly applications.",
+    "button1": "View My Work",
+    "button2": "Get in Touch"
   },
   "skills": {
     "title": "Skills",
@@ -101,6 +106,8 @@
       "emailAddress": "Email Address",
       "subject": "Subject",
       "message": "Message",
+      "sendMessage": "Send Message",
+      "sendMessageRealTime": "Sending... Message",
       "placeholders": {
         "name": "Enter your full name",
         "email": "Enter your email address",
@@ -134,7 +141,9 @@
     },
     "directApproach": {
       "title": "Prefer a direct approach?",
-      "description": "Sometimes it's easier to just pick up the phone or send a quick email"
+      "description": "Sometimes it's easier to just pick up the phone or send a quick email",
+      "sendMessage": "Mail Me",
+      "callMe": "Call Me"
     }
   }
 }

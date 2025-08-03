@@ -1,5 +1,6 @@
 {
   "site": {
+    "logo": "Yassine",
     "name": "Echadani Yassine",
     "title": "Portfolio Développeur Full Stack",
     "description": "Développeur Full Stack passionné par la création d'expériences web extraordinaires avec des technologies modernes."
@@ -26,7 +27,9 @@
       "uiUxDesign": "Design UI/UX",
       "cms": "CMS",
       "mobileDevelopment": "Développement Mobile"
-    }
+    },
+    "Download" : "Télécharger le CV",
+    "status" : "Disponible pour travailler"
   },
   "hero": {
     "greeting": "Bonjour, je suis",
@@ -38,7 +41,9 @@
       "uiUxEnthusiast": "Passionné UI/UX",
       "problemSolver": "Résolveur de Problèmes"
     },
-    "description": "Passionné par la création d'<span>expériences web extraordinaires</span> avec des technologies modernes. Je transforme les idées en applications belles, fonctionnelles et conviviales."
+    "description": "Passionné par la création d'<span>expériences web extraordinaires</span> avec des technologies modernes. Je transforme les idées en applications belles, fonctionnelles et conviviales.",
+    "button1": "Voir Mon Travail",
+    "button2": "Contactez-moi"
   },
   "skills": {
     "title": "Compétences",
@@ -101,6 +106,8 @@
       "emailAddress": "Adresse Email",
       "subject": "Sujet",
       "message": "Message",
+      "sendMessage": "Envoyer le Message",
+      "sendMessageRealTime": "Envoi du message...",
       "placeholders": {
         "name": "Entrez votre nom complet",
         "email": "Entrez votre adresse email",
@@ -134,7 +141,9 @@
     },
     "directApproach": {
       "title": "Vous préférez une approche directe ?",
-      "description": "Parfois, il est plus facile de décrocher le téléphone ou d'envoyer un email rapide"
+      "description": "Parfois, il est plus facile de décrocher le téléphone ou d'envoyer un email rapide",
+      "sendMessage": "Envoyer Mail",
+      "callMe": "Appelez-moi"
     }
   }
 }
