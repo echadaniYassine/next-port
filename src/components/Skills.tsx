@@ -1,121 +1,23 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { SectionDecorator } from "./SectionDecorator";
 
 import * as FaIcons from "react-icons/fa";
 import * as SiIcons from "react-icons/si";
 
-// Define types for better type safety and code readability
-type ColorType = "blue" | "purple" | "green" | "orange";
-
-interface Skill {
-  name: string;
-  level: number;
-  icon: keyof typeof FaIcons | keyof typeof SiIcons;
-  description: string;
-}
-
-interface SkillCategory {
-  category: string;
-  icon: string;
-  color: ColorType;
-  items: Skill[];
-}
-
-interface SummaryStat {
-  label: string;
-  value: string;
-  icon: string;
-  color: ColorType;
-}
-
-// Skills data - moved inline for better maintainability
-const skillsData = {
-  skillCategories: [
-    {
-      category: "Frontend",
-      icon: "🎨",
-      color: "blue" as ColorType,
-      items: [
-        { name: "HTML5", level: 95, icon: "FaHtml5" as keyof typeof FaIcons, description: "Semantic markup and accessibility" },
-        { name: "CSS3", level: 90, icon: "FaCss3Alt" as keyof typeof FaIcons, description: "Modern styling and animations" },
-        { name: "JavaScript", level: 92, icon: "FaJs" as keyof typeof FaIcons, description: "ES6+ and modern features" },
-        { name: "React", level: 88, icon: "FaReact" as keyof typeof FaIcons, description: "Hooks, Context, and performance" },
-        { name: "Next.js", level: 85, icon: "SiNextdotjs" as keyof typeof SiIcons, description: "SSR, SSG, and App Router" },
-        { name: "Tailwind CSS", level: 90, icon: "SiTailwindcss" as keyof typeof SiIcons, description: "Utility-first styling" }
-      ]
-    },
-    {
-      category: "Backend",
-      icon: "⚙️",
-      color: "purple" as ColorType,
-      items: [
-        { name: "Laravel", level: 95, icon: "FaLaravel" as keyof typeof FaIcons, description: "MVC architecture and APIs" },
-        { name: "Node.js", level: 85, icon: "FaNodeJs" as keyof typeof FaIcons, description: "Server-side JavaScript" },
-        { name: "Express", level: 82, icon: "SiExpress" as keyof typeof SiIcons, description: "Web application framework" },
-        { name: "Python", level: 80, icon: "FaPython" as keyof typeof FaIcons, description: "Scripting and automation" },
-        { name: "RESTful APIs", level: 88, icon: "FaNodeJs" as keyof typeof FaIcons, description: "API design and integration" }
-      ]
-    },
-    {
-      category: "Database",
-      icon: "🗄️",
-      color: "green" as ColorType,
-      items: [
-        { name: "MongoDB", level: 85, icon: "SiMongodb" as keyof typeof SiIcons, description: "NoSQL document database" },
-        { name: "PostgreSQL", level: 80, icon: "SiPostgresql" as keyof typeof SiIcons, description: "Relational database" },
-        { name: "MySQL", level: 78, icon: "SiMysql" as keyof typeof SiIcons, description: "Popular SQL database" },
-        { name: "Redis", level: 75, icon: "SiRedis" as keyof typeof SiIcons, description: "In-memory data structure" }
-      ]
-    },
-    {
-      category: "Tools & Others",
-      icon: "🛠️",
-      color: "orange" as ColorType,
-      items: [
-        { name: "Git", level: 90, icon: "FaGit" as keyof typeof FaIcons, description: "Version control system" },
-        { name: "Docker", level: 75, icon: "FaDocker" as keyof typeof FaIcons, description: "Containerization platform" },
-        { name: "AWS", level: 70, icon: "FaAws" as keyof typeof FaIcons, description: "Cloud computing services" },
-        { name: "Firebase", level: 80, icon: "SiFirebase" as keyof typeof SiIcons, description: "Backend-as-a-Service" },
-        { name: "WordPress", level: 85, icon: "FaWordpress" as keyof typeof FaIcons, description: "CMS and custom themes" },
-        { name: "cPanel", level: 85, icon: "SiCpanel" as keyof typeof SiIcons, description: "Web hosting control panel" }
-      ]
-    }
-  ],
-  summaryStats: [
-    { label: "Technologies Mastered", value: "20+", icon: "🚀", color: "blue" as ColorType },
-    { label: "Years of Experience", value: "2+", icon: "⏰", color: "green" as ColorType },
-    { label: "Projects Completed", value: "24+", icon: "✅", color: "purple" as ColorType },
-    { label: "Always Learning", value: "∞", icon: "📚", color: "orange" as ColorType }
-  ]
-};
-
-// Color mappings using CSS custom properties
-const colorMappings = {
-  blue: {
-    primary: "59 130 246", // blue-500
-    light: "147 197 253", // blue-300
-    lighter: "219 234 254" // blue-100
-  },
-  purple: {
-    primary: "168 85 247", // purple-500
-    light: "196 181 253", // purple-300
-    lighter: "243 232 255" // purple-100
-  },
-  green: {
-    primary: "34 197 94", // green-500
-    light: "134 239 172", // green-300
-    lighter: "220 252 231" // green-100
-  },
-  orange: {
-    primary: "249 115 22", // orange-500
-    light: "251 146 60", // orange-400
-    lighter: "254 215 170" // orange-100
-  }
-};
+// Import separated data and utilities
+import { 
+  skillsData, 
+  skillsConfig, 
+  colorMappings, 
+  getSkillLevel, 
+  getSkillStatus 
+} from "../data/skills/index";
 
 const Skills: React.FC = () => {
+  const { t } = useTranslation();
   const { skillCategories, summaryStats } = useMemo(() => skillsData, []);
 
   const [isVisible, setIsVisible] = useState(false);
@@ -123,20 +25,34 @@ const Skills: React.FC = () => {
   const [hoveredSkill, setHoveredSkill] = useState<string | null>(null);
   const skillsRef = useRef<HTMLElement>(null);
 
-  const getSkillLevel = useCallback((level: number) => {
-    if (level >= 90) return "Expert";
-    if (level >= 80) return "Advanced";
-    if (level >= 70) return "Intermediate";
-    return "Basic";
-  }, []);
-
-  const getSkillStatus = useCallback((level: number) => {
-    if (level >= 90) return "Production Ready";
-    if (level >= 80) return "Proficient";
-    return "Learning";
-  }, []);
-
   const currentCategory = useMemo(() => skillCategories[activeCategory], [activeCategory, skillCategories]);
+
+  // Helper functions to get translated text
+  const getTranslatedSkillLevel = useCallback((level: number): string => {
+    if (level >= 90) return t("skills.levels.expert", "Expert");
+    if (level >= 80) return t("skills.levels.advanced", "Advanced");
+    if (level >= 70) return t("skills.levels.intermediate", "Intermediate");
+    return t("skills.levels.basic", "Basic");
+  }, [t]);
+
+  const getTranslatedSkillStatus = useCallback((level: number): string => {
+    if (level >= 90) return t("skills.status.productionReady", "Production Ready");
+    if (level >= 80) return t("skills.status.proficient", "Proficient");
+    return t("skills.status.learning", "Learning");
+  }, [t]);
+
+  const getTranslatedDescription = useCallback((skillName: string, fallbackDescription: string): string => {
+    return t(`skills.descriptions.${skillName}`, fallbackDescription);
+  }, [t]);
+
+  const getTranslatedCategoryName = useCallback((categoryName: string): string => {
+    return t(`skills.categories.${categoryName}`, categoryName);
+  }, [t]);
+
+  const getTranslatedSummaryLabel = useCallback((label: string): string => {
+    const labelKey = label.toLowerCase().replace(/\s+/g, '');
+    return t(`skills.summary.${labelKey}`, label);
+  }, [t]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -145,7 +61,10 @@ const Skills: React.FC = () => {
           setIsVisible(true);
         }
       },
-      { threshold: 0.3, rootMargin: "0px 0px -100px 0px" }
+      { 
+        threshold: skillsConfig.intersectionThreshold, 
+        rootMargin: skillsConfig.intersectionRootMargin 
+      }
     );
 
     const currentSkillsRef = skillsRef.current;
@@ -163,7 +82,7 @@ const Skills: React.FC = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setActiveCategory((prev) => (prev + 1) % skillCategories.length);
-    }, 5000);
+    }, skillsConfig.categoryChangeInterval);
 
     return () => clearInterval(interval);
   }, [skillCategories.length]);
@@ -177,7 +96,7 @@ const Skills: React.FC = () => {
   }, []);
 
   // Icon component with error handling
-  const IconComponent = ({ iconName, className }: { iconName: keyof typeof FaIcons | keyof typeof SiIcons; className?: string }) => {
+  const IconComponent = ({ iconName, className }: { iconName: string; className?: string }) => {
     const FaIcon = FaIcons[iconName as keyof typeof FaIcons];
     const SiIcon = SiIcons[iconName as keyof typeof SiIcons];
     const Icon = FaIcon || SiIcon;
@@ -196,7 +115,7 @@ const Skills: React.FC = () => {
                 className="text-3xl md:text-4xl font-bold mb-4"
                 style={{ color: 'hsl(var(--foreground))' }}
               >
-                My Skills
+                {t('skills.title')}
               </h2>
               <div className="w-24 h-1 mx-auto animate-gradient-x10" />
             </div>
@@ -205,7 +124,7 @@ const Skills: React.FC = () => {
             className="mt-6 text-lg max-w-2xl mx-auto"
             style={{ color: 'hsl(var(--muted-foreground))' }}
           >
-            Technologies and tools I use to bring ideas to life
+            {t('skills.subtitle', 'Technologies and tools I use to bring ideas to life')}
           </p>
         </header>
 
@@ -237,12 +156,12 @@ const Skills: React.FC = () => {
                   : 'transparent'
               }}
               aria-pressed={activeCategory === index}
-              aria-label={`View ${category.category} skills`}
+              aria-label={`View ${getTranslatedCategoryName(category.category)} skills`}
             >
               <span className="mr-2" role="img" aria-label={category.category}>
                 {category.icon}
               </span>
-              {category.category}
+              {getTranslatedCategoryName(category.category)}
               <span className="ml-2 text-xs opacity-75">({category.items.length})</span>
             </button>
           ))}
@@ -258,7 +177,7 @@ const Skills: React.FC = () => {
                 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}
               `}
               style={{ 
-                transitionDelay: `${index * 100}ms`,
+                transitionDelay: `${index * skillsConfig.animationDelayMultiplier}ms`,
                 backgroundColor: 'hsl(var(--card))',
                 borderColor: 'hsl(var(--border))'
               }}
@@ -288,7 +207,7 @@ const Skills: React.FC = () => {
                       className="text-xs"
                       style={{ color: 'hsl(var(--muted-foreground))' }}
                     >
-                      {getSkillLevel(skill.level)}
+                      {getTranslatedSkillLevel(skill.level)}
                     </p>
                   </div>
                 </div>
@@ -314,7 +233,7 @@ const Skills: React.FC = () => {
                     className="h-3 rounded-full transition-all duration-1000 ease-out relative overflow-hidden"
                     style={{
                       width: isVisible ? `${skill.level}%` : "0%",
-                      transitionDelay: `${index * 100 + 300}ms`,
+                      transitionDelay: `${index * skillsConfig.animationDelayMultiplier + 300}ms`,
                       backgroundColor: `rgb(${colorMappings[currentCategory.color].primary})`
                     }}
                   >
@@ -330,7 +249,7 @@ const Skills: React.FC = () => {
                   className="text-sm leading-relaxed"
                   style={{ color: 'hsl(var(--muted-foreground))' }}
                 >
-                  {skill.description}
+                  {getTranslatedDescription(skill.name, skill.description)}
                 </p>
                 <div className="flex justify-between items-center">
                   <div className="flex items-center space-x-2">
@@ -342,7 +261,7 @@ const Skills: React.FC = () => {
                       className="text-xs"
                       style={{ color: 'hsl(var(--muted-foreground))' }}
                     >
-                      {getSkillStatus(skill.level)}
+                      {getTranslatedSkillStatus(skill.level)}
                     </span>
                   </div>
                 </div>
@@ -367,12 +286,12 @@ const Skills: React.FC = () => {
                   ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}
                 `}
                 style={{ 
-                  transitionDelay: `${index * 100 + 800}ms`,
+                  transitionDelay: `${index * skillsConfig.animationDelayMultiplier + 800}ms`,
                   backgroundColor: 'hsl(var(--card))',
                   borderColor: 'hsl(var(--border))'
                 }}
               >
-                <div className="text-4xl mb-3" role="img" aria-label={stat.label}>
+                <div className="text-4xl mb-3" role="img" aria-label={getTranslatedSummaryLabel(stat.label)}>
                   {stat.icon}
                 </div>
                 <div 
@@ -385,7 +304,7 @@ const Skills: React.FC = () => {
                   className="text-sm font-medium"
                   style={{ color: 'hsl(var(--muted-foreground))' }}
                 >
-                  {stat.label}
+                  {getTranslatedSummaryLabel(stat.label)}
                 </div>
 
                 {/* Decorative element */}
@@ -412,19 +331,19 @@ const Skills: React.FC = () => {
                 className="text-2xl font-bold mb-4"
                 style={{ color: 'hsl(var(--foreground))' }}
               >
-                Ready to work together?
+                {t('skills.cta.title', 'Ready to work together?')}
               </h3>
               <p 
                 className="mb-6 max-w-2xl mx-auto"
                 style={{ color: 'hsl(var(--muted-foreground))' }}
               >
-                I'm always excited to take on new challenges and learn new technologies. Let's build something amazing!
+                {t('skills.cta.description', "I'm always excited to take on new challenges and learn new technologies. Let's build something amazing!")}
               </p>
               <button
                 onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
                 className="px-8 py-3 bg-gradient-to-r from-purple-600 to-red-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-purple-500/40 hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-purple-500/30"
               >
-                Let's Connect
+                {t('skills.cta.buttonText', "Let's Connect")}
               </button>
             </div>
           </SectionDecorator>

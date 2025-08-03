@@ -28,8 +28,8 @@
       "cms": "CMS",
       "mobileDevelopment": "Développement Mobile"
     },
-    "Download" : "Télécharger le CV",
-    "status" : "Disponible pour travailler"
+    "Download": "Télécharger le CV",
+    "status": "Disponible pour travailler"
   },
   "hero": {
     "greeting": "Bonjour, je suis",
@@ -46,12 +46,24 @@
     "button2": "Contactez-moi"
   },
   "skills": {
-    "title": "Compétences",
+    "title": "Mes Compétences",
+    "subtitle": "Technologies et outils que j'utilise pour donner vie aux idées",
     "categories": {
       "Frontend": "Frontend",
       "Backend": "Backend",
       "Database": "Base de données",
       "Tools & Others": "Outils et autres"
+    },
+    "levels": {
+      "expert": "Expert",
+      "advanced": "Avancé",
+      "intermediate": "Intermédiaire",
+      "basic": "Basique"
+    },
+    "status": {
+      "productionReady": "Prêt pour la production",
+      "proficient": "Compétent",
+      "learning": "En apprentissage"
     },
     "descriptions": {
       "HTML5": "Balisage sémantique et accessibilité",
@@ -75,25 +87,92 @@
       "Firebase": "Backend en tant que service",
       "WordPress": "CMS et thèmes personnalisés",
       "cPanel": "Panneau de contrôle d'hébergement"
+    },
+    "summary": {
+      "technologiesmastered": "Technologies Maîtrisées",
+      "yearsofexperience": "Années d'Expérience",
+      "projectscompleted": "Projets Terminés",
+      "alwayslearning": "Toujours en Apprentissage"
+    },
+    "cta": {
+      "title": "Prêt à travailler ensemble ?",
+      "description": "Je suis toujours enthousiaste à l'idée de relever de nouveaux défis et d'apprendre de nouvelles technologies. Construisons quelque chose d'incroyable !",
+      "buttonText": "Connectons-nous"
     }
   },
   "projects": {
     "title": "Projets",
+    "subtitle": "Une vitrine de mes travaux récents et projets personnels",
+    "featuredProjects": "Projets en Vedette",
+    "featured": "En Vedette",
+    "moreLabel": "plus",
+    "viewLive": "Démo en Direct",
+    "viewCode": "Code",
+    "noProjectsTitle": "Aucun projet trouvé",
+    "noProjectsDescription": "Aucun projet ne correspond au filtre sélectionné. Essayez de sélectionner une catégorie différente.",
+    "filters": {
+      "all": "Tous les Projets"
+    },
     "categories": {
-      "fullstack": "Full Stack",
-      "frontend": "Frontend",
-      "wordpress": "WordPress",
-      "mobile": "Mobile",
-      "landingPage": "Page d'accueil"
+      "fullstack": "Applications Full-Stack",
+      "frontend": "Applications Frontend",
+      "landingPage": "Pages d'Atterrissage",
+      "wordpress": "Sites WordPress",
+      "mobile": "Applications Mobiles"
     },
     "status": {
       "completed": "Terminé",
-      "in-progress": "En cours",
-      "planning": "Planifié"
+      "in-progress": "En Cours",
+      "planning": "En Planification"
     },
-    "featured": "Projet en vedette",
-    "viewLive": "Voir le site",
-    "viewCode": "Voir le code"
+    "items": {
+      "okyWebcraft": {
+        "title": "OKY WebCraft — Vitrine d'Agence Digitale",
+        "description": "Un site web moderne basé sur React pour l'Agence Oky WebCraft, conçu pour présenter les services de l'agence, avec une interface conviviale, des animations fluides et un design responsive pour une expérience client engageante."
+      },
+      "shoppingStore": {
+        "title": "Boutique en Ligne",
+        "description": "Un outil de gestion de projet intuitif avec fonctionnalité de glisser-déposer, fonctionnalités de collaboration d'équipe, suivi du temps et analyses détaillées pour des insights de productivité."
+      },
+      "troneGame": {
+        "title": "Trone Game — Plateforme de Jeu Multijoueur",
+        "description": "Une application de chat complète avec capacités d'appel vidéo, partage de fichiers, chats de groupe et notifications en temps réel. Construite avec Socket.io pour une communication fluide."
+      },
+      "schoolManagement": {
+        "title": "Gestion Scolaire — Plateforme Éducative",
+        "description": "Une plateforme complète pour gérer les institutions éducatives, comprenant l'inscription des étudiants, la gestion des cours et le suivi des performances."
+      },
+      "interstellarTours": {
+        "title": "Interstellar Tours",
+        "description": "Un site web basé sur WordPress offrant des services de transport sur mesure à Tanger, incluant le transport VIP, le tourisme d'affaires et une flotte diversifiée de véhicules pour tous les besoins."
+      },
+      "asianTaste": {
+        "title": "Asian Taste — Page d'Atterrissage Gastronomique",
+        "description": "Une page d'atterrissage visuellement engageante et responsive construite avec React, inspirée par l'esthétique du design asiatique, optimisée pour des performances rapides et la conversion de prospects."
+      },
+      "twaregEsports": {
+        "title": "Twareg eSports — Site d'Organisation eSport",
+        "description": "Une plateforme élégante et informative développée pour Twareg eSports, une équipe eSport marocaine de premier plan. Le site web met en valeur leur histoire, leurs réalisations et leurs divisions de jeu comme League of Legends, FIFA et PUBG. Construit avec un focus sur la performance, le design moderne et l'engagement utilisateur."
+      },
+      "twizaPack": {
+        "title": "Twiza Pack1 — Plateforme E-commerce Artisanale",
+        "description": "Une solution de vitrine en ligne pour les artisans et petites entreprises marocains. Ce projet permet aux utilisateurs de présenter et vendre des produits artisanaux à travers une interface simple, localisée et adaptée aux mobiles."
+      },
+      "trendify": {
+        "title": "Trendify — Plateforme E-Commerce",
+        "description": "Une application web e-commerce moderne construite avec React et Node.js, présentant une interface utilisateur élégante, une gestion de produits en temps réel et une fonctionnalité de checkout sécurisée et évolutive."
+      },
+      "mirriahPro": {
+        "title": "Mirriah.pro — Site Web Portfolio Personnel",
+        "description": "Un site portfolio professionnel et raffiné développé pour présenter les projets, compétences et l'image de marque de Mirriah. Présentant une mise en page épurée, une navigation intuitive et un design responsive, le site met en valeur les réalisations personnelles et le travail créatif de manière polie et convaincante."
+      }
+    },
+    "cta": {
+      "title": "Intéressé par une collaboration ?",
+      "description": "Je suis toujours ouvert aux discussions sur de nouvelles opportunités et projets intéressants. Créons quelque chose d'incroyable ensemble !",
+      "getInTouch": "Prendre Contact",
+      "sendEmail": "Envoyer un Email"
+    }
   },
   "contact": {
     "title": "Contactez-Moi",

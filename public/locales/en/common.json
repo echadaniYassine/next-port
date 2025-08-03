@@ -46,12 +46,24 @@
     "button2": "Get in Touch"
   },
   "skills": {
-    "title": "Skills",
+    "title": "My Skills",
+    "subtitle": "Technologies and tools I use to bring ideas to life",
     "categories": {
       "Frontend": "Frontend",
       "Backend": "Backend",
       "Database": "Database",
       "Tools & Others": "Tools & Others"
+    },
+    "levels": {
+      "expert": "Expert",
+      "advanced": "Advanced",
+      "intermediate": "Intermediate",
+      "basic": "Basic"
+    },
+    "status": {
+      "productionReady": "Production Ready",
+      "proficient": "Proficient",
+      "learning": "Learning"
     },
     "descriptions": {
       "HTML5": "Semantic markup and accessibility",
@@ -75,25 +87,92 @@
       "Firebase": "Backend-as-a-Service",
       "WordPress": "CMS and custom themes",
       "cPanel": "Web hosting control panel"
+    },
+    "summary": {
+      "technologiesmastered": "Technologies Mastered",
+      "yearsofexperience": "Years of Experience",
+      "projectscompleted": "Projects Completed",
+      "alwayslearning": "Always Learning"
+    },
+    "cta": {
+      "title": "Ready to work together?",
+      "description": "I'm always excited to take on new challenges and learn new technologies. Let's build something amazing!",
+      "buttonText": "Let's Connect"
     }
   },
   "projects": {
     "title": "Projects",
+    "subtitle": "A showcase of my recent work and personal projects",
+    "featuredProjects": "Featured Projects",
+    "featured": "Featured",
+    "moreLabel": "more",
+    "viewLive": "Live Demo",
+    "viewCode": "Code",
+    "noProjectsTitle": "No projects found",
+    "noProjectsDescription": "No projects match the selected filter. Try selecting a different category.",
+    "filters": {
+      "all": "All Projects"
+    },
     "categories": {
-      "fullstack": "Full-Stack",
-      "frontend": "Frontend",
-      "wordpress": "WordPress",
-      "mobile": "Mobile",
-      "landingPage": "Landing Page"
+      "fullstack": "Full-Stack Applications",
+      "frontend": "Frontend Applications",
+      "landingPage": "Landing Pages",
+      "wordpress": "WordPress Sites",
+      "mobile": "Mobile Applications"
     },
     "status": {
       "completed": "Completed",
       "in-progress": "In Progress",
       "planning": "Planning"
     },
-    "featured": "Featured Project",
-    "viewLive": "View Live",
-    "viewCode": "View Code"
+    "items": {
+      "okyWebcraft": {
+        "title": "OKY WebCraft — Digital Agency Showcase",
+        "description": "A modern React-based website for Oky WebCraft Agency, designed to showcase the agency's services, with a user-friendly interface, smooth animations, and responsive design for an engaging client experience."
+      },
+      "shoppingStore": {
+        "title": "Shopping Store",
+        "description": "An intuitive project management tool with drag-and-drop functionality, team collaboration features, time tracking, and detailed analytics for productivity insights."
+      },
+      "troneGame": {
+        "title": "Trone Game — Multiplayer Gaming Platform",
+        "description": "A comprehensive chat application with video calling capabilities, file sharing, group chats, and real-time notifications. Built with Socket.io for seamless communication."
+      },
+      "schoolManagement": {
+        "title": "School Management — Education Platform",
+        "description": "A comprehensive platform for managing educational institutions, featuring student enrollment, course management, and performance tracking."
+      },
+      "interstellarTours": {
+        "title": "Interstellar Tours",
+        "description": "A WordPress-based website offering tailored transportation services in Tangier, including VIP transport, business tourism, and a diverse fleet of vehicles for every need."
+      },
+      "asianTaste": {
+        "title": "Asian Taste — Dish Showcase Landing Page",
+        "description": "A visually engaging and responsive landing page built with React, inspired by Asian design aesthetics, optimized for fast performance and lead conversion."
+      },
+      "twaregEsports": {
+        "title": "Twareg eSports — Esports Organization Website",
+        "description": "A sleek and informative platform developed for Twareg eSports, a leading Moroccan esports team. The website highlights their history, achievements, and game divisions like League of Legends, FIFA, and PUBG. Built with a focus on performance, modern design, and user engagement."
+      },
+      "twizaPack": {
+        "title": "Twiza Pack1 — Artisan E-commerce Platform",
+        "description": "An online storefront solution for Moroccan artisans and small businesses. This project enables users to showcase and sell handmade products through a simple, localized, and mobile-friendly interface."
+      },
+      "trendify": {
+        "title": "Trendify — E‑Commerce Platform",
+        "description": "A modern e-commerce web application built with React and Node.js, featuring a sleek user interface, real-time product management, and secure, scalable checkout functionality."
+      },
+      "mirriahPro": {
+        "title": "Mirriah.pro — Personal Portfolio Website",
+        "description": "A refined, professional portfolio site developed to showcase projects, skills, and branding for Mirriah. Featuring a clean layout, intuitive navigation, and responsive design, the site highlights personal achievements and creative work in a polished and compelling way."
+      }
+    },
+    "cta": {
+      "title": "Interested in working together?",
+      "description": "I'm always open to discussing new opportunities and interesting projects. Let's create something amazing together!",
+      "getInTouch": "Get In Touch",
+      "sendEmail": "Send Email"
+    }
   },
   "contact": {
     "title": "Get In Touch",

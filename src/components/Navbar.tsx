@@ -73,10 +73,9 @@ export default function Navbar({ locale }: NavbarProps) {
     <nav
       className={`
         fixed top-4 left-1/2 transform -translate-x-1/2 z-50 transition-all duration-500 ease-out
-        ${
-          isScrolled
-            ? 'w-[95%] md:w-[60%] lg:w-[50%] rounded-2xl shadow-2xl backdrop-blur-md border'
-            : 'w-full rounded-none backdrop-blur-none shadow-none border-none'
+        ${isScrolled
+          ? 'w-[95%] md:w-[60%] lg:w-[50%] rounded-2xl shadow-2xl backdrop-blur-md border'
+          : 'w-full rounded-none backdrop-blur-none shadow-none border-none'
         }
       `}
       style={{
@@ -111,11 +110,10 @@ export default function Navbar({ locale }: NavbarProps) {
                 >
                   {t(item.labelKey)}
                   <div
-                    className={`absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-purple-600 to-red-600 transition-transform duration-300 origin-left rounded-full ${
-                      activeSection === item.href.slice(1)
+                    className={`absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-purple-600 to-red-600 transition-transform duration-300 origin-left rounded-full ${activeSection === item.href.slice(1)
                         ? 'scale-x-100'
                         : 'scale-x-0 group-hover:scale-x-100'
-                    }`}
+                      }`}
                   />
                 </Link>
               ))}
@@ -131,6 +129,7 @@ export default function Navbar({ locale }: NavbarProps) {
           {/* Mobile Controls */}
           <div className="md:hidden flex items-center space-x-3 ml-auto">
             <ThemeToggle />
+            <LanguageSwitcher locale={locale} />
             <button
               onClick={toggleMenu}
               className="p-2 hover:bg-accent/50 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500/50"
@@ -192,11 +191,10 @@ export default function Navbar({ locale }: NavbarProps) {
                 >
                   {t(item.labelKey)}
                   <div
-                    className={`absolute bottom-0 left-4 right-4 h-0.5 bg-gradient-to-r from-purple-600 to-red-600 transition-transform duration-300 origin-left rounded-full ${
-                      activeSection === item.href.slice(1)
+                    className={`absolute bottom-0 left-4 right-4 h-0.5 bg-gradient-to-r from-purple-600 to-red-600 transition-transform duration-300 origin-left rounded-full ${activeSection === item.href.slice(1)
                         ? 'scale-x-100'
                         : 'scale-x-0 group-hover:scale-x-100'
-                    }`}
+                      }`}
                   />
                 </Link>
               ))}
