@@ -63,12 +63,12 @@ export default function Projects() {
       9: 'trendify',
       10: 'mirriahPro'
     }
-    
+
     const key = projectKeys[projectId as keyof typeof projectKeys]
     if (key) {
       return t(`projects.items.${key}.${field}`)
     }
-    
+
     // Fallback to original data if translation key not found
     const project = PROJECTS.find(p => p.id === projectId)
     return project ? project[field] : ''
@@ -95,7 +95,7 @@ export default function Projects() {
     <section id="projects" ref={projectsRef} className="relative py-20 bg-transparent transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <header className="text-center mb-16">
+        <header className="text-center mb-12">
           <SectionDecorator variant="default">
             <div className="inline-block">
               <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">{t('projects.title')}</h2>
@@ -110,7 +110,7 @@ export default function Projects() {
         {/* Featured Projects */}
         {featuredProjects.length > 0 && (
           <div className="mb-16">
-            <h3 className="text-2xl font-bold text-foreground mb-8 text-center flex items-center justify-center">
+            <h3 className="text-2xl font-bold text-foreground mb-12 text-center flex items-center justify-center">
               <span className="mr-2" role="img" aria-label="featured">
                 ⭐
               </span>
@@ -229,31 +229,39 @@ export default function Projects() {
         )}
 
         {/* Filter Buttons */}
-        <div className="flex flex-wrap justify-center gap-2 mb-12">
+        <div className="flex flex-wrap justify-center gap-1 sm:gap-2 mb-12">
           {FILTERS.map((filter) => {
             const count =
               filter.key === "all" ? PROJECTS.length : PROJECTS.filter((p) => p.category === filter.key).length
-            const filterLabel = filter.key === "all" 
-              ? t('projects.filters.all') 
+
+            const emoji = filter.label.split(' ')[0]
+            const filterLabel = filter.key === "all"
+              ? t('projects.filters.all')
               : t(`projects.categories.${filter.key}`)
-            
+
             return (
               <button
                 key={filter.key}
                 onClick={() => handleFilterChange(filter.key)}
                 className={`
-                  cursor-pointer px-6 py-3 rounded-xl font-medium transition-all duration-300 transform hover:scale-105
-                  ${activeFilter === filter.key
+          cursor-pointer px-3 sm:px-6 py-2 sm:py-3 rounded-lg sm:rounded-xl font-medium transition-all duration-300 transform hover:scale-105 text-xs sm:text-base whitespace-nowrap
+          ${activeFilter === filter.key
                     ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg"
                     : "bg-card text-muted-foreground hover:bg-accent hover:text-foreground border border-border"
                   }
-                `}
+        `}
                 aria-pressed={activeFilter === filter.key}
                 aria-label={`Filter by ${filterLabel}`}
               >
-                {filterLabel}
+                <span className="sm:hidden">
+                  {emoji}
+                </span>
+                <span className="hidden sm:inline">
+                  {emoji} {filterLabel}
+                </span>
+
                 <span
-                  className={`ml-2 px-2 py-1 rounded-full text-xs ${activeFilter === filter.key ? "bg-white/20 text-white" : "bg-muted text-muted-foreground"
+                  className={`ml-1 sm:ml-2 px-1 sm:px-2 py-1 rounded-full text-xs ${activeFilter === filter.key ? "bg-white/20 text-white" : "bg-muted text-muted-foreground"
                     }`}
                 >
                   {count}

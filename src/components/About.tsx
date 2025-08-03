@@ -156,16 +156,50 @@ export default function About({ locale }: AboutProps) {
             {/* Call to Action */}
             <div className="flex flex-row flex-wrap gap-4 pt-6 justify-center sm:justify-start">
               <SectionDecorator variant="card">
-                <button className="cursor-pointer px-6 py-3 bg-gradient-to-r from-purple-600 to-red-600 text-white font-semibold rounded-lg shadow-lg hover:shadow-purple-500/40 hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-blue-300/50">
-                  {t('about.Download')}
-                </button>
+                <a
+                  href="./cv/Echadani-Yassine.pdf"
+                  download="Echadani_Yassine_Resume.pdf"
+                  className="inline-block cursor-pointer px-6 py-3 bg-gradient-to-r from-purple-600 to-red-600 text-white font-semibold rounded-lg shadow-lg hover:shadow-purple-500/40 hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-purple-300/50"
+                >
+                  <span className="flex items-center gap-2">
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                      />
+                    </svg>
+                    {t('about.Download')}
+                  </span>
+                </a>
               </SectionDecorator>
               <SectionDecorator variant="card">
                 <a
                   href="#contact"
-                  className="cursor-pointer inline-block px-6 py-3 border-2 border-foreground text-foreground font-semibold rounded-lg shadow-lg hover:shadow-purple-500/40 hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-foreground/30"
+                  className="inline-block cursor-pointer px-6 py-3 border-2 border-foreground text-foreground font-semibold rounded-lg shadow-lg hover:shadow-purple-500/40 hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-foreground/30"
                 >
-                  {t('nav.contact')}
+                  <span className="flex items-center gap-2">
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                      />
+                    </svg>
+                    {t('nav.contact')}
+                  </span>
                 </a>
               </SectionDecorator>
             </div>

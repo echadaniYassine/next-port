@@ -8,12 +8,10 @@ import * as FaIcons from "react-icons/fa";
 import * as SiIcons from "react-icons/si";
 
 // Import separated data and utilities
-import { 
-  skillsData, 
-  skillsConfig, 
-  colorMappings, 
-  getSkillLevel, 
-  getSkillStatus 
+import {
+  colorMappings,
+  skillsConfig,
+  skillsData
 } from "../data/skills/index";
 
 const Skills: React.FC = () => {
@@ -61,9 +59,9 @@ const Skills: React.FC = () => {
           setIsVisible(true);
         }
       },
-      { 
-        threshold: skillsConfig.intersectionThreshold, 
-        rootMargin: skillsConfig.intersectionRootMargin 
+      {
+        threshold: skillsConfig.intersectionThreshold,
+        rootMargin: skillsConfig.intersectionRootMargin
       }
     );
 
@@ -100,7 +98,7 @@ const Skills: React.FC = () => {
     const FaIcon = FaIcons[iconName as keyof typeof FaIcons];
     const SiIcon = SiIcons[iconName as keyof typeof SiIcons];
     const Icon = FaIcon || SiIcon;
-    
+
     return Icon ? <Icon className={className} /> : <div className={className}>?</div>;
   };
 
@@ -111,7 +109,7 @@ const Skills: React.FC = () => {
         <header className="text-center mb-16">
           <SectionDecorator variant="default">
             <div className="inline-block">
-              <h2 
+              <h2
                 className="text-3xl md:text-4xl font-bold mb-4"
                 style={{ color: 'hsl(var(--foreground))' }}
               >
@@ -120,7 +118,7 @@ const Skills: React.FC = () => {
               <div className="w-24 h-1 mx-auto animate-gradient-x10" />
             </div>
           </SectionDecorator>
-          <p 
+          <p
             className="mt-6 text-lg max-w-2xl mx-auto"
             style={{ color: 'hsl(var(--muted-foreground))' }}
           >
@@ -129,40 +127,58 @@ const Skills: React.FC = () => {
         </header>
 
         {/* Category Tabs */}
-        <div className="flex flex-wrap justify-center gap-3 mb-12">
+        <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-12">
           {skillCategories.map((category, index) => (
             <button
               key={category.category}
               onClick={() => handleCategoryChange(index)}
               className={`
-                px-6 py-3 rounded-xl font-medium transition-all duration-300 transform hover:scale-105 border
-                ${activeCategory === index 
-                  ? "shadow-lg ring-2" 
+        px-3 sm:px-6 py-2 sm:py-3 rounded-lg sm:rounded-xl font-medium transition-all duration-300 transform hover:scale-105 border text-xs sm:text-base whitespace-nowrap min-w-[4.5rem] sm:min-w-auto
+        ${activeCategory === index
+                  ? "shadow-lg ring-2"
                   : "hover:bg-accent/50"
                 }
-              `}
+      `}
               style={{
-                backgroundColor: activeCategory === index 
+                backgroundColor: activeCategory === index
                   ? `rgb(${colorMappings[category.color].primary} / 0.1)`
                   : 'hsl(var(--card))',
-                color: activeCategory === index 
+                color: activeCategory === index
                   ? `rgb(${colorMappings[category.color].primary})`
                   : 'hsl(var(--muted-foreground))',
-                borderColor: activeCategory === index 
+                borderColor: activeCategory === index
                   ? `rgb(${colorMappings[category.color].primary})`
                   : 'hsl(var(--border))',
-                ringColor: activeCategory === index 
+                ringColor: activeCategory === index
                   ? `rgb(${colorMappings[category.color].primary} / 0.3)`
                   : 'transparent'
               }}
               aria-pressed={activeCategory === index}
               aria-label={`View ${getTranslatedCategoryName(category.category)} skills`}
             >
-              <span className="mr-2" role="img" aria-label={category.category}>
-                {category.icon}
-              </span>
-              {getTranslatedCategoryName(category.category)}
-              <span className="ml-2 text-xs opacity-75">({category.items.length})</span>
+              {/* Mobile: Show emoji, short name, and count */}
+              <div className="sm:hidden flex flex-col items-center gap-0.5">
+                <span role="img" aria-label={category.category}>
+                  {category.icon}
+                </span>
+                <span className="text-xs font-medium">
+                  {category.shortCategory || category.category}
+                </span>
+                <span className="text-xs opacity-75">
+                  ({category.items.length})
+                </span>
+              </div>
+
+              {/* Desktop: Show full content */}
+              <div className="hidden sm:flex sm:items-center">
+                <span className="mr-2" role="img" aria-label={category.category}>
+                  {category.icon}
+                </span>
+                {getTranslatedCategoryName(category.category)}
+                <span className="ml-2 text-xs opacity-75">
+                  ({category.items.length})
+                </span>
+              </div>
             </button>
           ))}
         </div>
@@ -176,7 +192,7 @@ const Skills: React.FC = () => {
                 group p-6 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:scale-105 border relative overflow-hidden
                 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}
               `}
-              style={{ 
+              style={{
                 transitionDelay: `${index * skillsConfig.animationDelayMultiplier}ms`,
                 backgroundColor: 'hsl(var(--card))',
                 borderColor: 'hsl(var(--border))'
@@ -197,13 +213,13 @@ const Skills: React.FC = () => {
                     <IconComponent iconName={skill.icon} className="text-xl" />
                   </div>
                   <div>
-                    <h3 
+                    <h3
                       className="text-lg font-semibold group-hover:text-primary transition-colors duration-300"
                       style={{ color: 'hsl(var(--foreground))' }}
                     >
                       {skill.name}
                     </h3>
-                    <p 
+                    <p
                       className="text-xs"
                       style={{ color: 'hsl(var(--muted-foreground))' }}
                     >
@@ -211,7 +227,7 @@ const Skills: React.FC = () => {
                     </p>
                   </div>
                 </div>
-                <span 
+                <span
                   className="text-sm font-medium"
                   style={{ color: `rgb(${colorMappings[currentCategory.color].primary})` }}
                 >
@@ -245,7 +261,7 @@ const Skills: React.FC = () => {
 
               {/* Skill Description */}
               <div className="space-y-2">
-                <p 
+                <p
                   className="text-sm leading-relaxed"
                   style={{ color: 'hsl(var(--muted-foreground))' }}
                 >
@@ -257,7 +273,7 @@ const Skills: React.FC = () => {
                       className={`w-2 h-2 rounded-full ${hoveredSkill === skill.name ? "animate-pulse" : ""}`}
                       style={{ backgroundColor: `rgb(${colorMappings[currentCategory.color].primary})` }}
                     />
-                    <span 
+                    <span
                       className="text-xs"
                       style={{ color: 'hsl(var(--muted-foreground))' }}
                     >
@@ -285,7 +301,7 @@ const Skills: React.FC = () => {
                   text-center p-6 rounded-2xl shadow-lg border transition-all duration-500 hover:shadow-xl hover:scale-105
                   ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}
                 `}
-                style={{ 
+                style={{
                   transitionDelay: `${index * skillsConfig.animationDelayMultiplier + 800}ms`,
                   backgroundColor: 'hsl(var(--card))',
                   borderColor: 'hsl(var(--border))'
@@ -294,13 +310,13 @@ const Skills: React.FC = () => {
                 <div className="text-4xl mb-3" role="img" aria-label={getTranslatedSummaryLabel(stat.label)}>
                   {stat.icon}
                 </div>
-                <div 
+                <div
                   className="text-3xl font-bold mb-2"
                   style={{ color: `rgb(${colorMappings[stat.color].primary})` }}
                 >
                   {stat.value}
                 </div>
-                <div 
+                <div
                   className="text-sm font-medium"
                   style={{ color: 'hsl(var(--muted-foreground))' }}
                 >
@@ -320,20 +336,20 @@ const Skills: React.FC = () => {
         {/* Call to Action */}
         <div className="text-center mt-16">
           <SectionDecorator variant="hero">
-            <div 
+            <div
               className="rounded-2xl p-8 border"
               style={{
                 background: 'linear-gradient(135deg, hsl(var(--primary) / 0.05), hsl(221.2 83.2% 53.3% / 0.05))',
                 borderColor: 'hsl(var(--primary) / 0.2)'
               }}
             >
-              <h3 
+              <h3
                 className="text-2xl font-bold mb-4"
                 style={{ color: 'hsl(var(--foreground))' }}
               >
                 {t('skills.cta.title', 'Ready to work together?')}
               </h3>
-              <p 
+              <p
                 className="mb-6 max-w-2xl mx-auto"
                 style={{ color: 'hsl(var(--muted-foreground))' }}
               >

@@ -5,7 +5,7 @@ import { useState, useEffect, useRef, useCallback } from "react"
 import { SectionDecorator } from "./SectionDecorator"
 import { useTranslation } from '../lib/i18n/client'
 import { type Language } from '../lib/i18n-config'
-import contactData from '../data/contact/contactData.json'
+import contactData from '../data/contact/contactData'
 
 const { contactInfo: CONTACT_INFO, socialLinks: SOCIAL_LINKS } = contactData
 
@@ -198,10 +198,11 @@ export default function Contact({ locale }: ContactProps) {
                   style={{ transitionDelay: `${index * 100}ms` }}
                   aria-label={`${t('nav.contact')} via ${t(`contact.contactInfo.${info.title.toLowerCase()}`)}: ${info.value}`}
                 >
-                  <div
-                    className={`p-3 rounded-lg ${getColorClasses(info.color as "blue" | "green" | "purple")} group-hover:scale-110 transition-transform duration-200`}
-                    dangerouslySetInnerHTML={{ __html: info.icon }}
-                  />
+                  <div className={`p-3 rounded-lg ${getColorClasses(info.color as "blue" | "green" | "purple")} group-hover:scale-110 transition-transform duration-200`}>
+                    <svg className="w-6 h-6" fill={info.fill} stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={info.strokeWidth} d={info.icon} />
+                    </svg>
+                  </div>
                   <div className="ml-4">
                     <h4 className="text-lg font-semibold text-foreground">
                       {t(`contact.contactInfo.${info.title.toLowerCase()}`)}
@@ -225,12 +226,15 @@ export default function Contact({ locale }: ContactProps) {
                     target="_blank"
                     rel="noopener noreferrer"
                     className={`
-                      p-3 bg-card rounded-lg shadow-lg hover:shadow-purple-500/40 transition-all duration-300 transform hover:scale-110 border border-border text-muted-foreground hover:text-primary
-                      ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}
-                    `}
+    p-3 bg-card rounded-lg shadow-lg hover:shadow-purple-500/40 transition-all duration-300 transform hover:scale-110 border border-border text-muted-foreground hover:text-primary
+    ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}
+  `}
                     aria-label={`${t('contact.followMe')} ${social.name}`}
-                    dangerouslySetInnerHTML={{ __html: social.icon }}
-                  />
+                  >
+                    <svg className="w-5 h-5" fill={social.fill} viewBox="0 0 24 24" aria-hidden="true">
+                      <path d={social.icon} />
+                    </svg>
+                  </a>
                 ))}
               </div>
             </div>

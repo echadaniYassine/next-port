@@ -13,6 +13,7 @@ export interface SkillCategory {
   icon: string;
   color: ColorType;
   items: Skill[];
+  shortCategory?: string; 
 }
 
 export interface SummaryStat {

@@ -17,5 +17,7 @@ export interface Project {
 
 export interface Filter {
   key: "all" | ProjectCategory
-  label: string
+  label: string,
+  shortLabel: string
+
 }
