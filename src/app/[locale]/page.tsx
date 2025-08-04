@@ -1,6 +1,4 @@
-// ===========================================
-// 6. src/app/[locale]/page.tsx - Home Page
-// ===========================================
+// src/app/[locale]/page.tsx - Home Page
 import { getTranslation } from '../../lib/i18n/server'
 import { Suspense } from 'react'
 import dynamic from 'next/dynamic'
@@ -27,7 +25,9 @@ interface PageProps {
   params: { locale: Language }
 }
 
-export default async function HomePage({ params: { locale } }: PageProps) {
+export default async function HomePage({ params }: PageProps) { // <-- 1. Accept the whole params object
+  const { locale } = params 
+
   // Pre-load translations on server
   await getTranslation(locale, 'common')
 

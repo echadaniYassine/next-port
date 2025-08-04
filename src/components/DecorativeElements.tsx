@@ -1,9 +1,8 @@
+// src/components/DecorativeElements.tsx
 "use client"
 
 import type React from "react"
 import { memo, useState, useEffect } from "react"
-
-// --- Component 1: DecorativeDots ---
 
 interface DecorativeDotsProps {
   variant?: "default" | "large" | "small" | "minimal"

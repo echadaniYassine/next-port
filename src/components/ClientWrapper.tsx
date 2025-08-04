@@ -1,6 +1,4 @@
-// ===========================================
-// 11. src/components/ClientWrapper.tsx - Client Component Wrapper
-// ===========================================
+// src/components/ClientWrapper.tsx 
 'use client'
 
 import { useEffect, useState } from 'react'

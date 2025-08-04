@@ -1,6 +1,4 @@
-// ===========================================
 // 1. src/lib/i18n-config.ts - Core Configuration
-// ===========================================
 export const fallbackLng = 'en' as const
 export const languages = ['en', 'fr'] as const
 export const defaultNS = 'common' as const

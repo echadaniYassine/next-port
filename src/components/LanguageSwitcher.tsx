@@ -1,12 +1,10 @@
-// ===========================================
-// 7. src/components/LanguageSwitcher.tsx - Updated
-// ===========================================
+// src/components/LanguageSwitcher.tsx - Optimized Version
 'use client'
 
 import { useRouter, usePathname } from 'next/navigation'
 import { useTranslation } from '../lib/i18n/client'
 import { languages, type Language } from '../lib/i18n-config'
-import { useState, useTransition } from 'react'
+import { useState, useTransition, useCallback } from 'react'
 
 interface LanguageSwitcherProps {
   locale: Language
@@ -24,12 +22,15 @@ export default function LanguageSwitcher({ locale }: LanguageSwitcherProps) {
   const [isPending, startTransition] = useTransition()
   const [isChanging, setIsChanging] = useState(false)
 
-  const switchLanguage = async (lng: Language) => {
+  const switchLanguage = useCallback(async (lng: Language) => {
     if (lng === locale || isChanging) return
 
     setIsChanging(true)
 
     try {
+      // Store current scroll position
+      const scrollY = window.scrollY
+
       // Get current pathname
       const segments = pathname.split('/').filter(Boolean)
 
@@ -53,13 +54,14 @@ export default function LanguageSwitcher({ locale }: LanguageSwitcherProps) {
       // Change i18n language first
       await i18n.changeLanguage(lng)
 
-      // Then navigate
+      // Use router.replace instead of router.push to avoid adding to history
       startTransition(() => {
-        router.push(newPath)
+        router.replace(newPath, { scroll: false })
       })
 
-      // Force a small delay to ensure proper state update
+      // Restore scroll position after navigation
       setTimeout(() => {
+        window.scrollTo(0, scrollY)
         setIsChanging(false)
       }, 100)
 
@@ -67,7 +69,7 @@ export default function LanguageSwitcher({ locale }: LanguageSwitcherProps) {
       console.error('Language switch failed:', error)
       setIsChanging(false)
     }
-  }
+  }, [locale, isChanging, pathname, i18n, router])
 
   return (
     <div className="flex gap-2" role="group" aria-label={t('nav.languageSelector')}>
@@ -78,7 +80,7 @@ export default function LanguageSwitcher({ locale }: LanguageSwitcherProps) {
             onClick={() => switchLanguage(lng === 'en' ? 'fr' : 'en')}
             disabled={isChanging || isPending}
             className="bg-transparent text-foreground px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500/50 disabled:opacity-50 cursor-pointer"
-             aria-label={`${t('nav.switchTo')} ${languageNames[lng === 'en' ? 'fr' : 'en']}`}
+            aria-label={`${t('nav.switchTo')} ${languageNames[lng === 'en' ? 'fr' : 'en']}`}
             aria-pressed={true}
           >
             {isChanging ? (

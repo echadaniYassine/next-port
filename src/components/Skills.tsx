@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { SectionDecorator } from "./SectionDecorator";
+import { type Language } from "../lib/i18n-config"
 
 import * as FaIcons from "react-icons/fa";
 import * as SiIcons from "react-icons/si";
@@ -14,7 +15,11 @@ import {
   skillsData
 } from "../data/skills/index";
 
-const Skills: React.FC = () => {
+interface SkillsProps {
+  locale: Language;
+}
+
+const Skills: React.FC<SkillsProps> = ({ locale }: SkillsProps) => {
   const { t } = useTranslation();
   const { skillCategories, summaryStats } = useMemo(() => skillsData, []);
 

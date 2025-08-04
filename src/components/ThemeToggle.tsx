@@ -19,9 +19,16 @@ export function ThemeToggle() {
   }
 
   const toggleTheme = () => {
-    // Use a small delay to ensure smooth transition
+    // PERFORMANCE FIX: Add transitioning class to disable transitions temporarily
+    document.documentElement.classList.add('theme-transitioning')
+    
     const newTheme = resolvedTheme === "dark" ? "light" : "dark"
     setTheme(newTheme)
+    
+    // Remove the transitioning class after a brief moment
+    setTimeout(() => {
+      document.documentElement.classList.remove('theme-transitioning')
+    }, 50)
   }
 
   return (
@@ -42,16 +49,16 @@ export function ThemeToggle() {
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
-          className={`absolute inset-0 transition-all duration-300 ease-in-out ${
-            resolvedTheme === "dark" 
-              ? "opacity-0 rotate-90 scale-0" 
+          className={`absolute inset-0 transition-all duration-200 ease-in-out ${
+            resolvedTheme === "dark"
+              ? "opacity-0 rotate-90 scale-0"
               : "opacity-100 rotate-0 scale-100"
           }`}
         >
           <circle cx="12" cy="12" r="4" />
           <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
         </svg>
-        
+                
         {/* Moon Icon */}
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -63,16 +70,16 @@ export function ThemeToggle() {
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
-          className={`absolute inset-0 transition-all duration-300 ease-in-out ${
-            resolvedTheme === "dark" 
-              ? "opacity-100 rotate-0 scale-100" 
+          className={`absolute inset-0 transition-all duration-200 ease-in-out ${
+            resolvedTheme === "dark"
+              ? "opacity-100 rotate-0 scale-100"
               : "opacity-0 -rotate-90 scale-0"
           }`}
         >
           <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
         </svg>
       </div>
-      
+            
       {/* Hover effect */}
       <div className="absolute inset-0 rounded-lg bg-accent/0 group-hover:bg-accent/20 transition-colors duration-200" />
     </button>

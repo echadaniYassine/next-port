@@ -8,8 +8,12 @@ import { PROJECTS } from "../data/projects/projectsData"
 import { FILTERS } from "../data/projects/filtersData.ts"
 import { STATUS_CONFIG } from "../data/projects/statusConfig"
 import { ProjectStatus, ProjectCategory } from "../data/projects/types"
+import { type Language } from "../lib/i18n-config"
 
-export default function Projects() {
+interface ProjectsProps {
+  locale: Language;
+}
+export default function Projects({ locale }: ProjectsProps) {
   const { t } = useTranslation()
   const [isVisible, setIsVisible] = useState(false)
   const [activeFilter, setActiveFilter] = useState<"all" | ProjectCategory>("all")
@@ -249,12 +253,11 @@ export default function Projects() {
                     ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg"
                     : "bg-card text-muted-foreground hover:bg-accent hover:text-foreground border border-border"
                   }
-        `}
-                aria-pressed={activeFilter === filter.key}
+        `} aria-pressed={activeFilter === filter.key}
                 aria-label={`Filter by ${filterLabel}`}
               >
                 <span className="sm:hidden">
-                  {emoji}
+                  {filter.shortLabel}
                 </span>
                 <span className="hidden sm:inline">
                   {emoji} {filterLabel}
@@ -267,6 +270,7 @@ export default function Projects() {
                   {count}
                 </span>
               </button>
+
             )
           })}
         </div>

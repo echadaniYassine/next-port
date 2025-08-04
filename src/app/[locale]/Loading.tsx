@@ -1,3 +1,5 @@
+// src/app/[locale]/Loading.tsx
+
 "use client"
 
 export default function Loading() {

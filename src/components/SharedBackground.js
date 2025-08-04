@@ -1,3 +1,4 @@
+// src/components/SharedBackground.js
 "use client"
 
 export default function SharedBackground() {

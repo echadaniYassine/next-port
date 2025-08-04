@@ -1,6 +1,4 @@
-// ===========================================
-// 5. src/app/[locale]/layout.tsx - Root Layout
-// ===========================================
+// src/app/[locale]/layout.tsx
 import { dir } from 'i18next'
 import { languages, type Language } from '../../lib/i18n-config'
 import { getTranslation } from '../../lib/i18n/server'
@@ -28,10 +26,11 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({
-  params: { locale },
+  params,
 }: {
   params: { locale: Language }
 }): Promise<Metadata> {
+  const { locale } = params
   const { t } = await getTranslation(locale)
 
   return {
@@ -63,8 +62,9 @@ interface RootLayoutProps {
 
 export default function RootLayout({
   children,
-  params: { locale },
+  params,
 }: RootLayoutProps) {
+  const { locale } = params
   return (
     <html
       lang={locale}
@@ -83,14 +83,31 @@ export default function RootLayout({
           content="#0a0a0a"
           media="(prefers-color-scheme: dark)"
         />
+        {/* PERFORMANCE: Preload theme styles */}
+        <style dangerouslySetInnerHTML={{
+          __html: `
+            /* Instant theme switching */
+            .theme-transitioning * {
+              transition: none !important;
+            }
+            /* Faster initial load */
+            html { color-scheme: light dark; }
+            body { 
+              transition: background-color 0.15s ease, color 0.15s ease;
+              background-color: hsl(var(--background));
+              color: hsl(var(--foreground));
+            }
+          `
+        }} />
       </head>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased theme-bg theme-text`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange={false}
           storageKey="theme"
+          enableColorScheme={true}
         >
           <SharedBackground />
           <ClientWrapper locale={locale}>

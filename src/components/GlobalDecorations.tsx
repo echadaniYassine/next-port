@@ -1,3 +1,4 @@
+// src/components/GlobalDecorations.tsx
 "use client"
 
 import type React from "react"

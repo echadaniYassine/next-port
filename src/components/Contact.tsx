@@ -86,39 +86,37 @@ export default function Contact({ locale }: ContactProps) {
 
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {
-      e.preventDefault()
+      e.preventDefault();
 
-      if (!validateForm()) {
-        return
-      }
+      if (!validateForm()) return;
 
-      setSubmitStatus("submitting")
+      setSubmitStatus("submitting");
 
       try {
-        // Simulate API call
-        await new Promise((resolve) => setTimeout(resolve, 2000))
+        const response = await fetch("https://your-vercel-backend.vercel.app/api/contact", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData),
+        });
 
-        console.log("Form submitted:", formData)
-        setSubmitStatus("success")
-        setFormData({ name: "", email: "", subject: "", message: "" })
-        setErrors({})
+        const data = await response.json();
 
-        // Reset success message after 5 seconds
-        setTimeout(() => {
-          setSubmitStatus("idle")
-        }, 5000)
+        if (!response.ok) throw new Error(data.error || "Something went wrong");
+
+        setSubmitStatus("success");
+        setFormData({ name: "", email: "", subject: "", message: "" });
+        setErrors({});
+
+        setTimeout(() => setSubmitStatus("idle"), 5000);
       } catch (error) {
-        console.error("Form submission error:", error)
-        setSubmitStatus("error")
-
-        // Reset error message after 5 seconds
-        setTimeout(() => {
-          setSubmitStatus("idle")
-        }, 5000)
+        console.error("Form submission error:", error);
+        setSubmitStatus("error");
+        setTimeout(() => setSubmitStatus("idle"), 5000);
       }
     },
-    [formData, validateForm],
-  )
+    [formData, validateForm]
+  );
+
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {

@@ -67,11 +67,9 @@ export default function Hero({ locale }: HeroProps) {
                   {t('hero.name')}
                 </span>
 
-                <div className="relative inline-block glitch-wrapper">
-                  <span className="block relative z-10 bg-gradient-to-r from-blue-600 via-teal-500 to-cyan-500 bg-clip-text text-transparent drop-shadow-2xl">
-                    {t('hero.title')}
-                  </span>
-                </div>
+                <span className="block animate-gradient-x bg-gradient-to-r from-blue-600 via-teal-500 to-cyan-500 bg-clip-text text-transparent drop-shadow-2xl">
+                  {t('hero.title')}
+                </span>
               </h1>
 
               <div className="flex justify-center">
@@ -91,7 +89,7 @@ export default function Hero({ locale }: HeroProps) {
 
           {/* Description */}
           <div className="relative animate-fade-in [animation-delay:0.6s]">
-            <div 
+            <div
               className="text-xl md:text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed"
               dangerouslySetInnerHTML={{ __html: t('hero.description') }}
             />

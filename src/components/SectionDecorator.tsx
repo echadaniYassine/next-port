@@ -1,3 +1,4 @@
+// src/components/SectionDecorator.tsx
 "use client"
 
 import type React from "react"

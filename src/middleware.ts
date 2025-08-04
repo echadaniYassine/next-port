@@ -1,6 +1,4 @@
-// ===========================================
-// 4. src/middleware.ts - Route Middleware
-// ===========================================
+// src/middleware.ts - Route Middleware
 import { NextRequest, NextResponse } from 'next/server'
 import { fallbackLng, languages } from './lib/i18n-config'
 

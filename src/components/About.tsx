@@ -22,9 +22,9 @@ export default function About({ locale }: AboutProps) {
   const SKILLS = [
     { name: t('about.skills.frontendDevelopment'), level: 95 },
     { name: t('about.skills.backendDevelopment'), level: 95 },
+    { name: t('about.skills.mobileDevelopment'), level: 75 },
     { name: t('about.skills.uiUxDesign'), level: 80 },
     { name: t('about.skills.cms'), level: 90 },
-    { name: t('about.skills.mobileDevelopment'), level: 75 },
   ] as const
 
   const STATS = [

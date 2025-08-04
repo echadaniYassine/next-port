@@ -57,25 +57,38 @@ html.dark {
   color-scheme: dark;
 }
 
-/* Optimized transitions - Only target necessary properties */
-*,
-*::before,
-*::after {
-  transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 150ms;
-}
-
-/* Body with optimized transitions */
+/* FIXED: More specific transitions - Only for theme-related properties */
 body {
   color: hsl(var(--foreground));
   background-color: hsl(var(--background));
   font-feature-settings: "rlig" 1, "calt" 1;
+  /* CRITICAL: Fast theme transition for body */
+  transition: background-color 0.15s ease, color 0.15s ease;
 }
 
-/* Remove conflicting transitions from border-color */
-* {
+/* FIXED: Separate transition rules for different element types */
+/* Navigation and UI elements - Fast transitions */
+nav, header, aside, [role="navigation"] {
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+/* Interactive elements - Slightly slower for better UX */
+button, a, input, textarea, select {
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Cards and containers - Medium speed */
+.card, [data-theme-element], .theme-transition {
+  transition: background-color 0.25s ease, border-color 0.25s ease;
+}
+
+/* REMOVED: Global * selector that was causing performance issues */
+/* Now using more specific selectors */
+
+/* Border color - Only for elements that need it */
+[class*="border"], .border {
   border-color: hsl(var(--border));
+  transition: border-color 0.15s ease;
 }
 
 /* Selection styles */
@@ -91,12 +104,13 @@ body {
 
 ::-webkit-scrollbar-track {
   background: hsl(var(--muted));
+  transition: background-color 0.15s ease;
 }
 
 ::-webkit-scrollbar-thumb {
   background: hsl(var(--muted-foreground) / 0.3);
   border-radius: 4px;
-  transition: background-color 150ms ease;
+  transition: background-color 0.15s ease;
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -115,7 +129,6 @@ body {
     opacity: 0;
     transform: translateY(10px);
   }
-
   to {
     opacity: 1;
     transform: translateY(0);
@@ -127,7 +140,6 @@ body {
     opacity: 0;
     transform: translateY(30px);
   }
-
   to {
     opacity: 1;
     transform: translateY(0);
@@ -138,27 +150,21 @@ body {
   0% {
     transform: translate(0px, 0px) scale(1);
   }
-
   33% {
     transform: translate(30px, -50px) scale(1.1);
   }
-
   66% {
     transform: translate(-20px, 20px) scale(0.9);
   }
-
   100% {
     transform: translate(0px, 0px) scale(1);
   }
 }
 
 @keyframes float {
-
-  0%,
-  100% {
+  0%, 100% {
     transform: translateY(0px) rotate(0deg);
   }
-
   50% {
     transform: translateY(-20px) rotate(5deg);
   }
@@ -168,25 +174,21 @@ body {
   0% {
     background-position: -200px 0;
   }
-
   100% {
     background-position: calc(200px + 100%) 0;
   }
 }
 
 @keyframes gradient-x {
-
-  0%,
-  100% {
+  0%, 100% {
     background-position: 0% 50%;
   }
-
   50% {
     background-position: 100% 50%;
   }
 }
 
-/* Utility classes with will-change for better performance */
+/* FIXED: Utility classes with optimized performance */
 .animate-fade-in {
   animation: fade-in 0.6s ease-out forwards;
   opacity: 0;
@@ -214,6 +216,22 @@ body {
   will-change: background-position;
 }
 
+/* FIXED: Theme-specific utility classes */
+.theme-bg {
+  background-color: hsl(var(--background));
+  transition: background-color 0.15s ease;
+}
+
+.theme-text {
+  color: hsl(var(--foreground));
+  transition: color 0.15s ease;
+}
+
+.theme-border {
+  border-color: hsl(var(--border));
+  transition: border-color 0.15s ease;
+}
+
 @layer utilities {
   .animate-gradient-x {
     background-size: 200% 200%;
@@ -223,46 +241,23 @@ body {
 
   .animate-gradient-x10 {
     background: linear-gradient(90deg,
-        #8b5cf6,
-        /* purple-500 */
-        #ec4899,
-        /* pink-500 */
-        #ef4444,
-        /* red-500 */
-        #2563eb,
-        /* blue-600 */
-        #14b8a6,
-        /* teal-500 */
-        #06b6d4
-        /* cyan-500 */
+        #8b5cf6, /* purple-500 */
+        #ec4899, /* pink-500 */
+        #ef4444, /* red-500 */
+        #2563eb, /* blue-600 */
+        #14b8a6, /* teal-500 */
+        #06b6d4  /* cyan-500 */
       );
     background-size: 300% 100%;
     animation: gradient-x 4s ease-in-out infinite;
     will-change: background-position;
     border-radius: 9999px;
-    /* same as rounded-full */
   }
-
-  @keyframes gradient-x {
-
-    0%,
-    100% {
-      background-position: 0% 50%;
-    }
-
-    50% {
-      background-position: 100% 50%;
-    }
-  }
-
 }
 
-/* Reduced motion support */
+/* FIXED: Reduced motion support with better performance */
 @media (prefers-reduced-motion: reduce) {
-
-  *,
-  *::before,
-  *::after {
+  *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
@@ -279,6 +274,11 @@ body {
     opacity: 1 !important;
     transform: none !important;
   }
+}
+
+/* PERFORMANCE: Disable transitions during theme change */
+.theme-transitioning * {
+  transition: none !important;
 }
 
 /* High contrast mode support */

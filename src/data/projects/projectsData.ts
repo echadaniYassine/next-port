@@ -6,7 +6,7 @@ export const PROJECTS: readonly Project[] = [
     title: "OKY WebCraft — Digital Agency Showcase",
     description:
       "A modern React-based website for Oky WebCraft Agency, designed to showcase the agency's services, with a user-friendly interface, smooth animations, and responsive design for an engaging client experience.",
-    image: "/img5.png",
+    image: "/images/img5.png",
     category: "landingPage",
     tech: ["React", "CSS3", "I18n", "Framer Motion"],
     liveLink: "https://oky-webcraft.vercel.app/",
@@ -20,7 +20,7 @@ export const PROJECTS: readonly Project[] = [
     title: "Shopping Store",
     description:
       "An intuitive project management tool with drag-and-drop functionality, team collaboration features, time tracking, and detailed analytics for productivity insights.",
-    image: "/img3.png",
+    image: "/images/img3.png",
     category: "wordpress",
     tech: ["WordPress", "Elementor", "MySQL", "PHP"],
     liveLink: "https://project3.com",
@@ -34,7 +34,7 @@ export const PROJECTS: readonly Project[] = [
     title: "Trone Game — Multiplayer Gaming Platform",
     description:
       "A comprehensive chat application with video calling capabilities, file sharing, group chats, and real-time notifications. Built with Socket.io for seamless communication.",
-    image: "/img8.png",
+    image: "/images/img8.png",
     category: "fullstack",
     tech: ["React", "Socket.io", "WebRTC", "Firebase", "Material-UI"],
     liveLink: "https://trone-game.vercel.app/",
@@ -48,7 +48,7 @@ export const PROJECTS: readonly Project[] = [
     title: "School Management — Education Platform",
     description:
       "A comprehensive platform for managing educational institutions, featuring student enrollment, course management, and performance tracking.",
-    image: "/img9.png",
+    image: "/images/img9.png",
     category: "fullstack",
     tech: ["React", "Laravel", "MySQL", "Tailwind", "Shadcn"],
     liveLink: "https://project6.com",
@@ -62,7 +62,7 @@ export const PROJECTS: readonly Project[] = [
     title: "Interstellar Tours",
     description:
       "A WordPress-based website offering tailored transportation services in Tangier, including VIP transport, business tourism, and a diverse fleet of vehicles for every need.",
-    image: "/img1.png",
+    image: "/images/img1.png",
     category: "wordpress",
     tech: ["WordPress", "Elementor", "PHP", "MySQL"],
     liveLink: "https://project5.com",
@@ -76,7 +76,7 @@ export const PROJECTS: readonly Project[] = [
     title: "Asian Taste — Dish Showcase Landing Page",
     description:
       "A visually engaging and responsive landing page built with React, inspired by Asian design aesthetics, optimized for fast performance and lead conversion.",
-    image: "/img7.png",
+    image: "/images/img7.png",
     category: "landingPage",
     tech: ["React", "CSS3", "Framer Motion"],
     liveLink: "https://asian-taste-one.vercel.app/",
@@ -90,7 +90,7 @@ export const PROJECTS: readonly Project[] = [
     title: "Twareg eSports — Esports Organization Website",
     description:
       "A sleek and informative platform developed for Twareg eSports, a leading Moroccan esports team. The website highlights their history, achievements, and game divisions like League of Legends, FIFA, and PUBG. Built with a focus on performance, modern design, and user engagement.",
-    image: "/img10.png",
+    image: "/images/img10.png",
     category: "wordpress",
     tech: ["WordPress", "Elementor", "PHP", "MySQL"],
     liveLink: "https://twaregesports.com/site/",
@@ -104,7 +104,7 @@ export const PROJECTS: readonly Project[] = [
     title: "Twiza Pack1 — Artisan E-commerce Platform",
     description:
       "An online storefront solution for Moroccan artisans and small businesses. This project enables users to showcase and sell handmade products through a simple, localized, and mobile-friendly interface.",
-    image: "/img11.png",
+    image: "/images/img11.png",
     category: "wordpress",
     tech: ["WordPress", "Elementor", "MySQL"],
     liveLink: "https://artisanat.twiza.ma/pack1/",
@@ -118,7 +118,7 @@ export const PROJECTS: readonly Project[] = [
     title: "Trendify — E‑Commerce Platform",
     description:
       "A modern e-commerce web application built with React and Node.js, featuring a sleek user interface, real-time product management, and secure, scalable checkout functionality.",
-    image: "/img6.png",
+    image: "/images/img6.png",
     category: "fullstack",
     tech: ["React.js", "Express", "MongoDB", "CSS3", "NodeJS"],
     liveLink: "https://trendify-frontend-nine.vercel.app/",
@@ -132,7 +132,7 @@ export const PROJECTS: readonly Project[] = [
     title: "Mirriah.pro — Personal Portfolio Website",
     description:
       "A refined, professional portfolio site developed to showcase projects, skills, and branding for Mirriah. Featuring a clean layout, intuitive navigation, and responsive design, the site highlights personal achievements and creative work in a polished and compelling way.",
-    image: "/img12.png",
+    image: "/images/img12.png",
     category: "wordpress",
     tech: ["WordPress", "Elementor", "MySQL"],
     liveLink: "https://mirriah.pro/",

@@ -1,6 +1,4 @@
-// ===========================================
-// 3. src/lib/i18n/client.ts - Client-side i18n
-// ===========================================
+// src/lib/i18n/client.ts - Client-side i18n
 'use client'
 
 import { useEffect, useState } from 'react'

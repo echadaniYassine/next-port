@@ -1,3 +1,5 @@
+// src/app/[locale]/not-found.tsx
+
 'use client'
 
 import Link from 'next/link'

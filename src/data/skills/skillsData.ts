@@ -17,25 +17,25 @@ export const skillCategories: SkillCategory[] = [
       },
       {
         name: "CSS3",
-        level: 90,
+        level: 95,
         icon: "FaCss3Alt",
         description: "Modern styling and animations"
       },
       {
         name: "JavaScript",
-        level: 92,
+        level: 90,
         icon: "FaJs",
         description: "ES6+ and modern features"
       },
       {
         name: "React",
-        level: 88,
+        level: 92,
         icon: "FaReact",
         description: "Hooks, Context, and performance"
       },
       {
         name: "Next.js",
-        level: 85,
+        level: 80,
         icon: "SiNextdotjs",
         description: "SSR, SSG, and App Router"
       },
@@ -67,7 +67,7 @@ export const skillCategories: SkillCategory[] = [
       },
       {
         name: "Express",
-        level: 82,
+        level: 90,
         icon: "SiExpress",
         description: "Web application framework"
       },
@@ -79,7 +79,7 @@ export const skillCategories: SkillCategory[] = [
       },
       {
         name: "RESTful APIs",
-        level: 88,
+        level: 90,
         icon: "FaNodeJs",
         description: "API design and integration"
       }
@@ -93,19 +93,19 @@ export const skillCategories: SkillCategory[] = [
     items: [
       {
         name: "MongoDB",
-        level: 85,
+        level: 95,
         icon: "SiMongodb",
         description: "NoSQL document database"
       },
       {
         name: "PostgreSQL",
-        level: 80,
+        level: 75,
         icon: "SiPostgresql",
         description: "Relational database"
       },
       {
         name: "MySQL",
-        level: 78,
+        level: 95,
         icon: "SiMysql",
         description: "Popular SQL database"
       },
@@ -143,7 +143,7 @@ export const skillCategories: SkillCategory[] = [
       },
       {
         name: "Firebase",
-        level: 80,
+        level: 78,
         icon: "SiFirebase",
         description: "Backend-as-a-Service"
       },
