@@ -5,6 +5,7 @@ import { SectionDecorator } from "./SectionDecorator"
 import { useTranslation } from "../lib/i18n/client"
 import { type Language } from "../lib/i18n-config"
 import Loading from "../app/[locale]/Loading"
+import RoleDisplay from "./RoleDisplay"
 
 const ROLES = [
   { textKey: "hero.roles.fullStackDeveloper", gradient: "from-purple-500 via-pink-500 to-red-500 bg-clip-text text-transparent drop-shadow-2xl" },
@@ -79,13 +80,7 @@ export default function Hero({ locale }: HeroProps) {
           </div>
 
           {/* Role */}
-          <div className="min-h-[60px] sm:min-h-[80px] flex flex-col items-center justify-center animate-fade-in space-y-3">
-            <SectionDecorator variant="default">
-              <p className={`text-xl sm:text-2xl md:text-4xl font-bold bg-gradient-to-r ${currentRoleData.gradient} transition-all duration-1000 ease-in-out`}>
-                {t(currentRoleData.textKey)}
-              </p>
-            </SectionDecorator>
-          </div>
+          <RoleDisplay currentRoleData={currentRoleData} t={t} />
 
           {/* Description */}
           <div className="relative animate-fade-in [animation-delay:0.6s]">

@@ -138,7 +138,7 @@ const Skills: React.FC<SkillsProps> = ({ locale }: SkillsProps) => {
               key={category.category}
               onClick={() => handleCategoryChange(index)}
               className={`
-        px-3 sm:px-6 py-2 sm:py-3 rounded-lg sm:rounded-xl font-medium transition-all duration-300 transform hover:scale-105 border text-xs sm:text-base whitespace-nowrap min-w-[4.5rem] sm:min-w-auto
+        cursor-pointer px-3 sm:px-6 py-2 sm:py-3 rounded-lg sm:rounded-xl font-medium transition-all duration-300 transform hover:scale-105 border text-xs sm:text-base whitespace-nowrap min-w-[4.5rem] sm:min-w-auto
         ${activeCategory === index
                   ? "shadow-lg ring-2"
                   : "hover:bg-accent/50"

@@ -47,7 +47,7 @@ export const PROJECTS: readonly Project[] = [
     id: 4,
     title: "School Management — Education Platform",
     description:
-      "A comprehensive platform for managing educational institutions, featuring student enrollment, course management, and performance tracking.",
+      "A complete platform for educational institutions, enabling easy student enrollment, course management, performance tracking, attendance monitoring, and seamless communication between teachers, students, and parents.",
     image: "/images/img9.png",
     category: "fullstack",
     tech: ["React", "Laravel", "MySQL", "Tailwind", "Shadcn"],
