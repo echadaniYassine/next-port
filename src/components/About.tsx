@@ -101,7 +101,7 @@ export default function About({ locale }: AboutProps) {
                 {/* Main Image Container */}
                 <div className="relative h-80 md:h-96 bg-gradient-to-br from-muted/50 to-muted rounded-2xl shadow-2xl overflow-hidden border border-border">
                   <Image
-                    src="/img1.png"
+                    src="/images/img1.png"
                     alt={`${t('site.name')} - ${t('hero.title')}`}
                     fill
                     className="object-contain p-8 transition-transform duration-300 hover:scale-105"

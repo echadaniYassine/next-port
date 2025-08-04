@@ -84,39 +84,96 @@ export default function Contact({ locale }: ContactProps) {
     return Object.keys(newErrors).length === 0
   }, [formData, t])
 
-  const handleSubmit = useCallback(
-    async (e: React.FormEvent) => {
-      e.preventDefault();
+ const handleSubmit = useCallback(
+  async (e: React.FormEvent) => {
+    e.preventDefault();
 
-      if (!validateForm()) return;
+    if (!validateForm()) return;
 
-      setSubmitStatus("submitting");
+    setSubmitStatus("submitting");
 
-      try {
-        const response = await fetch("https://your-vercel-backend.vercel.app/api/contact", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formData),
-        });
+    try {
+      // Try multiple API endpoints for better reliability
+      const apiUrls = [
+        "https://mail-service-murex.vercel.app/api/contact",
+        "http://localhost:3001/api/contact" // Fallback for local development
+      ];
 
-        const data = await response.json();
+      let response;
+      let lastError;
 
-        if (!response.ok) throw new Error(data.error || "Something went wrong");
+      // Try each API endpoint
+      for (const apiUrl of apiUrls) {
+        try {
+          console.log(`Attempting to connect to: ${apiUrl}`);
+          
+          response = await fetch(apiUrl, {
+            method: "POST",
+            headers: { 
+              "Content-Type": "application/json",
+              "Accept": "application/json",
+            },
+            body: JSON.stringify(formData),
+            // Add timeout and other fetch options
+            signal: AbortSignal.timeout(30000), // 30 second timeout
+          });
 
-        setSubmitStatus("success");
-        setFormData({ name: "", email: "", subject: "", message: "" });
-        setErrors({});
-
-        setTimeout(() => setSubmitStatus("idle"), 5000);
-      } catch (error) {
-        console.error("Form submission error:", error);
-        setSubmitStatus("error");
-        setTimeout(() => setSubmitStatus("idle"), 5000);
+          console.log(`Response status: ${response.status}`);
+          break; // Success, exit the loop
+        } catch (fetchError) {
+          console.warn(`Failed to connect to ${apiUrl}:`, fetchError);
+          lastError = fetchError;
+          continue; // Try next URL
+        }
       }
-    },
-    [formData, validateForm]
-  );
 
+      // If no response was successful
+      if (!response) {
+        throw new Error(`Unable to connect to API server. ${lastError?.message || 'Network error'}`);
+      }
+
+      const data = await response.json();
+      console.log('API Response:', data);
+
+      if (!response.ok) {
+        // Handle different types of errors
+        if (response.status === 429) {
+          throw new Error("Too many requests. Please try again later.");
+        } else if (response.status === 400 && data.errors) {
+          // Handle validation errors from server
+          setErrors(data.errors);
+          setSubmitStatus("idle");
+          return;
+        } else if (response.status === 500) {
+          throw new Error("Server error. Please try again later.");
+        } else {
+          throw new Error(data.error || `HTTP ${response.status}: ${response.statusText}`);
+        }
+      }
+
+      setSubmitStatus("success");
+      setFormData({ name: "", email: "", subject: "", message: "" });
+      setErrors({});
+
+      setTimeout(() => setSubmitStatus("idle"), 5000);
+    } catch (error) {
+      console.error("Form submission error:", error);
+      setSubmitStatus("error");
+      
+      // More detailed error logging
+      if (error instanceof TypeError && error.message.includes('Failed to fetch')) {
+        console.error("Network error - possible causes:");
+        console.error("1. Server is not running");
+        console.error("2. CORS policy blocking the request");
+        console.error("3. Network connectivity issues");
+        console.error("4. SSL/TLS certificate issues");
+      }
+      
+      setTimeout(() => setSubmitStatus("idle"), 5000);
+    }
+  },
+  [formData, validateForm]
+);
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
