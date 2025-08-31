@@ -11,7 +11,8 @@ export interface PageProps {
   params: { locale: Language }
 }
 
-export interface LayoutProps {
+// 🔥 Rename to avoid collision with Next.js internal LayoutProps
+export interface AppLayoutProps {
   children: React.ReactNode
   params: { locale: Language }
 }
