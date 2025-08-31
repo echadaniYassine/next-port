@@ -7,7 +7,8 @@ export const cookieName = 'i18next' as const
 export type Language = (typeof languages)[number]
 export type Namespace = typeof defaultNS
 
-export function getOptions(lng = fallbackLng, ns = defaultNS) {
+// Fixed getOptions function with proper typing
+export function getOptions(lng: Language = fallbackLng, ns: Namespace = defaultNS) {
   return {
     supportedLngs: languages,
     fallbackLng,

@@ -1,11 +1,18 @@
 // src/lib/i18n/server.ts - Server-side i18n
-import { createInstance, Resource } from 'i18next'
+import { createInstance } from 'i18next'
 import resourcesToBackend from 'i18next-resources-to-backend'
 import { initReactI18next } from 'react-i18next/initReactI18next'
-import { getOptions, type Language, type Namespace } from '../i18n-config'
+import { 
+  languages, 
+  fallbackLng, 
+  defaultNS, 
+  type Language, 
+  type Namespace 
+} from '../i18n-config'
 
 const initI18next = async (lng: Language, ns: Namespace) => {
   const i18nInstance = createInstance()
+  
   await i18nInstance
     .use(initReactI18next)
     .use(
@@ -14,7 +21,19 @@ const initI18next = async (lng: Language, ns: Namespace) => {
           import(`../../../public/locales/${language}/${namespace}.json`)
       )
     )
-    .init(getOptions(lng, ns))
+    .init({
+      supportedLngs: languages,
+      fallbackLng,
+      lng,
+      fallbackNS: defaultNS,
+      defaultNS,
+      ns,
+      interpolation: {
+        escapeValue: false, // React already handles escaping
+      },
+      debug: process.env.NODE_ENV === 'development',
+    })
+    
   return i18nInstance
 }
 
