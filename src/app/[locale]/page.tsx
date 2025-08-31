@@ -22,11 +22,11 @@ const Contact = dynamic(() => import('../../components/Contact'), {
 })
 
 interface PageProps {
-  params: { locale: Language }
+  params: Promise<{ locale: Language }> // Updated: params is now a Promise
 }
 
-export default async function HomePage({ params }: PageProps) { // <-- 1. Accept the whole params object
-  const { locale } = params 
+export default async function HomePage({ params }: PageProps) { // Made async
+  const { locale } = await params // Updated: await the params
 
   // Pre-load translations on server
   await getTranslation(locale, 'common')

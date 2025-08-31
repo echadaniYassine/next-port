@@ -1,18 +1,18 @@
-// ===========================================
-// 9. src/types/i18n.ts - TypeScript Types
-// ===========================================
+// src/types/i18n.ts - TypeScript Types
 import { type Language } from '../lib/i18n-config'
 
 export interface TranslationProps {
   locale: Language
 }
 
+// Updated for Next.js 15: params must be Promise
 export interface PageProps {
-  params: { locale: Language }
+  params: Promise<{ locale: Language }>
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }
 
-// 🔥 Rename to avoid collision with Next.js internal LayoutProps
+// Updated for Next.js 15: params must be Promise
 export interface AppLayoutProps {
   children: React.ReactNode
-  params: { locale: Language }
+  params: Promise<{ locale: Language }>
 }
