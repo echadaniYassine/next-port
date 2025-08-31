@@ -1,8 +1,8 @@
-// src/lib/i18n/client.ts - Alternative simplified approach
+// src/lib/i18n/client.ts - Client-side i18n
 'use client'
 
 import { useEffect, useState } from 'react'
-import i18next from 'i18next'
+import i18next, { InitOptions } from 'i18next'
 import {
   initReactI18next,
   useTranslation as useTranslationOrg,
@@ -23,6 +23,24 @@ const runsOnServerSide = typeof window === 'undefined'
 
 // Initialize i18next for client side
 if (!i18next.isInitialized) {
+  // Properly typed configuration
+  const initConfig: InitOptions = {
+    supportedLngs: languages,
+    fallbackLng,
+    fallbackNS: defaultNS,
+    defaultNS,
+    ns: defaultNS,
+    lng: undefined, // Let detector handle this
+    preload: runsOnServerSide ? languages : [],
+    interpolation: {
+      escapeValue: false,
+    },
+    react: {
+      useSuspense: false,
+    },
+    debug: process.env.NODE_ENV === 'development',
+  }
+
   i18next
     .use(initReactI18next)
     .use(LanguageDetector)
@@ -31,28 +49,16 @@ if (!i18next.isInitialized) {
         import(`../../../public/locales/${language}/${namespace}.json`)
       )
     )
-    .init({
-      supportedLngs: languages,
-      fallbackLng,
-      fallbackNS: defaultNS,
-      defaultNS,
-      ns: defaultNS,
-      lng: undefined, // Let detector handle this
-      detection: {
-        order: ['path', 'htmlTag', 'cookie', 'navigator'],
-        caches: ['cookie'],
-        cookieName,
-        lookupFromPathIndex: 0,
-        lookupFromSubdomainIndex: 0,
-      },
-      preload: runsOnServerSide ? languages : [],
-      interpolation: {
-        escapeValue: false,
-      },
-      react: {
-        useSuspense: false,
-      },
-      debug: process.env.NODE_ENV === 'development',
+    .init(initConfig)
+    .then(() => {
+      // Configure language detection after initialization
+      if (i18next.services.languageDetector) {
+        i18next.services.languageDetector.cacheUserLanguage = (lng: string) => {
+          if (typeof window !== 'undefined') {
+            document.cookie = `${cookieName}=${lng}; path=/; max-age=31536000`
+          }
+        }
+      }
     })
 }
 
