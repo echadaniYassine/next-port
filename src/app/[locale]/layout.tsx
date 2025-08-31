@@ -28,9 +28,9 @@ export async function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: { locale: Language }
+  params: Promise<{ locale: Language }> // Updated: params is now a Promise
 }): Promise<Metadata> {
-  const { locale } = params
+  const { locale } = await params // Updated: await the params
   const { t } = await getTranslation(locale)
 
   return {
@@ -57,14 +57,15 @@ export async function generateMetadata({
 
 interface RootLayoutProps {
   children: React.ReactNode
-  params: { locale: Language }
+  params: Promise<{ locale: Language }> // Updated: params is now a Promise
 }
 
-export default function RootLayout({
+export default async function RootLayout({ // Updated: added async
   children,
   params,
 }: RootLayoutProps) {
-  const { locale } = params
+  const { locale } = await params // Updated: await the params
+  
   return (
     <html
       lang={locale}
@@ -92,8 +93,8 @@ export default function RootLayout({
             }
             /* Faster initial load */
             html { color-scheme: light dark; }
-            body { 
-              transition: background-color 0.15s ease, color 0.15s ease;
+            body {
+               transition: background-color 0.15s ease, color 0.15s ease;
               background-color: hsl(var(--background));
               color: hsl(var(--foreground));
             }
