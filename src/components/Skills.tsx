@@ -144,6 +144,8 @@ const Skills: React.FC<SkillsProps> = ({ locale }: SkillsProps) => {
                   : "hover:bg-accent/50"
                 }
       `}
+              // Replace the problematic style object (around line 152-160) with this:
+
               style={{
                 backgroundColor: activeCategory === index
                   ? `rgb(${colorMappings[category.color].primary} / 0.1)`
@@ -154,10 +156,11 @@ const Skills: React.FC<SkillsProps> = ({ locale }: SkillsProps) => {
                 borderColor: activeCategory === index
                   ? `rgb(${colorMappings[category.color].primary})`
                   : 'hsl(var(--border))',
-                ringColor: activeCategory === index
+                '--tw-ring-color': activeCategory === index
                   ? `rgb(${colorMappings[category.color].primary} / 0.3)`
                   : 'transparent'
-              }}
+              } as React.CSSProperties & { '--tw-ring-color'?: string }}
+              
               aria-pressed={activeCategory === index}
               aria-label={`View ${getTranslatedCategoryName(category.category)} skills`}
             >
