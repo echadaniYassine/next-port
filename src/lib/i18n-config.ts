@@ -1,4 +1,4 @@
-// 1. src/lib/i18n-config.ts - Core Configuration
+// src/lib/i18n-config.ts - Core Configuration
 export const fallbackLng = 'en' as const
 export const languages = ['en', 'fr'] as const
 export const defaultNS = 'common' as const
@@ -12,14 +12,12 @@ export function getOptions(lng = fallbackLng, ns = defaultNS) {
     supportedLngs: languages,
     fallbackLng,
     lng,
-    ns,
+    fallbackNS: defaultNS,
     defaultNS,
+    ns,
     interpolation: {
       escapeValue: false, // React already handles escaping
     },
     debug: process.env.NODE_ENV === 'development',
-    react: {
-      useSuspense: false, // Important for avoiding hydration issues
-    },
   }
 }

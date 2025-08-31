@@ -1,4 +1,4 @@
-// src/lib/i18n/client.ts - Client-side i18n
+// src/lib/i18n/client.ts - Alternative simplified approach
 'use client'
 
 import { useEffect, useState } from 'react'
@@ -11,8 +11,9 @@ import {
 import resourcesToBackend from 'i18next-resources-to-backend'
 import LanguageDetector from 'i18next-browser-languagedetector'
 import {
-  getOptions,
   languages,
+  fallbackLng,
+  defaultNS,
   cookieName,
   type Language,
   type Namespace,
@@ -31,17 +32,27 @@ if (!i18next.isInitialized) {
       )
     )
     .init({
-      ...getOptions(),
-      lng: undefined, // Let detect the language on client side
+      supportedLngs: languages,
+      fallbackLng,
+      fallbackNS: defaultNS,
+      defaultNS,
+      ns: defaultNS,
+      lng: undefined, // Let detector handle this
       detection: {
         order: ['path', 'htmlTag', 'cookie', 'navigator'],
         caches: ['cookie'],
         cookieName,
+        lookupFromPathIndex: 0,
+        lookupFromSubdomainIndex: 0,
       },
       preload: runsOnServerSide ? languages : [],
-      react: {
-        useSuspense: false, // Disable suspense to avoid hydration issues
+      interpolation: {
+        escapeValue: false,
       },
+      react: {
+        useSuspense: false,
+      },
+      debug: process.env.NODE_ENV === 'development',
     })
 }
 
@@ -54,17 +65,14 @@ export function useTranslation(
   const { i18n } = ret
   const [activeLng, setActiveLng] = useState<string>(lng)
 
-  // Handle language changes with proper resource loading
   useEffect(() => {
     if (!lng || i18n.resolvedLanguage === lng) return
     
-    // Change language and reload resources
     const changeLanguage = async () => {
       try {
         await i18n.changeLanguage(lng)
         setActiveLng(lng)
         
-        // Force reload of namespace if needed
         if (!i18n.hasResourceBundle(lng, ns)) {
           await i18n.reloadResources(lng, ns)
         }
