@@ -4,29 +4,79 @@ import type { SkillsData, SkillCategory, SummaryStat } from './types';
 // Skills Categories Data
 export const skillCategories: SkillCategory[] = [
   {
-    category: "Frontend",
-    shortCategory: "Front", // Add this
-    icon: "🎨",
-    color: "blue",
+    category: "Languages",
+    shortCategory: "Lang",
+    icon: "💻",
+    color: "indigo",
     items: [
       {
         name: "HTML5",
         level: 95,
         icon: "FaHtml5",
-        description: "Semantic markup and accessibility"
+        description: "Semantic markup, accessibility, and modern web standards"
       },
       {
         name: "CSS3",
         level: 95,
         icon: "FaCss3Alt",
-        description: "Modern styling and animations"
+        description: "Responsive design, Flexbox, Grid, and animations"
       },
       {
         name: "JavaScript",
         level: 90,
         icon: "FaJs",
-        description: "ES6+ and modern features"
+        description: "ES6+, DOM manipulation, async programming"
       },
+      {
+        name: "PHP",
+        level: 92,
+        icon: "FaPhp",
+        description: "Server-side scripting, dynamic web applications"
+      },
+      {
+        name: "Dart",
+        level: 80,
+        icon: "SiDart",
+        description: "Strongly typed language, used with Flutter for cross-platform apps"
+      },
+      {
+        name: "C",
+        level: 90,
+        icon: "SiC",
+        description: "Low-level programming, memory management, system development"
+      },
+      {
+        name: "C++",
+        level: 90,
+        icon: "SiCplusplus",
+        description: "Object-oriented programming, performance-critical applications"
+      },
+      {
+        name: "Java",
+        level: 88,
+        icon: "FaJava",
+        description: "Object-oriented programming, Spring Boot, and enterprise applications"
+      },
+      {
+        name: "Python",
+        level: 80,
+        icon: "FaPython",
+        description: "Scripting and automation"
+      },
+      {
+        name: "SQL",
+        level: 88,
+        icon: "SiMysql", // or SiPostgresql, depending on your focus
+        description: "Database querying and management"
+      }
+    ]
+  },
+  {
+    category: "Frontend",
+    shortCategory: "Front", // Add this
+    icon: "🎨",
+    color: "blue",
+    items: [
       {
         name: "React",
         level: 92,
@@ -70,12 +120,6 @@ export const skillCategories: SkillCategory[] = [
         level: 90,
         icon: "SiExpress",
         description: "Web application framework"
-      },
-      {
-        name: "Python",
-        level: 80,
-        icon: "FaPython",
-        description: "Scripting and automation"
       },
       {
         name: "RESTful APIs",
@@ -158,6 +202,12 @@ export const skillCategories: SkillCategory[] = [
         level: 85,
         icon: "SiCpanel",
         description: "Web hosting control panel"
+      },
+      {
+        name: "Canvas",
+        level: 85,
+        icon: "FaPaintBrush", // You can use FaPaintBrush, or SiCanvas if you prefer a specific brand
+        description: "Drawing and rendering graphics using HTML5 Canvas API"
       }
     ]
   }

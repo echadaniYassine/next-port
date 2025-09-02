@@ -1,5 +1,5 @@
 // src/data/skills/types.ts
-export type ColorType = "blue" | "purple" | "green" | "orange";
+export type ColorType = "blue" | "purple" | "green" | "orange" | "indigo";
 
 export interface Skill {
   name: string;
@@ -39,4 +39,5 @@ export interface ColorMappings {
   purple: ColorMapping;
   green: ColorMapping;
   orange: ColorMapping;
+  indigo: ColorMapping;
 }

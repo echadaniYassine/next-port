@@ -21,5 +21,10 @@ export const colorMappings: ColorMappings = {
     primary: "249 115 22", // orange-500
     light: "251 146 60", // orange-400
     lighter: "254 215 170" // orange-100
+  },
+  indigo: {
+    primary: "99 102 241", // indigo-500
+    light: "165 180 252", // indigo-300
+    lighter: "224 231 255" // indigo-100
   }
 };
