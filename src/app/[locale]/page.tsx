@@ -6,6 +6,7 @@ import Hero from '../../components/Hero'
 import Navbar from '../../components/Navbar'
 import Loading from './Loading'
 import { type Language } from '../../lib/i18n-config'
+import ScrollToTopButton from '../../components/ScrollToTopButton' // ✅ new import
 
 // Dynamic imports for better performance
 const About = dynamic(() => import('../../components/About'), {
@@ -47,6 +48,9 @@ export default async function HomePage({ params }: PageProps) { // Made async
       <Suspense fallback={<Loading />}>
         <Contact locale={locale} />
       </Suspense>
+
+      {/* Scroll To Top Button */}
+      <ScrollToTopButton />
     </main>
   )
 }

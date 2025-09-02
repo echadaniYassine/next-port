@@ -363,4 +363,19 @@ button, a, input, textarea, select {
     background: white !important;
     color: black !important;
   }
+}@keyframes wave {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-wave {
+  animation: wave 4s linear infinite;
+}
+
+.animate-wave-slow {
+  animation: wave 8s linear infinite;
 }
