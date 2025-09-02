@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { SectionDecorator } from "./SectionDecorator";
 import { type Language } from "../lib/i18n-config"
-
+import AnimatedProgress from "./AnimatedProgress";
 import * as FaIcons from "react-icons/fa";
 import * as SiIcons from "react-icons/si";
 
@@ -160,7 +160,7 @@ const Skills: React.FC<SkillsProps> = ({ locale }: SkillsProps) => {
                   ? `rgb(${colorMappings[category.color].primary} / 0.3)`
                   : 'transparent'
               } as React.CSSProperties & { '--tw-ring-color'?: string }}
-              
+
               aria-pressed={activeCategory === index}
               aria-label={`View ${getTranslatedCategoryName(category.category)} skills`}
             >
@@ -195,7 +195,7 @@ const Skills: React.FC<SkillsProps> = ({ locale }: SkillsProps) => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
           {currentCategory.items.map((skill, index) => (
             <div
-              key={skill.name}
+              key={`${activeCategory}-${skill.name}`}  // 👈 Force re-mount on tab change
               className={`
                 group p-6 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:scale-105 border relative overflow-hidden
                 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}
@@ -244,28 +244,16 @@ const Skills: React.FC<SkillsProps> = ({ locale }: SkillsProps) => {
               </div>
 
               {/* Progress Bar */}
+              {/* Progress Bar */}
               <div className="space-y-2 mb-4">
-                <div
-                  className="w-full rounded-full h-3 overflow-hidden"
-                  style={{ backgroundColor: 'hsl(var(--muted))' }}
-                  role="progressbar"
-                  aria-valuenow={skill.level}
-                  aria-valuemin={0}
-                  aria-valuemax={100}
-                >
-                  <div
-                    className="h-3 rounded-full transition-all duration-1000 ease-out relative overflow-hidden"
-                    style={{
-                      width: isVisible ? `${skill.level}%` : "0%",
-                      transitionDelay: `${index * skillsConfig.animationDelayMultiplier + 300}ms`,
-                      backgroundColor: `rgb(${colorMappings[currentCategory.color].primary})`
-                    }}
-                  >
-                    {/* Shimmer effect */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 animate-shimmer" />
-                  </div>
-                </div>
+                <AnimatedProgress
+                  value={skill.level}
+                  colorRGB={colorMappings[currentCategory.color].primary}
+                  delay={index * skillsConfig.animationDelayMultiplier + 300}
+                  trigger={activeCategory} // 👈 re-run animation on tab change
+                />
               </div>
+
 
               {/* Skill Description */}
               <div className="space-y-2">
