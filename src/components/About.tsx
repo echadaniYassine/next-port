@@ -2,6 +2,7 @@
 
 import Image from "next/image"
 import { useState, useEffect, useRef, useCallback } from "react"
+import { useTheme } from "next-themes"
 import { SectionDecorator } from "./SectionDecorator"
 import { useTranslation } from '../lib/i18n/client'
 import { type Language } from '../lib/i18n-config'
@@ -14,8 +15,10 @@ interface AboutProps {
 
 export default function About({ locale }: AboutProps) {
   const { t } = useTranslation(locale, 'common')
+  const { theme, resolvedTheme } = useTheme()
   const [isVisible, setIsVisible] = useState(false)
   const [counters, setCounters] = useState({ experience: 0, projects: 0, clients: 0 })
+  const [mounted, setMounted] = useState(false)
   const aboutRef = useRef<HTMLElement>(null)
 
   // Get skills data from translations
@@ -25,12 +28,6 @@ export default function About({ locale }: AboutProps) {
     { name: t('about.skills.mobileDevelopment'), level: 75 },
     { name: t('about.skills.uiUxDesign'), level: 80 },
     { name: t('about.skills.cms'), level: 90 },
-  ] as const
-
-  const STATS = [
-    { key: "experience" as const, label: "Years Experience", color: "blue" },
-    { key: "projects" as const, label: "Projects Completed", color: "purple" },
-    { key: "clients" as const, label: "Happy Clients", color: "green" },
   ] as const
 
   const animateCounters = useCallback(() => {
@@ -51,6 +48,10 @@ export default function About({ locale }: AboutProps) {
   }, [])
 
   useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -67,6 +68,12 @@ export default function About({ locale }: AboutProps) {
 
     return () => observer.disconnect()
   }, [animateCounters])
+
+  // Get the correct image source based on theme
+  const getImageSrc = () => {
+    if (!mounted) return "/images/image_pic_light.png" // Default fallback
+    return resolvedTheme === 'dark' ? "/images/image_pic_dark.png" : "/images/image_pic_light.png"
+  }
 
   return (
     <section id="about" ref={aboutRef} className="relative py-20 bg-transparent transition-colors duration-300">
@@ -86,30 +93,38 @@ export default function About({ locale }: AboutProps) {
           </p>
         </header>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           {/* Image Section */}
           <div
             className={`relative transition-all duration-1000 ${isVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-10"
               }`}
           >
             <SectionDecorator variant="card">
-              <div className="relative">
-                {/* Background Decorations */}
-                <div className="absolute -top-6 -left-6 w-24 h-24 bg-blue-100 dark:bg-blue-900/30 rounded-2xl -rotate-6" />
-                <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-purple-100 dark:bg-purple-900/30 rounded-2xl rotate-12" />
+              <div className="relative group">
+                {/* Enhanced Background Decorations */}
+                <div className="absolute -top-6 -left-6 w-24 h-24 bg-gradient-to-br from-blue-200 to-blue-300 dark:from-blue-900/40 dark:to-blue-800/60 rounded-3xl -rotate-6 shadow-lg transition-transform duration-500 group-hover:rotate-3" />
+                <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-gradient-to-br from-purple-200 to-pink-300 dark:from-purple-900/40 dark:to-pink-800/60 rounded-3xl rotate-12 shadow-lg transition-transform duration-500 group-hover:-rotate-6" />
 
                 {/* Main Image Container */}
-                <div className="relative h-80 md:h-96 bg-gradient-to-br from-muted/50 to-muted rounded-2xl shadow-2xl overflow-hidden border border-border">
-                  <Image
-                    src="/images/img1.png"
-                    alt={`${t('site.name')} - ${t('hero.title')}`}
-                    fill
-                    className="object-contain p-8 transition-transform duration-300 hover:scale-105"
-                    priority
-                  />
-                  {/* Status Badge */}
-                  <div className="absolute top-4 right-4 bg-green-500 text-white px-3 py-1 rounded-full text-sm font-medium shadow-lg">
-                    {t('about.status')}
+                <div className="relative aspect-square max-w-md w-full mx-auto bg-gradient-to-br from-white/90 to-gray-50/90 dark:from-gray-800/90 dark:to-gray-900/90 rounded-3xl shadow-2xl overflow-hidden border border-gray-200/50 dark:border-gray-700/50 backdrop-blur-sm transition-all duration-500 group-hover:shadow-3xl group-hover:scale-[1.02]">
+                  {/* Dynamic Image based on theme */}
+                  {mounted && (
+                    <Image
+                      key={resolvedTheme} // Force re-render on theme change
+                      src={getImageSrc()}
+                      alt={`${t('site.name')} - ${t('hero.title')}`}
+                      fill
+                      className="object-cover transition-transform duration-300 hover:scale-105"
+                      priority
+                    />
+                  )}
+                  
+                  {/* Petite Status Badge - Bottom Left */}
+                  <div className="absolute bottom-3 left-3 text-white px-2 py-1 rounded-full text-xs font-medium shadow-md backdrop-blur-sm border border-white/20 dark:border-white/10" style={{ background: 'linear-gradient(to right, #6b4c52, #5a4148)' }}>
+                    <div className="flex items-center gap-1.5">
+                      <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
+                      {t('about.status')}
+                    </div>
                   </div>
                 </div>
               </div>
