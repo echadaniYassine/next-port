@@ -172,7 +172,7 @@ export default function About({ locale }: AboutProps) {
             <div className="flex flex-row flex-wrap gap-4 pt-6 justify-center sm:justify-start">
               <SectionDecorator variant="card">
                 <a
-                  href="./cv/Echadani-Yassine.pdf"
+                  href="./cv/Echadani_yassine_fr.pdf"
                   download="Echadani_Yassine_Resume.pdf"
                   className="inline-block cursor-pointer px-6 py-3 bg-gradient-to-r from-purple-600 to-red-600 text-white font-semibold rounded-lg shadow-lg hover:shadow-purple-500/40 hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-purple-300/50"
                 >
