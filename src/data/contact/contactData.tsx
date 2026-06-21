@@ -5,8 +5,8 @@ export const contactData = {
   contactInfo: [
     {
       title: "Email",
-      value: "yassinechadani113@gmail.com",
-      href: "mailto:yassinechadani113@gmail.com",
+      value: "echadaniyassine@gmail.com",
+      href: "mailto:echadaniyassine@gmail.com",
       color: "blue",
       icon: "M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z",
       strokeWidth: 2,
@@ -14,8 +14,8 @@ export const contactData = {
     },
     {
       title: "Phone",
-      value: "+212 601 714 706",
-      href: "tel:+212601714706",
+      value: "+212 771 473 306",
+      href: "tel:+212771473306",
       color: "green",
       icon: "M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z",
       strokeWidth: 2,
