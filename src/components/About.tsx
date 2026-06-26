@@ -1,8 +1,7 @@
 "use client"
 
 import Image from "next/image"
-import { useState, useEffect, useRef, useCallback } from "react"
-import { useTheme } from "next-themes"
+import { useState, useEffect, useRef, useMemo } from "react"
 import { SectionDecorator } from "./SectionDecorator"
 import { useTranslation } from '../lib/i18n/client'
 import { type Language } from '../lib/i18n-config'
@@ -15,115 +14,121 @@ interface AboutProps {
 
 export default function About({ locale }: AboutProps) {
   const { t } = useTranslation(locale, 'common')
-  const { theme, resolvedTheme } = useTheme()
   const [isVisible, setIsVisible] = useState(false)
   const [counters, setCounters] = useState({ experience: 0, projects: 0, clients: 0 })
-  const [mounted, setMounted] = useState(false)
   const aboutRef = useRef<HTMLElement>(null)
 
-  // Get skills data from translations
-  const SKILLS = [
-    { name: t('about.skills.frontendDevelopment'), level: 95 },
-    { name: t('about.skills.backendDevelopment'), level: 95 },
-    { name: t('about.skills.mobileDevelopment'), level: 75 },
-    { name: t('about.skills.uiUxDesign'), level: 80 },
-    { name: t('about.skills.cms'), level: 90 },
-  ] as const
+  // OPTIMIZED: Memoized to prevent array creation on counter state ticks
+  const SKILLS = useMemo(() => [
+    { name: t('about.skills.frontendDevelopment' as any), level: 95 },
+    { name: t('about.skills.backendDevelopment' as any), level: 95 },
+    { name: t('about.skills.mobileDevelopment' as any), level: 75 },
+    { name: t('about.skills.uiUxDesign' as any), level: 80 },
+    { name: t('about.skills.cms' as any), level: 90 },
+  ], [t])
 
-  const animateCounters = useCallback(() => {
-    Object.entries(FINAL_COUNTS).forEach(([key, end]) => {
-      let start = 0
-      const duration = 2000
-      const increment = end / (duration / 16)
+  // OPTIMIZED: High performance requestAnimationFrame ticking for seamless counting interpolation
+  useEffect(() => {
+    if (!isVisible) return
 
-      const timer = setInterval(() => {
-        start += increment
-        if (start >= end) {
-          start = end
-          clearInterval(timer)
-        }
-        setCounters((prev) => ({ ...prev, [key]: Math.floor(start) }))
-      }, 16)
-    })
-  }, [])
+    let startTime: number | null = null
+    const duration = 2000
+    let animationFrameId: number
+
+    const updateCounters = (timestamp: number) => {
+      if (!startTime) startTime = timestamp
+      const progress = Math.min((timestamp - startTime) / duration, 1)
+
+      setCounters({
+        experience: Math.floor(progress * FINAL_COUNTS.experience),
+        projects: Math.floor(progress * FINAL_COUNTS.projects),
+        clients: Math.floor(progress * FINAL_COUNTS.clients),
+      })
+
+      if (progress < 1) {
+        animationFrameId = requestAnimationFrame(updateCounters)
+      }
+    }
+
+    animationFrameId = requestAnimationFrame(updateCounters)
+    return () => cancelAnimationFrame(animationFrameId)
+  }, [isVisible])
 
   useEffect(() => {
-    setMounted(true)
-  }, [])
+    const target = aboutRef.current
+    if (!target) return
 
-  useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsVisible(true)
-          animateCounters()
+          observer.unobserve(target) // Stop listening once triggered to preserve runtime memory
         }
       },
-      { threshold: 0.3, rootMargin: "0px 0px -100px 0px" },
+      { threshold: 0.2, rootMargin: "0px 0px -50px 0px" },
     )
 
-    if (aboutRef.current) {
-      observer.observe(aboutRef.current)
-    }
-
+    observer.observe(target)
     return () => observer.disconnect()
-  }, [animateCounters])
-
-  // Get the correct image source based on theme
-  const getImageSrc = () => {
-    if (!mounted) return "/images/image_pic_light.png" // Default fallback
-    return resolvedTheme === 'dark' ? "/images/image_pic_dark.png" : "/images/image_pic_light.png"
-  }
+  }, [])
 
   return (
     <section id="about" ref={aboutRef} className="relative py-20 bg-transparent transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
         {/* Section Header */}
         <header className="text-center mb-16">
           <SectionDecorator variant="default">
             <div className="inline-block">
               <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-                {t('about.title')}
+                {t('about.title' as any)}
               </h2>
-              <div className="w-24 h-1 mx-auto animate-gradient-x10" />
+              <div className="w-24 h-1 mx-auto bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 animate-pulse rounded-full" />
             </div>
           </SectionDecorator>
           <p className="mt-6 text-lg text-muted-foreground max-w-2xl mx-auto">
-            {t('about.subtitle')}
+            {t('about.subtitle' as any)}
           </p>
         </header>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-          {/* Image Section */}
-          <div
-            className={`relative transition-all duration-1000 ${isVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-10"
-              }`}
-          >
+          
+          {/* Image Component Block Wrapper */}
+          <div className={`relative transition-all duration-1000 ${isVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-10"}`}>
             <SectionDecorator variant="card">
               <div className="relative group">
-                {/* Enhanced Background Decorations */}
-                <div className="absolute -top-6 -left-6 w-24 h-24 bg-gradient-to-br from-blue-200 to-blue-300 dark:from-blue-900/40 dark:to-blue-800/60 rounded-3xl -rotate-6 shadow-lg transition-transform duration-500 group-hover:rotate-3" />
-                <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-gradient-to-br from-purple-200 to-pink-300 dark:from-purple-900/40 dark:to-pink-800/60 rounded-3xl rotate-12 shadow-lg transition-transform duration-500 group-hover:-rotate-6" />
+                {/* Visual Background Accent Details */}
+                <div className="absolute -top-6 -left-6 w-24 h-24 bg-gradient-to-br from-blue-200 to-blue-300 dark:from-blue-900/30 dark:to-blue-800/50 rounded-3xl -rotate-6 shadow-lg transition-transform duration-500 group-hover:rotate-3" />
+                <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-gradient-to-br from-purple-200 to-pink-300 dark:from-purple-900/30 dark:to-pink-800/50 rounded-3xl rotate-12 shadow-lg transition-transform duration-500 group-hover:-rotate-6" />
 
-                {/* Main Image Container */}
+                {/* Main Framed Graphics Frame */}
                 <div className="relative aspect-square max-w-md w-full mx-auto bg-gradient-to-br from-white/90 to-gray-50/90 dark:from-gray-800/90 dark:to-gray-900/90 rounded-3xl shadow-2xl overflow-hidden border border-gray-200/50 dark:border-gray-700/50 backdrop-blur-sm transition-all duration-500 group-hover:shadow-3xl group-hover:scale-[1.02]">
-                  {/* Dynamic Image based on theme */}
-                  {mounted && (
+                  
+                  {/* OPTIMIZED: Native responsive class dark toggle to eliminate flash shifts */}
+                  <div className="relative w-full h-full dark:hidden">
                     <Image
-                      key={resolvedTheme} // Force re-render on theme change
-                      src={getImageSrc()}
-                      alt={`${t('site.name')} - ${t('hero.title')}`}
+                      src="/images/image_pic_light.png"
+                      alt="Profile Graphic Light"
                       fill
-                      className="object-cover transition-transform duration-300 hover:scale-105"
+                      className="object-cover transition-transform duration-300 group-hover:scale-105"
                       priority
                     />
-                  )}
-                  
-                  {/* Petite Status Badge - Bottom Left */}
-                  <div className="absolute bottom-3 left-3 text-white px-2 py-1 rounded-full text-xs font-medium shadow-md backdrop-blur-sm border border-white/20 dark:border-white/10" style={{ background: 'linear-gradient(to right, #6b4c52, #5a4148)' }}>
+                  </div>
+                  <div className="relative w-full h-full hidden dark:block">
+                    <Image
+                      src="/images/image_pic_dark.png"
+                      alt="Profile Graphic Dark"
+                      fill
+                      className="object-cover transition-transform duration-300 group-hover:scale-105"
+                      priority
+                    />
+                  </div>
+
+                  {/* Petite Status Floating Badge */}
+                  <div className="absolute bottom-3 left-3 text-white px-3 py-1.5 rounded-full text-xs font-medium shadow-md backdrop-blur-md border border-white/20 dark:border-white/10 bg-gradient-to-r from-[#6b4c52] to-[#5a4148]">
                     <div className="flex items-center gap-1.5">
-                      <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
-                      {t('about.status')}
+                      <div className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse" />
+                      {t('about.status' as any)}
                     </div>
                   </div>
                 </div>
@@ -131,23 +136,37 @@ export default function About({ locale }: AboutProps) {
             </SectionDecorator>
           </div>
 
-          {/* Content Section */}
-          <div
-            className={`space-y-8 transition-all duration-1000 delay-300 ${isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-10"
-              }`}
-          >
-            {/* Description */}
+          {/* Copy Writing & Metric Counters Dashboard Area */}
+          <div className={`space-y-8 transition-all duration-1000 delay-200 ${isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-10"}`}>
+            
+            {/* Rich Biography Column */}
             <div className="space-y-6">
               <div
                 className="text-lg text-muted-foreground leading-relaxed"
-                dangerouslySetInnerHTML={{ __html: t('about.description') }}
+                dangerouslySetInnerHTML={{ __html: t('about.description' as any) || "" }}
               />
             </div>
 
-            {/* Skills Progress Bars */}
+            {/* Metric Counters Dashboard Area */}
+            <div className="grid grid-cols-3 gap-4 py-2 text-center bg-accent/10 rounded-2xl border border-border/20 p-4">
+              <div>
+                <p className="text-2xl sm:text-3xl font-black text-purple-600 dark:text-purple-400">{counters.experience}+</p>
+                <p className="text-xs sm:text-sm font-medium text-muted-foreground">{t('about.stats.experience' as any) || 'Years Experience'}</p>
+              </div>
+              <div>
+                <p className="text-2xl sm:text-3xl font-black text-pink-600 dark:text-pink-400">{counters.projects}+</p>
+                <p className="text-xs sm:text-sm font-medium text-muted-foreground">{t('about.stats.projects' as any) || 'Projects Completed'}</p>
+              </div>
+              <div>
+                <p className="text-2xl sm:text-3xl font-black text-blue-600 dark:text-blue-400">{counters.clients}+</p>
+                <p className="text-xs sm:text-sm font-medium text-muted-foreground">{t('about.stats.clients' as any) || 'Happy Clients'}</p>
+              </div>
+            </div>
+
+            {/* Skills Track Bars */}
             <div className="space-y-4">
               <h3 className="text-xl font-semibold text-foreground">
-                {t('about.coreSkills')}
+                {t('about.coreSkills' as any)}
               </h3>
               {SKILLS.map((skill, index) => (
                 <div key={skill.name} className="space-y-2">
@@ -157,10 +176,10 @@ export default function About({ locale }: AboutProps) {
                   </div>
                   <div className="w-full bg-muted rounded-full h-2.5 overflow-hidden">
                     <div
-                      className="bg-gradient-to-r from-transparent via-purple-600 to-red-600 h-2.5 rounded-full transition-all duration-1000 ease-out"
+                      className="bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 h-2.5 rounded-full transition-all duration-1000 ease-out"
                       style={{
                         width: isVisible ? `${skill.level}%` : "0%",
-                        transitionDelay: `${index * 200}ms`,
+                        transitionDelay: `${index * 100}ms`,
                       }}
                     />
                   </div>
@@ -168,56 +187,34 @@ export default function About({ locale }: AboutProps) {
               ))}
             </div>
 
-            {/* Call to Action */}
-            <div className="flex flex-row flex-wrap gap-4 pt-6 justify-center sm:justify-start">
+            {/* Call to Action Interactive Anchors */}
+            <div className="flex flex-row flex-wrap gap-4 pt-4 justify-center sm:justify-start">
               <SectionDecorator variant="card">
                 <a
                   href="./cv/Echadani_yassine_fr.pdf"
                   download="Echadani_Yassine_Resume.pdf"
-                  className="inline-block cursor-pointer px-6 py-3 bg-gradient-to-r from-purple-600 to-red-600 text-white font-semibold rounded-lg shadow-lg hover:shadow-purple-500/40 hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-purple-300/50"
+                  className="inline-flex items-center gap-2 cursor-pointer px-6 py-3 bg-gradient-to-r from-purple-600 to-red-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-purple-500/40 hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-purple-300/50"
                 >
-                  <span className="flex items-center gap-2">
-                    <svg
-                      className="w-5 h-5"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                      />
-                    </svg>
-                    {t('about.Download')}
-                  </span>
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                  {t('about.Download' as any)}
                 </a>
               </SectionDecorator>
+              
               <SectionDecorator variant="card">
                 <a
                   href="#contact"
-                  className="inline-block cursor-pointer px-6 py-3 border-2 border-foreground text-foreground font-semibold rounded-lg shadow-lg hover:shadow-purple-500/40 hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-foreground/30"
+                  className="inline-flex items-center gap-2 cursor-pointer px-6 py-3 border-2 border-foreground text-foreground font-semibold rounded-xl shadow-lg hover:shadow-purple-500/40 hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-foreground/30"
                 >
-                  <span className="flex items-center gap-2">
-                    <svg
-                      className="w-5 h-5"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                      />
-                    </svg>
-                    {t('nav.contact')}
-                  </span>
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                  {t('nav.contact' as any)}
                 </a>
               </SectionDecorator>
             </div>
+
           </div>
         </div>
       </div>

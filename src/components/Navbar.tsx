@@ -136,7 +136,7 @@ export default function Navbar({ locale }: NavbarProps) {
               <Link
                 href={`/${locale}`}
                 className="text-lg sm:text-xl md:text-2xl font-bold bg-gradient-to-r from-purple-500 via-pink-500 to-indigo-500 bg-clip-text text-transparent hover:scale-105 transition-transform duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500/50 rounded-lg px-1 sm:px-2 py-1"
-                aria-label={t('nav.name')}
+                aria-label={t('nav.home' as any)}
               >
                 {t('site.logo')}
               </Link>
@@ -246,7 +246,7 @@ export default function Navbar({ locale }: NavbarProps) {
               <div className="relative p-4 sm:p-6 border-b border-border/20">
                 <div className="flex items-center justify-between">
                   <h2 className="text-lg sm:text-xl font-semibold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-                    {t('nav.menu') || 'Menu'}
+                    {t('nav.languageSelector' as any) || 'Menu'}
                   </h2>
                   <button
                     onClick={closeMenu}

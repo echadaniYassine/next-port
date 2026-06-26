@@ -17,20 +17,25 @@
     "switchTo": "Passer à"
   },
   "about": {
-    "title": "À Propos de Moi",
-    "subtitle": "Développeur passionné avec l'amour de créer des expériences numériques exceptionnelles",
-    "description": "Je suis un <span>Développeur Full Stack</span> Compétent à la fois en frontend et backend, animé par une passion pour construire des applications efficaces et centrées sur l'utilisateur.",
-    "coreSkills": "Compétences Principales",
-    "skills": {
-      "frontendDevelopment": "Développement Frontend",
-      "backendDevelopment": "Développement Backend",
-      "uiUxDesign": "Design UI/UX",
-      "cms": "CMS",
-      "mobileDevelopment": "Développement Mobile"
-    },
-    "Download": "Télécharger le CV",
-    "status": "Disponible pour travailler"
+  "title": "À Propos de Moi",
+  "subtitle": "Développeur passionné par la création d'expériences numériques exceptionnelles",
+  "description": "Je suis un <span>Développeur Full Stack</span> compétent en frontend et backend, animé par la passion de créer des applications efficaces et centrées sur l'utilisateur.",
+  "coreSkills": "Compétences Clés",
+  "skills": {
+    "frontendDevelopment": "Développement Frontend",
+    "backendDevelopment": "Développement Backend",
+    "uiUxDesign": "Design UI/UX",
+    "cms": "CMS",
+    "mobileDevelopment": "Développement Mobile"
   },
+  "stats": {
+    "experience": "Années d'Expérience",
+    "projects": "Projets Réalisés",
+    "clients": "Clients Satisfaits"
+  },
+  "Download": "Télécharger le CV",
+  "status": "Disponible pour travailler"
+},
   "hero": {
     "greeting": "Bonjour, je suis",
     "name": "Echadani Yassine",
@@ -43,7 +48,8 @@
     },
     "description": "Passionné par la création d'<span>expériences web extraordinaires</span> avec des technologies modernes. Je transforme les idées en applications belles, fonctionnelles et conviviales.",
     "button1": "Voir Mon Travail",
-    "button2": "Contactez-moi"
+    "button2": "Contactez-moi",
+    "scrollDown": "Défiler vers le bas"
   },
   "skills": {
     "title": "Mes Compétences",

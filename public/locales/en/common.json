@@ -28,6 +28,11 @@
       "cms": "CMS",
       "mobileDevelopment": "Mobile Development"
     },
+    "stats": {
+      "experience": "Years Experience",
+      "projects": "Projects Completed",
+      "clients": "Happy Clients"
+    },
     "Download": "Download CV",
     "status": "Available for work"
   },
@@ -43,7 +48,8 @@
     },
     "description": "Passionate about creating <span>amazing web experiences</span> with modern technologies. I transform ideas into beautiful, functional, and user-friendly applications.",
     "button1": "View My Work",
-    "button2": "Get in Touch"
+    "button2": "Get in Touch",
+    "scrollDown": "Scroll Down"
   },
   "skills": {
     "title": "My Skills",

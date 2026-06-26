@@ -1,10 +1,11 @@
-// src/data/skills/types.ts
+import React from 'react';
+
 export type ColorType = "blue" | "purple" | "green" | "orange" | "indigo";
 
 export interface Skill {
   name: string;
   level: number;
-  icon: string; // Icon name as string
+  icon: string | React.ComponentType<{ className?: string }>; // OPTIMIZED: Supports raw component references
   description: string;
 }
 

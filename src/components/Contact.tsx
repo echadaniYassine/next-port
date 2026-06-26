@@ -30,6 +30,7 @@ interface ContactProps {
 }
 
 export default function Contact({ locale }: ContactProps) {
+  // Accessing the i18n instance explicitly to help solve parameter matching if needed
   const { t } = useTranslation(locale, 'common')
   const [formData, setFormData] = useState<FormData>({
     name: "",
@@ -48,7 +49,7 @@ export default function Contact({ locale }: ContactProps) {
       green: "bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400",
       purple: "bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400",
     }
-    return colorMap[color]
+    return colorMap[color] || colorMap.blue
   }, [])
 
   const validateForm = useCallback((): boolean => {
@@ -84,103 +85,80 @@ export default function Contact({ locale }: ContactProps) {
     return Object.keys(newErrors).length === 0
   }, [formData, t])
 
- const handleSubmit = useCallback(
-  async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = useCallback(
+    async (e: React.FormEvent) => {
+      e.preventDefault();
 
-    if (!validateForm()) return;
+      if (!validateForm()) return;
 
-    setSubmitStatus("submitting");
+      setSubmitStatus("submitting");
 
-    try {
-      // Try multiple API endpoints for better reliability
-      const apiUrls = [
-        "https://mail-service-murex.vercel.app/api/contact",
-        "http://localhost:3001/api/contact" // Fallback for local development
-      ];
+      try {
+        const apiUrls = [
+          "https://mail-service-ten.vercel.app/api/contact",
+          "https://mail-service-ten.vercel.app/",
+        ];
 
-      let response;
-      let lastError;
+        let response: Response | undefined;
+        let lastError: any;
 
-      // Try each API endpoint
-      for (const apiUrl of apiUrls) {
-        try {
-          console.log(`Attempting to connect to: ${apiUrl}`);
-          
-          response = await fetch(apiUrl, {
-            method: "POST",
-            headers: { 
-              "Content-Type": "application/json",
-              "Accept": "application/json",
-            },
-            body: JSON.stringify(formData),
-            // Add timeout and other fetch options
-            signal: AbortSignal.timeout(30000), // 30 second timeout
-          });
+        for (const apiUrl of apiUrls) {
+          try {
+            response = await fetch(apiUrl, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+              },
+              body: JSON.stringify(formData),
+              signal: AbortSignal.timeout(30000),
+            });
 
-          console.log(`Response status: ${response.status}`);
-          break; // Success, exit the loop
-        } catch (fetchError) {
-          console.warn(`Failed to connect to ${apiUrl}:`, fetchError);
-          lastError = fetchError;
-          continue; // Try next URL
+            break;
+          } catch (fetchError) {
+            lastError = fetchError;
+            continue;
+          }
         }
-      }
 
-      // If no response was successful
-      if (!response) {
-        throw new Error(`Unable to connect to API server. ${lastError?.message || 'Network error'}`);
-      }
-
-      const data = await response.json();
-      console.log('API Response:', data);
-
-      if (!response.ok) {
-        // Handle different types of errors
-        if (response.status === 429) {
-          throw new Error("Too many requests. Please try again later.");
-        } else if (response.status === 400 && data.errors) {
-          // Handle validation errors from server
-          setErrors(data.errors);
-          setSubmitStatus("idle");
-          return;
-        } else if (response.status === 500) {
-          throw new Error("Server error. Please try again later.");
-        } else {
-          throw new Error(data.error || `HTTP ${response.status}: ${response.statusText}`);
+        if (!response) {
+          throw new Error(`Unable to connect to API server. ${lastError?.message || 'Network error'}`);
         }
-      }
 
-      setSubmitStatus("success");
-      setFormData({ name: "", email: "", subject: "", message: "" });
-      setErrors({});
+        const data = await response.json();
 
-      setTimeout(() => setSubmitStatus("idle"), 5000);
-    } catch (error) {
-      console.error("Form submission error:", error);
-      setSubmitStatus("error");
-      
-      // More detailed error logging
-      if (error instanceof TypeError && error.message.includes('Failed to fetch')) {
-        console.error("Network error - possible causes:");
-        console.error("1. Server is not running");
-        console.error("2. CORS policy blocking the request");
-        console.error("3. Network connectivity issues");
-        console.error("4. SSL/TLS certificate issues");
+        if (!response.ok) {
+          if (response.status === 429) {
+            throw new Error("Too many requests. Please try again later.");
+          } else if (response.status === 400 && data.errors) {
+            setErrors(data.errors);
+            setSubmitStatus("idle");
+            return;
+          } else if (response.status === 500) {
+            throw new Error("Server error. Please try again later.");
+          } else {
+            throw new Error(data.error || `HTTP ${response.status}: ${response.statusText}`);
+          }
+        }
+
+        setSubmitStatus("success");
+        setFormData({ name: "", email: "", subject: "", message: "" });
+        setErrors({});
+
+        setTimeout(() => setSubmitStatus("idle"), 5000);
+      } catch (error) {
+        setSubmitStatus("error");
+        setTimeout(() => setSubmitStatus("idle"), 5000);
       }
-      
-      setTimeout(() => setSubmitStatus("idle"), 5000);
-    }
-  },
-  [formData, validateForm]
-);
+    },
+    [formData, validateForm]
+  );
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       const { name, value } = e.target
       setFormData((prev) => ({ ...prev, [name]: value }))
 
-      // Clear error when user starts typing
       if (errors[name as keyof FormErrors]) {
         setErrors((prev) => ({ ...prev, [name]: "" }))
       }
@@ -215,7 +193,7 @@ export default function Contact({ locale }: ContactProps) {
               <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
                 {t('contact.title')}
               </h2>
-              <div className="w-24 h-1 mx-auto animate-gradient-x10" />
+              <div className="w-24 h-1 mx-auto bg-gradient-to-r from-purple-600 to-red-600" />
             </div>
           </SectionDecorator>
           <p className="mt-6 text-lg text-muted-foreground max-w-2xl mx-auto">
@@ -226,8 +204,9 @@ export default function Contact({ locale }: ContactProps) {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
           {/* Contact Information */}
           <div
-            className={`lg:col-span-1 space-y-8 transition-all duration-1000 ${isVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-10"
-              }`}
+            className={`lg:col-span-1 space-y-8 transition-all duration-1000 ${
+              isVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-10"
+            }`}
           >
             <div>
               <h3 className="text-2xl font-bold text-foreground mb-6">
@@ -240,32 +219,35 @@ export default function Contact({ locale }: ContactProps) {
 
             {/* Contact Info Cards */}
             <div className="space-y-4">
-              {CONTACT_INFO.map((info, index) => (
-                <a
-                  key={info.title}
-                  href={info.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`
-                    flex items-center p-4 bg-card rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 border border-border group
-                    ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}
-                  `}
-                  style={{ transitionDelay: `${index * 100}ms` }}
-                  aria-label={`${t('nav.contact')} via ${t(`contact.contactInfo.${info.title.toLowerCase()}`)}: ${info.value}`}
-                >
-                  <div className={`p-3 rounded-lg ${getColorClasses(info.color as "blue" | "green" | "purple")} group-hover:scale-110 transition-transform duration-200`}>
-                    <svg className="w-6 h-6" fill={info.fill} stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={info.strokeWidth} d={info.icon} />
-                    </svg>
-                  </div>
-                  <div className="ml-4">
-                    <h4 className="text-lg font-semibold text-foreground">
-                      {t(`contact.contactInfo.${info.title.toLowerCase()}`)}
-                    </h4>
-                    <p className="text-muted-foreground">{info.value}</p>
-                  </div>
-                </a>
-              ))}
+              {CONTACT_INFO.map((info, index) => {
+                const labelKey = `contact.contactInfo.${info.title.toLowerCase()}`;
+                return (
+                  <a
+                    key={info.title}
+                    href={info.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`
+                      flex items-center p-4 bg-card rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 border border-border group
+                      ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}
+                    `}
+                    style={{ transitionDelay: `${index * 100}ms` }}
+                    aria-label={`${t('nav.contact')} via ${t(labelKey as any)}: ${info.value}`}
+                  >
+                    <div className={`p-3 rounded-lg ${getColorClasses(info.color as "blue" | "green" | "purple")} group-hover:scale-110 transition-transform duration-200`}>
+                      <svg className="w-6 h-6" fill={info.fill} stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={info.strokeWidth} d={info.icon} />
+                      </svg>
+                    </div>
+                    <div className="ml-4">
+                      <h4 className="text-lg font-semibold text-foreground">
+                        {t(labelKey as any)}
+                      </h4>
+                      <p className="text-muted-foreground">{info.value}</p>
+                    </div>
+                  </a>
+                );
+              })}
             </div>
 
             {/* Social Links */}
@@ -274,16 +256,16 @@ export default function Contact({ locale }: ContactProps) {
                 {t('contact.followMe')}
               </h4>
               <div className="flex space-x-4">
-                {SOCIAL_LINKS.map((social, index) => (
+                {SOCIAL_LINKS.map((social) => (
                   <a
                     key={social.name}
                     href={social.url}
                     target="_blank"
                     rel="noopener noreferrer"
                     className={`
-    p-3 bg-card rounded-lg shadow-lg hover:shadow-purple-500/40 transition-all duration-300 transform hover:scale-110 border border-border text-muted-foreground hover:text-primary
-    ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}
-  `}
+                      p-3 bg-card rounded-lg shadow-lg hover:shadow-purple-500/40 transition-all duration-300 transform hover:scale-110 border border-border text-muted-foreground hover:text-primary
+                      ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}
+                    `}
                     aria-label={`${t('contact.followMe')} ${social.name}`}
                   >
                     <svg className="w-5 h-5" fill={social.fill} viewBox="0 0 24 24" aria-hidden="true">
@@ -297,8 +279,9 @@ export default function Contact({ locale }: ContactProps) {
 
           {/* Contact Form */}
           <div
-            className={`lg:col-span-2 transition-all duration-1000 delay-300 ${isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-10"
-              }`}
+            className={`lg:col-span-2 transition-all duration-1000 delay-300 ${
+              isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-10"
+            }`}
           >
             <div className="bg-card p-8 rounded-2xl shadow-2xl border border-border">
               <form onSubmit={handleSubmit} className="space-y-6" noValidate>
@@ -355,7 +338,7 @@ export default function Contact({ locale }: ContactProps) {
                       value={formData.name}
                       onChange={handleChange}
                       className={`
-                        w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-200 bg-background text-foreground placeholder-muted-foreground
+                        w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-primary/50 focus:border-primary focus:outline-none transition-all duration-200 bg-background text-foreground placeholder-muted-foreground
                         ${errors.name ? "border-red-500 dark:border-red-400" : "border-border hover:border-border/80"}
                       `}
                       placeholder={t('contact.form.placeholders.name')}
@@ -381,7 +364,7 @@ export default function Contact({ locale }: ContactProps) {
                       value={formData.email}
                       onChange={handleChange}
                       className={`
-                        w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-200 bg-background text-foreground placeholder-muted-foreground
+                        w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-primary/50 focus:border-primary focus:outline-none transition-all duration-200 bg-background text-foreground placeholder-muted-foreground
                         ${errors.email ? "border-red-500 dark:border-red-400" : "border-border hover:border-border/80"}
                       `}
                       placeholder={t('contact.form.placeholders.email')}
@@ -408,7 +391,7 @@ export default function Contact({ locale }: ContactProps) {
                     value={formData.subject}
                     onChange={handleChange}
                     className={`
-                      w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-200 bg-background text-foreground placeholder-muted-foreground
+                      w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-primary/50 focus:border-primary focus:outline-none transition-all duration-200 bg-background text-foreground placeholder-muted-foreground
                       ${errors.subject ? "border-red-500 dark:border-red-400" : "border-border hover:border-border/80"}
                     `}
                     placeholder={t('contact.form.placeholders.subject')}
@@ -434,7 +417,7 @@ export default function Contact({ locale }: ContactProps) {
                     onChange={handleChange}
                     rows={6}
                     className={`
-                      w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-200 bg-background text-foreground placeholder-muted-foreground resize-vertical
+                      w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-primary/50 focus:border-primary focus:outline-none transition-all duration-200 bg-background text-foreground placeholder-muted-foreground resize-vertical
                       ${errors.message ? "border-red-500 dark:border-red-400" : "border-border hover:border-border/80"}
                     `}
                     placeholder={t('contact.form.placeholders.message')}
@@ -475,7 +458,6 @@ export default function Contact({ locale }: ContactProps) {
                             d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                           />
                         </svg>
-
                         <span>{t('contact.form.sendMessageRealTime')}</span>
                       </>
                     ) : (

@@ -2,7 +2,7 @@
 
 import Image from "next/image"
 import { useState, useEffect, useRef, useCallback, useMemo } from "react"
-import { useTranslation } from "react-i18next"
+import { useTranslation } from '../lib/i18n/client'
 import { SectionDecorator } from "./SectionDecorator"
 import { PROJECTS } from "../data/projects/projectsData"
 import { FILTERS } from "../data/projects/filtersData.ts"
@@ -13,8 +13,9 @@ import { type Language } from "../lib/i18n-config"
 interface ProjectsProps {
   locale: Language;
 }
+
 export default function Projects({ locale }: ProjectsProps) {
-  const { t } = useTranslation()
+  const { t } = useTranslation(locale, 'common')
   const [isVisible, setIsVisible] = useState(false)
   const [activeFilter, setActiveFilter] = useState<"all" | ProjectCategory>("all")
   const [hoveredProject, setHoveredProject] = useState<number | null>(null)
@@ -53,6 +54,7 @@ export default function Projects({ locale }: ProjectsProps) {
     setHoveredProject(projectId)
   }, [])
 
+  // Function to get translated project data with safe data-store fallbacks
   // Function to get translated project data
   const getProjectTranslation = useCallback((projectId: number, field: 'title' | 'description') => {
     const projectKeys = {
@@ -66,11 +68,12 @@ export default function Projects({ locale }: ProjectsProps) {
       8: 'twizaPack',
       9: 'trendify',
       10: 'mirriahPro'
-    }
+    } as const; // Added 'as const' to lock down types
 
     const key = projectKeys[projectId as keyof typeof projectKeys]
     if (key) {
-      return t(`projects.items.${key}.${field}`)
+      // Cast to 'any' or your specific 'TranslationKey' type to satisfy i18n parameter signatures
+      return t(`projects.items.${key}.${field}` as any)
     }
 
     // Fallback to original data if translation key not found
@@ -138,13 +141,14 @@ export default function Projects({ locale }: ProjectsProps) {
                     {t('projects.featured')}
                   </div>
 
-                  {/* Project Image */}
-                  <div className="relative h-64 overflow-hidden">
+                  {/* Project Image Container */}
+                  <div className="relative h-64 overflow-hidden bg-muted">
                     {!imageLoadErrors.has(project.id) ? (
                       <Image
                         src={project.image || "/placeholder.svg"}
                         alt={`${getProjectTranslation(project.id, 'title')} project screenshot`}
                         fill
+                        priority={index < 2}
                         className="object-cover transition-transform duration-500 group-hover:scale-110"
                         onError={() => handleImageError(project.id)}
                       />
@@ -152,7 +156,7 @@ export default function Projects({ locale }: ProjectsProps) {
                       <div className="w-full h-full bg-gradient-to-br from-muted to-muted/50 flex items-center justify-center">
                         <div className="text-center">
                           <div className="text-4xl mb-2">🖼️</div>
-                          <p className="text-muted-foreground text-sm">{getProjectTranslation(project.id, 'title')}</p>
+                          <p className="text-muted-foreground text-sm font-medium px-4">{getProjectTranslation(project.id, 'title')}</p>
                         </div>
                       </div>
                     )}
@@ -161,22 +165,22 @@ export default function Projects({ locale }: ProjectsProps) {
 
                   {/* Project Content */}
                   <div className="p-6">
-                    <div className="flex items-center justify-between mb-3">
-                      <h3 className="text-xl font-bold text-foreground group-hover:text-primary transition-colors duration-300">
+                    <div className="flex items-center justify-between mb-3 gap-4">
+                      <h3 className="text-xl font-bold text-foreground group-hover:text-primary transition-colors duration-300 line-clamp-1">
                         {getProjectTranslation(project.id, 'title')}
                       </h3>
-                      <div className="flex items-center space-x-2">
+                      <div className="flex items-center space-x-2 flex-shrink-0">
                         {getStatusBadge(project.status)}
                         <span className="text-xs text-muted-foreground">{project.year}</span>
                       </div>
                     </div>
 
-                    <p className="text-muted-foreground mb-4 line-clamp-3 leading-relaxed">
+                    <p className="text-muted-foreground mb-4 line-clamp-3 leading-relaxed min-h-[72px]">
                       {getProjectTranslation(project.id, 'description')}
                     </p>
 
                     {/* Tech Stack */}
-                    <div className="flex flex-wrap gap-2 mb-6">
+                    <div className="flex flex-wrap gap-2 mb-6 min-h-[32px]">
                       {project.tech.slice(0, 4).map((tech) => (
                         <span
                           key={tech}
@@ -216,7 +220,7 @@ export default function Projects({ locale }: ProjectsProps) {
                           href={project.githubLink}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="px-4 py-2 border-2 border-foreground text-foreground font-medium rounded-lg shadow-lg hover:shadow-cyan-500/40 transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-foreground/30"
+                          className="inline-flex items-center justify-center px-4 py-2 border-2 border-foreground text-foreground font-medium rounded-lg shadow-lg hover:shadow-cyan-500/40 transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-foreground/30"
                           aria-label={`View ${getProjectTranslation(project.id, 'title')} source code`}
                         >
                           <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -248,12 +252,13 @@ export default function Projects({ locale }: ProjectsProps) {
                 key={filter.key}
                 onClick={() => handleFilterChange(filter.key)}
                 className={`
-          cursor-pointer px-3 sm:px-6 py-2 sm:py-3 rounded-lg sm:rounded-xl font-medium transition-all duration-300 transform hover:scale-105 text-xs sm:text-base whitespace-nowrap
-          ${activeFilter === filter.key
+                  cursor-pointer px-3 sm:px-6 py-2 sm:py-3 rounded-lg sm:rounded-xl font-medium transition-all duration-300 transform hover:scale-105 text-xs sm:text-base whitespace-nowrap
+                  ${activeFilter === filter.key
                     ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg"
                     : "bg-card text-muted-foreground hover:bg-accent hover:text-foreground border border-border"
                   }
-        `} aria-pressed={activeFilter === filter.key}
+                `}
+                aria-pressed={activeFilter === filter.key}
                 aria-label={`Filter by ${filterLabel}`}
               >
                 <span className="sm:hidden">
@@ -270,26 +275,42 @@ export default function Projects({ locale }: ProjectsProps) {
                   {count}
                 </span>
               </button>
-
             )
           })}
         </div>
 
-        {/* Projects Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {/* Projects Grid Container 
+            AUDIT FIX: We use inline utility properties or dynamic classes via grid allocation numbers.
+            Since max capacity is 10 items, 3-column configuration layout maps heights cleanly:
+            - Desktop Max rows = 4 rows (min-h-[1650px])
+            - Tablet/Mid Max rows = 5 rows (min-h-[2100px])
+            - Mobile Max rows = 10 rows (min-h-[4150px])
+            We scale this minimum container value smoothly contextually using tailwind to prevent sudden layout collapses.
+        */}
+        <div className={`
+          grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 transition-all duration-300 items-start
+          ${filteredProjects.length > 6
+            ? "min-h-[4150px] md:min-h-[2100px] lg:min-h-[1650px]"
+            : filteredProjects.length > 3
+              ? "min-h-[2500px] md:min-h-[1300px] lg:min-h-[850px]"
+              : filteredProjects.length > 0
+                ? "min-h-[430px] md:min-h-[430px] lg:min-h-[430px]"
+                : "min-h-[200px]"
+          }
+        `}>
           {filteredProjects.map((project, index) => (
             <article
               key={project.id}
               className={`
-                group bg-card rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:scale-105 border border-border overflow-hidden
+                group bg-card rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:scale-105 border border-border overflow-hidden h-full flex flex-col
                 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}
               `}
               style={{ transitionDelay: `${index * 100}ms` }}
               onMouseEnter={() => handleProjectHover(project.id)}
               onMouseLeave={() => handleProjectHover(null)}
             >
-              {/* Project Image */}
-              <div className="relative h-48 overflow-hidden">
+              {/* Project Image View wrapper */}
+              <div className="relative h-48 overflow-hidden bg-muted flex-shrink-0">
                 {!imageLoadErrors.has(project.id) ? (
                   <Image
                     src={project.image || "/placeholder.svg"}
@@ -302,12 +323,12 @@ export default function Projects({ locale }: ProjectsProps) {
                   <div className="w-full h-full bg-gradient-to-br from-muted to-muted/50 flex items-center justify-center">
                     <div className="text-center">
                       <div className="text-3xl mb-2">🖼️</div>
-                      <p className="text-muted-foreground text-sm">{getProjectTranslation(project.id, 'title')}</p>
+                      <p className="text-muted-foreground text-sm font-medium px-2">{getProjectTranslation(project.id, 'title')}</p>
                     </div>
                   </div>
                 )}
 
-                {/* Overlay */}
+                {/* Overlay Interactivity Layout */}
                 <div
                   className={`
                     absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent transition-opacity duration-300
@@ -330,7 +351,7 @@ export default function Projects({ locale }: ProjectsProps) {
                           href={project.githubLink}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="bg-gray-900/80 text-white px-3 py-2 rounded-lg hover:bg-gray-900 transition-colors duration-200 hover:shadow-cyan-500/40 hover:scale-105"
+                          className="bg-gray-900/80 text-white px-3 py-2 rounded-lg hover:bg-gray-900 transition-colors duration-200 hover:shadow-cyan-500/40 hover:scale-105 flex items-center justify-center"
                           aria-label={`View ${getProjectTranslation(project.id, 'title')} source code`}
                         >
                           <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -346,38 +367,40 @@ export default function Projects({ locale }: ProjectsProps) {
                 <div className="absolute top-4 right-4">{getStatusBadge(project.status)}</div>
               </div>
 
-              {/* Project Content */}
-              <div className="p-6">
-                <div className="flex items-start justify-between mb-2">
-                  <h3 className="text-xl font-bold text-foreground group-hover:text-primary transition-colors duration-200 line-clamp-1">
-                    {getProjectTranslation(project.id, 'title')}
-                  </h3>
-                  <span className="text-xs text-muted-foreground ml-2 flex-shrink-0">{project.year}</span>
+              {/* Project Details Inner Content */}
+              <div className="p-6 flex flex-col flex-grow justify-between">
+                <div>
+                  <div className="flex items-start justify-between mb-2 gap-2">
+                    <h3 className="text-xl font-bold text-foreground group-hover:text-primary transition-colors duration-200 line-clamp-1">
+                      {getProjectTranslation(project.id, 'title')}
+                    </h3>
+                    <span className="text-xs text-muted-foreground flex-shrink-0 mt-1">{project.year}</span>
+                  </div>
+
+                  <p className="text-muted-foreground mb-4 text-sm leading-relaxed line-clamp-3 min-h-[60px]">
+                    {getProjectTranslation(project.id, 'description')}
+                  </p>
+
+                  {/* Tech Stack List */}
+                  <div className="flex flex-wrap gap-2 mb-4 min-h-[24px]">
+                    {project.tech.slice(0, 3).map((tech) => (
+                      <span
+                        key={tech}
+                        className="px-2 py-1 bg-primary/10 text-primary rounded-md text-xs font-medium border border-primary/20"
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                    {project.tech.length > 3 && (
+                      <span className="px-2 py-1 bg-muted text-muted-foreground rounded-md text-xs">
+                        +{project.tech.length - 3}
+                      </span>
+                    )}
+                  </div>
                 </div>
 
-                <p className="text-muted-foreground mb-4 text-sm leading-relaxed line-clamp-3">
-                  {getProjectTranslation(project.id, 'description')}
-                </p>
-
-                {/* Tech Stack */}
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {project.tech.slice(0, 3).map((tech) => (
-                    <span
-                      key={tech}
-                      className="px-2 py-1 bg-primary/10 text-primary rounded-md text-xs font-medium border border-primary/20"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                  {project.tech.length > 3 && (
-                    <span className="px-2 py-1 bg-muted text-muted-foreground rounded-md text-xs">
-                      +{project.tech.length - 3}
-                    </span>
-                  )}
-                </div>
-
-                {/* Action Links */}
-                <div className="flex items-center justify-between">
+                {/* Action Links Footers */}
+                <div className="flex items-center justify-between pt-2 border-t border-border/40 mt-auto">
                   <div className="flex space-x-3">
                     <a
                       href={project.liveLink}
@@ -406,14 +429,14 @@ export default function Projects({ locale }: ProjectsProps) {
                       >
                         <span>{t('projects.viewCode')}</span>
                         <svg className="w-4 h-4 ml-1" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.30 3.297-1.30.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                          <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.30.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
                         </svg>
                       </a>
                     )}
                   </div>
                   <div className="text-right">
                     <div className="text-xs text-muted-foreground capitalize">
-                      {t(`projects.categories.${project.category}`).replace(/^[^A-Za-z]*/, '')}
+                      {t(`projects.categories.${project.category}`, project.category).replace(/^[^A-Za-z]*/, '')}
                     </div>
                   </div>
                 </div>

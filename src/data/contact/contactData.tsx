@@ -1,6 +1,5 @@
 // contactData.tsx
 
-// Contact Data with SVG path strings instead of components
 export const contactData = {
   contactInfo: [
     {
