@@ -230,5 +230,9 @@
       "sendMessage": "Mail Me",
       "callMe": "Call Me"
     }
+  },
+  "schema": {
+    "jobTitle": "Full Stack Developer",
+    "description": "Experienced Full Stack Developer skilled in React, Next.js, and Laravel"
   }
 }

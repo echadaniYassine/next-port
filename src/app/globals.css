@@ -487,3 +487,20 @@ button, a, input, textarea, select {
     font-size: clamp(1.75rem, 8vw, 3rem);
   }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+ 
+  /* Also disable CSS transitions and animations for reduced-motion users.
+     Tailwind's animate-* classes and transition-* classes are covered here. */
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

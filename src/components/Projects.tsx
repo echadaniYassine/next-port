@@ -16,6 +16,8 @@ interface ProjectsProps {
 
 export default function Projects({ locale }: ProjectsProps) {
   const { t } = useTranslation(locale, 'common')
+  
+  // Set initial fallback state carefully to avoid empty view state lockups on screens
   const [isVisible, setIsVisible] = useState(false)
   const [activeFilter, setActiveFilter] = useState<"all" | ProjectCategory>("all")
   const [hoveredProject, setHoveredProject] = useState<number | null>(null)
@@ -54,8 +56,6 @@ export default function Projects({ locale }: ProjectsProps) {
     setHoveredProject(projectId)
   }, [])
 
-  // Function to get translated project data with safe data-store fallbacks
-  // Function to get translated project data
   const getProjectTranslation = useCallback((projectId: number, field: 'title' | 'description') => {
     const projectKeys = {
       1: 'okyWebcraft',
@@ -68,39 +68,47 @@ export default function Projects({ locale }: ProjectsProps) {
       8: 'twizaPack',
       9: 'trendify',
       10: 'mirriahPro'
-    } as const; // Added 'as const' to lock down types
+    } as const;
 
     const key = projectKeys[projectId as keyof typeof projectKeys]
     if (key) {
-      // Cast to 'any' or your specific 'TranslationKey' type to satisfy i18n parameter signatures
       return t(`projects.items.${key}.${field}` as any)
     }
 
-    // Fallback to original data if translation key not found
     const project = PROJECTS.find(p => p.id === projectId)
     return project ? project[field] : ''
   }, [t])
 
   useEffect(() => {
+    // If it's a small screen, immediately force visible to bypass the rigid scroll threshold
+    if (typeof window !== "undefined" && window.innerWidth < 1024) {
+      setIsVisible(true)
+      return
+    }
+
+    const target = projectsRef.current
+    if (!target) return
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsVisible(true)
         }
       },
-      { threshold: 0.2, rootMargin: "0px 0px -100px 0px" },
+      { 
+        threshold: 0.1, // Relaxed threshold for standard desktop monitoring lines
+        rootMargin: "0px 0px -50px 0px" 
+      },
     )
 
-    if (projectsRef.current) {
-      observer.observe(projectsRef.current)
-    }
-
+    observer.observe(target)
     return () => observer.disconnect()
   }, [])
 
   return (
-    <section id="projects" ref={projectsRef} className="relative py-20 bg-transparent transition-colors duration-300">
+    <section id="projects" ref={projectsRef} className="relative py-20 bg-transparent transition-colors duration-300 w-full block clear-both">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
         {/* Section Header */}
         <header className="text-center mb-12">
           <SectionDecorator variant="default">
@@ -129,7 +137,7 @@ export default function Projects({ locale }: ProjectsProps) {
                   key={project.id}
                   className={`
                     group relative bg-gradient-to-br from-primary/5 to-purple-600/5 rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:scale-[1.02] border border-primary/20
-                    ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}
+                    ${isVisible ? "opacity-100 translate-y-0" : "opacity-100 lg:opacity-0 lg:translate-y-10"}
                   `}
                   style={{ transitionDelay: `${index * 200}ms` }}
                 >
@@ -207,12 +215,7 @@ export default function Projects({ locale }: ProjectsProps) {
                       >
                         <span>{t('projects.viewLive')}</span>
                         <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                          />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                         </svg>
                       </a>
                       {project.githubLink && (
@@ -275,20 +278,13 @@ export default function Projects({ locale }: ProjectsProps) {
                   {count}
                 </span>
               </button>
-            )
+            );
           })}
         </div>
 
-        {/* Projects Grid Container 
-            AUDIT FIX: We use inline utility properties or dynamic classes via grid allocation numbers.
-            Since max capacity is 10 items, 3-column configuration layout maps heights cleanly:
-            - Desktop Max rows = 4 rows (min-h-[1650px])
-            - Tablet/Mid Max rows = 5 rows (min-h-[2100px])
-            - Mobile Max rows = 10 rows (min-h-[4150px])
-            We scale this minimum container value smoothly contextually using tailwind to prevent sudden layout collapses.
-        */}
+        {/* Projects Grid Container */}
         <div className={`
-          grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 transition-all duration-300 items-start
+          grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 transition-all duration-300 items-start w-full opacity-100
           ${filteredProjects.length > 6
             ? "min-h-[4150px] md:min-h-[2100px] lg:min-h-[1650px]"
             : filteredProjects.length > 3
@@ -302,8 +298,8 @@ export default function Projects({ locale }: ProjectsProps) {
             <article
               key={project.id}
               className={`
-                group bg-card rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:scale-105 border border-border overflow-hidden h-full flex flex-col
-                ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}
+                group bg-card rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:scale-105 border border-border overflow-hidden h-full flex flex-col w-full
+                ${isVisible ? "opacity-100 translate-y-0" : "opacity-100 lg:opacity-0 lg:translate-y-10"}
               `}
               style={{ transitionDelay: `${index * 100}ms` }}
               onMouseEnter={() => handleProjectHover(project.id)}
@@ -411,12 +407,7 @@ export default function Projects({ locale }: ProjectsProps) {
                     >
                       <span>{t('projects.viewLive')}</span>
                       <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                        />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                       </svg>
                     </a>
                     {project.githubLink && (

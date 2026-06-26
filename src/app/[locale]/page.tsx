@@ -1,14 +1,18 @@
+// src/app/[locale]/page.tsx
 import { getTranslation } from '../../lib/i18n/server'
 import { Suspense } from 'react'
 import dynamic from 'next/dynamic'
 import Hero from '../../components/Hero'
 import Navbar from '../../components/Navbar'
-import Loading from './Loading'
 import { type Language } from '../../lib/i18n-config'
 import ScrollToTopButton from '../../components/ScrollToTopButton'
+import SectionSkeleton from '../../components/SectionSkeleton'
 
-const About = dynamic(() => import('../../components/About'))
-const Skills = dynamic(() => import('../../components/Skills'))
+// Static imports for lightweight, synchronous sections
+import About from '../../components/About'
+import Skills from '../../components/Skills'
+
+// Dynamic imports only for heavier sections that may have client-side deps
 const Projects = dynamic(() => import('../../components/Projects'))
 const Contact = dynamic(() => import('../../components/Contact'))
 
@@ -22,14 +26,22 @@ export default async function HomePage({ params }: PageProps) {
 
   return (
     <main className="relative w-full min-h-screen overflow-x-hidden">
-      <Navbar locale={locale} logoText={t('site.logo')} />
+      <Navbar locale={locale} />
       <Hero locale={locale} />
-      
-      {/* Group sections under one fallback stream layout to stop DOM compilation thread blockages */}
-      <Suspense fallback={<Loading />}>
+
+      <Suspense fallback={<SectionSkeleton />}>
         <About locale={locale} />
+      </Suspense>
+
+      <Suspense fallback={<SectionSkeleton />}>
         <Skills locale={locale} />
+      </Suspense>
+
+      <Suspense fallback={<SectionSkeleton />}>
         <Projects locale={locale} />
+      </Suspense>
+
+      <Suspense fallback={<SectionSkeleton />}>
         <Contact locale={locale} />
       </Suspense>
 

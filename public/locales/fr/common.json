@@ -17,25 +17,25 @@
     "switchTo": "Passer à"
   },
   "about": {
-  "title": "À Propos de Moi",
-  "subtitle": "Développeur passionné par la création d'expériences numériques exceptionnelles",
-  "description": "Je suis un <span>Développeur Full Stack</span> compétent en frontend et backend, animé par la passion de créer des applications efficaces et centrées sur l'utilisateur.",
-  "coreSkills": "Compétences Clés",
-  "skills": {
-    "frontendDevelopment": "Développement Frontend",
-    "backendDevelopment": "Développement Backend",
-    "uiUxDesign": "Design UI/UX",
-    "cms": "CMS",
-    "mobileDevelopment": "Développement Mobile"
+    "title": "À Propos de Moi",
+    "subtitle": "Développeur passionné par la création d'expériences numériques exceptionnelles",
+    "description": "Je suis un <span>Développeur Full Stack</span> compétent en frontend et backend, animé par la passion de créer des applications efficaces et centrées sur l'utilisateur.",
+    "coreSkills": "Compétences Clés",
+    "skills": {
+      "frontendDevelopment": "Développement Frontend",
+      "backendDevelopment": "Développement Backend",
+      "uiUxDesign": "Design UI/UX",
+      "cms": "CMS",
+      "mobileDevelopment": "Développement Mobile"
+    },
+    "stats": {
+      "experience": "Années d'Expérience",
+      "projects": "Projets Réalisés",
+      "clients": "Clients Satisfaits"
+    },
+    "Download": "Télécharger le CV",
+    "status": "Disponible pour travailler"
   },
-  "stats": {
-    "experience": "Années d'Expérience",
-    "projects": "Projets Réalisés",
-    "clients": "Clients Satisfaits"
-  },
-  "Download": "Télécharger le CV",
-  "status": "Disponible pour travailler"
-},
   "hero": {
     "greeting": "Bonjour, je suis",
     "name": "Echadani Yassine",
@@ -230,5 +230,9 @@
       "sendMessage": "Envoyer Mail",
       "callMe": "Appelez-moi"
     }
+  },
+  "schema": {
+        "jobTitle": "Développeur Full Stack",
+        "description": "Développeur Full Stack expérimenté, spécialisé en React, Next.js et Laravel"
+      }
   }
-}
