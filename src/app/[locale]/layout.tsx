@@ -9,6 +9,18 @@ import { Geist, Geist_Mono } from 'next/font/google'
 import Script from 'next/script'
 
 // ---------------------------------------------------------------------------
+// Build-time guard — fail loudly in production if the env var is missing.
+// ---------------------------------------------------------------------------
+if (!process.env.NEXT_PUBLIC_SITE_URL && process.env.NODE_ENV === 'production') {
+  throw new Error(
+    '[layout] NEXT_PUBLIC_SITE_URL is required in production. ' +
+    'Set it in your deployment environment.'
+  )
+}
+
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://yourdomain.com'
+
+// ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
 
@@ -18,8 +30,8 @@ function dir(locale: string): 'ltr' | 'rtl' {
 }
 
 /**
- * Maps bare ISO-639-1 codes to IETF BCP-47 tags required by Google hreflang.
- * Extend this map as you add more locales.
+ * Maps ISO-639-1 codes to IETF BCP-47 tags for hreflang, og:locale, and
+ * <html lang>. Extend as you add locales.
  */
 const IETF_MAP: Record<string, string> = {
   en: 'en-US',
@@ -27,12 +39,23 @@ const IETF_MAP: Record<string, string> = {
   ar: 'ar-MA',
   es: 'es-ES',
   de: 'de-DE',
-  // add more locales here as needed
 }
 
 function toIETF(locale: string): string {
   return IETF_MAP[locale] ?? locale
 }
+
+// ---------------------------------------------------------------------------
+// NOTE ON CACHING (#5)
+// React.cache() deduplicates calls within a single synchronous render tree.
+// However, generateMetadata() and the Layout component run in separate async
+// contexts in Next.js 14+ — React.cache does NOT share state between them.
+// The safe approach is to call getTranslation() directly in both places.
+// i18n translation loading is typically reading a local JSON file (sub-ms),
+// so two calls per request is negligible. If you need cross-context caching,
+// use Next.js's own `unstable_cache` from 'next/cache' with a request-scoped
+// tag.
+// ---------------------------------------------------------------------------
 
 // ---------------------------------------------------------------------------
 // Fonts
@@ -42,15 +65,14 @@ const geistSans = Geist({
   variable: '--font-geist-sans',
   subsets: ['latin'],
   display: 'swap',
-  preload: true, // above-the-fold body font — keep preloaded
+  preload: true,
 })
 
 const geistMono = Geist_Mono({
   variable: '--font-geist-mono',
   subsets: ['latin'],
   display: 'swap',
-  // FIX: removed preload:true — mono font is only used in code blocks,
-  // not in the initial viewport, so preloading wastes a high-priority slot.
+  // Not preloaded — mono is only used in code blocks, not in the initial viewport.
 })
 
 // ---------------------------------------------------------------------------
@@ -63,6 +85,8 @@ export async function generateStaticParams() {
 
 // ---------------------------------------------------------------------------
 // Viewport
+// Next.js emits <meta name="color-scheme"> from colorScheme below.
+// Do NOT pass enableColorScheme to ThemeProvider — that would emit a duplicate.
 // ---------------------------------------------------------------------------
 
 export const viewport: Viewport = {
@@ -89,13 +113,11 @@ export async function generateMetadata({
   const { locale } = await params
   const { t } = await getTranslation(locale, 'common')
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://yourdomain.com'
-
-  // FIX: use ?? instead of || so empty-string translations don't fall back to
-  // the hard-coded default (empty string is a valid — if broken — translation).
-  const siteName = t('site.name') ?? 'Echadani Yassine'
-  const siteTitle = t('site.title') ?? 'Portfolio'
-  const siteDescription = t('site.description') ?? 'Portfolio Website'
+  // t() returns the key string on miss, never null — || is the correct guard.
+  const siteName = t('site.name') || 'Echadani Yassine'
+  const siteTitle = t('site.title') || 'Portfolio'
+  const siteDescription = t('site.description') || 'Portfolio Website'
+  const ietfLocale = toIETF(locale)
 
   return {
     title: { template: `%s | ${siteName}`, default: siteTitle },
@@ -105,28 +127,33 @@ export async function generateMetadata({
       'Laravel Developer', 'Web Development', 'Frontend Development',
       'Backend Development', 'Portfolio', 'TypeScript', 'JavaScript',
     ],
-    authors: [{ name: siteName, url: siteUrl }],
+    authors: [{ name: siteName, url: SITE_URL }],
     creator: siteName,
     publisher: siteName,
     formatDetection: { email: false, address: false, telephone: false },
-    metadataBase: new URL(siteUrl),
+    metadataBase: new URL(SITE_URL),
     alternates: {
-      canonical: `${siteUrl}/${locale}`,
-      // FIX: keys must be IETF BCP-47 tags for valid hreflang (e.g. "en-US" not "en")
-      languages: Object.fromEntries(
-        languages.map((lang) => [toIETF(lang), `${siteUrl}/${lang}`])
-      ),
+      canonical: `${SITE_URL}/${locale}`,
+      languages: {
+        // x-default tells crawlers which URL to use when no locale matches
+        'x-default': SITE_URL,
+        ...Object.fromEntries(
+          languages.map((lang) => [toIETF(lang), `${SITE_URL}/${lang}`])
+        ),
+      },
     },
     openGraph: {
       type: 'website',
-      locale,                                              // Next.js emits og:locale from here
-      alternateLocale: languages.filter((lang) => lang !== locale),
-      url: `${siteUrl}/${locale}`,
+      locale: ietfLocale,           // must be BCP-47
+      alternateLocale: languages
+        .filter((lang) => lang !== locale)
+        .map(toIETF),               // must also be BCP-47
+      url: `${SITE_URL}/${locale}`,
       title: siteTitle,
       description: siteDescription,
       siteName,
       images: [{
-        url: `${siteUrl}/images/og-image.jpg`,
+        url: `${SITE_URL}/images/og-image.jpg`,
         width: 1200,
         height: 630,
         alt: siteName,
@@ -136,7 +163,7 @@ export async function generateMetadata({
       card: 'summary_large_image',
       title: siteTitle,
       description: siteDescription,
-      images: [`${siteUrl}/images/og-image.jpg`],
+      images: [`${SITE_URL}/images/og-image.jpg`],
     },
     robots: {
       index: true,
@@ -157,9 +184,8 @@ export async function generateMetadata({
       ],
       apple: [{ url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }],
     },
-    manifest: `${siteUrl}/site.webmanifest`,
+    manifest: `${SITE_URL}/site.webmanifest`,
     other: {
-      // FIX: removed duplicate 'og:locale' — Next.js already outputs it via openGraph.locale above.
       'application-name': siteName,
       'apple-mobile-web-app-capable': 'yes',
       'apple-mobile-web-app-status-bar-style': 'default',
@@ -177,24 +203,26 @@ interface RootLayoutProps {
   params: Promise<{ locale: Language }>
 }
 
+// Evaluated once at module load — safe to use in the inline script below.
+const isDev = process.env.NODE_ENV === 'development'
+
 export default async function RootLayout({ children, params }: RootLayoutProps) {
   const { locale } = await params
   const { t } = await getTranslation(locale, 'common')
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://yourdomain.com'
-  const siteName = t('site.name') ?? 'Echadani Yassine'
+  const siteName = t('site.name') || 'Echadani Yassine'
 
-  // FIX: JSON-LD now uses t() for localisable strings so non-English
-  // locales get correct job title and description in structured data.
+  // Escape </script> sequences to prevent XSS via translated strings.
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Person',
-    '@id': `${siteUrl}/#person`,
+    '@id': `${SITE_URL}/#person`,
     name: siteName,
-    url: siteUrl,
-    // FIX: pull from translation files — add schema.jobTitle / schema.description keys
-    jobTitle: t('schema.jobTitle') ?? 'Full Stack Developer',
-    description: t('schema.description') ?? 'Experienced Full Stack Developer skilled in React, Next.js, and Laravel',
+    url: SITE_URL,
+    jobTitle: t('schema.jobTitle') || 'Full Stack Developer',
+    description:
+      t('schema.description') ||
+      'Experienced Full Stack Developer skilled in React, Next.js, and Laravel',
     knowsAbout: ['Web Development', 'React', 'Next.js', 'Laravel', 'TypeScript'],
     sameAs: [
       'https://github.com/echadaniYassine',
@@ -202,20 +230,25 @@ export default async function RootLayout({ children, params }: RootLayoutProps) 
     ],
   }
 
+  const jsonLdString = JSON.stringify(jsonLd).replace(/<\//g, '<\\/')
+  const ietfLocale = toIETF(locale)
+
   return (
+    // suppressHydrationWarning: next-themes injects the theme class client-side
+    // before React hydrates, causing a deliberate attribute mismatch on <html>.
+    // This flag suppresses that specific warning without hiding real SSR bugs
+    // in child components.
     <html
-      lang={locale}
+      lang={ietfLocale}
       dir={dir(locale)}
       suppressHydrationWarning
-      // FIX: scroll-smooth stays here for JS anchor links, but is overridden
-      // by prefers-reduced-motion in globals.css (see snippet below).
       className={`${geistSans.variable} ${geistMono.variable} scroll-smooth`}
     >
       <head>
         <script
           type="application/ld+json"
           id="ld-json-schema"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          dangerouslySetInnerHTML={{ __html: jsonLdString }}
         />
       </head>
 
@@ -223,12 +256,12 @@ export default async function RootLayout({ children, params }: RootLayoutProps) 
         suppressHydrationWarning
         className="antialiased min-h-screen transition-colors duration-150 bg-background text-foreground"
       >
+        {/* enableColorScheme omitted — Next.js viewport.colorScheme already emits the meta tag */}
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           storageKey="theme"
-          enableColorScheme
         >
           <SharedBackground />
           <div className="relative z-10">{children}</div>
@@ -240,7 +273,6 @@ export default async function RootLayout({ children, params }: RootLayoutProps) 
               var isScrolling = false;
               var scrollTimeout;
               var body = document.body;
-
               function handleScroll() {
                 if (!isScrolling) {
                   isScrolling = true;
@@ -252,19 +284,17 @@ export default async function RootLayout({ children, params }: RootLayoutProps) 
                   body.classList.remove('scrolling');
                 }, 150);
               }
-
               window.addEventListener('scroll', handleScroll, { passive: true });
             })();
           `}
         </Script>
 
-        {/* FIX: SW errors now logged in development instead of being silently swallowed */}
         <Script id="sw-loader" strategy="lazyOnload">
           {`
             if ('serviceWorker' in navigator) {
               window.addEventListener('load', function() {
                 navigator.serviceWorker.register('/sw.js').catch(function(err) {
-                  if (${process.env.NODE_ENV === 'development' ? 'true' : 'false'}) {
+                  if (${isDev}) {
                     console.warn('[SW] Registration failed:', err);
                   }
                 });
