@@ -9,9 +9,10 @@ import { type Language } from '../lib/i18n-config'
 
 const NAV_ITEMS = [
   { href: '#about', labelKey: 'nav.about' },
+  { href: '#experience', labelKey: 'nav.experience' },
   { href: '#skills', labelKey: 'nav.skills' },
   { href: '#projects', labelKey: 'nav.projects' },
-  { href: '#contact', labelKey: 'nav.contact' },
+  { href: '#contact', labelKey: 'nav.contact' }, 
 ] as const
 
 interface NavbarProps {
@@ -32,7 +33,7 @@ export default function Navbar({ locale }: NavbarProps) {
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY
-      
+
       // Determine scroll direction
       if (scrollY > lastScrollY && scrollY > 100) {
         setScrollDirection('down')
@@ -40,31 +41,31 @@ export default function Navbar({ locale }: NavbarProps) {
         setScrollDirection('up')
       }
       setLastScrollY(scrollY)
-      
+
       // Enhanced scroll state detection
       setIsScrolled(scrollY > 20)
 
       // Improved active section detection with better thresholds
-      const sections = ['home', 'about', 'skills', 'projects', 'contact']
+      const sections = ['home', 'about','experience', 'skills', 'projects', 'contact']
       const viewportHeight = window.innerHeight
       const scrollPosition = scrollY + viewportHeight * 0.3 // 30% from top of viewport
-      
+
       let foundSection = 'home'
-      
+
       for (const section of sections) {
         const element = document.getElementById(section)
         if (element) {
           const rect = element.getBoundingClientRect()
           const elementTop = rect.top + scrollY
           const elementBottom = elementTop + rect.height
-          
+
           if (scrollPosition >= elementTop && scrollPosition < elementBottom) {
             foundSection = section
             break
           }
         }
       }
-      
+
       setActiveSection(foundSection)
     }
 
@@ -93,7 +94,7 @@ export default function Navbar({ locale }: NavbarProps) {
     e.preventDefault()
     const targetId = href.slice(1)
     const element = document.getElementById(targetId)
-    
+
     if (element) {
       const navHeight = 80 // Account for navbar height
       const elementPosition = element.getBoundingClientRect().top + window.pageYOffset
@@ -104,7 +105,7 @@ export default function Navbar({ locale }: NavbarProps) {
         behavior: 'smooth'
       })
     }
-    
+
     closeMenu()
   }, [closeMenu])
 
@@ -124,8 +125,8 @@ export default function Navbar({ locale }: NavbarProps) {
             ? 'hsl(var(--background) / 0.85)'
             : 'transparent',
           borderColor: isScrolled ? 'hsl(var(--border) / 0.4)' : 'transparent',
-          boxShadow: isScrolled 
-            ? '0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.05)' 
+          boxShadow: isScrolled
+            ? '0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.05)'
             : 'none',
         }}
       >
@@ -155,11 +156,10 @@ export default function Navbar({ locale }: NavbarProps) {
                   >
                     {t(item.labelKey)}
                     <div
-                      className={`absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-purple-600 to-red-600 transition-all duration-300 origin-left rounded-full ${
-                        activeSection === item.href.slice(1)
+                      className={`absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-purple-600 to-red-600 transition-all duration-300 origin-left rounded-full ${activeSection === item.href.slice(1)
                           ? 'scale-x-100 opacity-100'
                           : 'scale-x-0 opacity-0 group-hover:scale-x-100 group-hover:opacity-100'
-                      }`}
+                        }`}
                     />
                   </Link>
                 ))}
@@ -223,9 +223,9 @@ export default function Navbar({ locale }: NavbarProps) {
             onClick={closeMenu}
             aria-hidden="true"
           />
-          
+
           {/* Responsive sliding menu panel */}
-          <div 
+          <div
             className={`fixed top-0 right-0 h-full lg:hidden z-50 transform transition-all duration-400 ease-out
               w-72 xs:w-80 sm:w-96 max-w-[90vw]
               ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'}
@@ -241,7 +241,7 @@ export default function Navbar({ locale }: NavbarProps) {
               {/* Enhanced decorative gradient */}
               <div className="absolute inset-0 bg-gradient-to-br from-purple-500/8 via-transparent to-blue-500/8 pointer-events-none" />
               <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-purple-500/10 to-transparent rounded-full blur-2xl" />
-              
+
               {/* Header section with better spacing */}
               <div className="relative p-4 sm:p-6 border-b border-border/20">
                 <div className="flex items-center justify-between">
@@ -259,7 +259,7 @@ export default function Navbar({ locale }: NavbarProps) {
                   </button>
                 </div>
               </div>
-              
+
               {/* Navigation items with enhanced animations */}
               <div className="relative p-3 sm:p-4 space-y-1 sm:space-y-2">
                 {NAV_ITEMS.map((item, index) => (
@@ -268,7 +268,7 @@ export default function Navbar({ locale }: NavbarProps) {
                     href={item.href}
                     onClick={(e) => handleNavClick(e, item.href)}
                     className="group relative flex items-center px-3 sm:px-4 py-3 sm:py-4 rounded-xl sm:rounded-2xl text-sm sm:text-base font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-purple-500/50 hover:bg-gradient-to-r hover:from-purple-500/10 hover:to-blue-500/10 hover:shadow-lg hover:shadow-purple-500/10 hover:scale-[1.02]"
-                    style={{ 
+                    style={{
                       color: 'hsl(var(--foreground))',
                       animationDelay: `${index * 75}ms`
                     }}
@@ -277,31 +277,31 @@ export default function Navbar({ locale }: NavbarProps) {
                     <div className="w-5 h-5 sm:w-6 sm:h-6 mr-2 sm:mr-3 rounded-lg bg-gradient-to-br from-purple-500/20 to-blue-500/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
                       <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-current opacity-60" />
                     </div>
-                    
+
                     {/* Label */}
                     <span className="flex-1">{t(item.labelKey)}</span>
-                    
+
                     {/* Enhanced active indicator */}
                     {activeSection === item.href.slice(1) && (
                       <div className="w-2 h-2 rounded-full bg-gradient-to-r from-purple-600 to-blue-600 shadow-lg shadow-purple-500/50 animate-pulse" />
                     )}
-                    
+
                     {/* Hover arrow with better animation */}
-                    <svg 
+                    <svg
                       className="w-3 h-3 sm:w-4 sm:h-4 ml-2 transform transition-all duration-300 group-hover:translate-x-1 group-hover:scale-110 opacity-0 group-hover:opacity-100"
-                      fill="none" 
-                      stroke="currentColor" 
+                      fill="none"
+                      stroke="currentColor"
                       viewBox="0 0 24 24"
                     >
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>
-                    
+
                     {/* Enhanced animated background */}
                     <div className="absolute inset-0 rounded-xl sm:rounded-2xl bg-gradient-to-r from-purple-600/0 to-blue-600/0 group-hover:from-purple-600/5 group-hover:to-blue-600/5 transition-all duration-300 -z-10" />
                   </Link>
                 ))}
               </div>
-              
+
               {/* Mobile Controls in Menu with better responsive layout */}
               <div className="absolute bottom-16 sm:bottom-20 left-0 right-0 p-3 sm:p-6">
                 <div className="h-px bg-gradient-to-r from-transparent via-border/30 to-transparent mb-4 sm:mb-6" />
@@ -313,7 +313,7 @@ export default function Navbar({ locale }: NavbarProps) {
                   </div>
                 </div>
               </div>
-              
+
               {/* Footer section */}
               <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6">
                 <div className="flex justify-center">
