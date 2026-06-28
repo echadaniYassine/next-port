@@ -19,8 +19,13 @@
   "about": {
     "title": "About Me",
     "subtitle": "Passionate developer with a love for creating exceptional digital experiences",
-    "description": "I'm a <span>Full Stack Developer</span> Skilled in both frontend and backend, driven by a passion for building efficient, user-focused applications.",
+    "description": "I'm a <span>Full Stack Developer</span> skilled in both frontend and backend, driven by a passion for building efficient, user-focused applications.",
+    "roleLabel": "About me",
+    "headline": "Full Stack Web Developer",
     "coreSkills": "Core Skills",
+    "status": "Available for work",
+    "remoteLabel": "Remote-friendly",
+    "Download": "Download CV",
     "skills": {
       "frontendDevelopment": "Frontend Development",
       "backendDevelopment": "Backend Development",
@@ -32,9 +37,45 @@
       "experience": "Years Experience",
       "projects": "Projects Completed",
       "clients": "Happy Clients"
+    }
+  },
+  "academie": {
+    "eyebrow": "Education",
+    "title": "Academic Background",
+    "subtitle": "My academic journey and training path.",
+    "current": "In progress"
+  },
+  "cv": {
+    "popupSubtitle": "Select which version to download."
+  },
+  "experience": {
+    "title": "Experience",
+    "subtitle": "Professional positions and internships I've held.",
+    "typeFullTime": "Full-time",
+    "typeInternship": "Internship",
+    "asic": {
+      "company": "ASIC",
+      "role": "Full Stack Developer",
+      "period": "October 2025 – Present",
+      "location": "Temara, Morocco",
+      "task1": "Developing and maintaining enterprise web applications using PHP, HMVC architecture, and Laravel.",
+      "task2": "Building new features, optimizing application performance, and ensuring code quality through best development practices.",
+      "task3": "Collaborating with cross-functional teams to design, implement, and maintain scalable business solutions."
     },
-    "Download": "Download CV",
-    "status": "Available for work"
+    "stationA": {
+      "company": "Station A Corporation",
+      "role": "Intern · Full Stack Developer",
+      "period": "Mar 2025 – Jul 2025",
+      "location": "Rabat, Morocco",
+      "task1": "WordPress/WooCommerce development, showcase sites, and a Laravel blog magazine platform."
+    },
+    "thinkGroup": {
+      "company": "Think Group",
+      "role": "Intern · Full Stack Developer",
+      "period": "Apr 2024 – Jul 2024",
+      "location": "Rabat, Morocco",
+      "task1": "Interactive landing page with ReactJS, dynamic game with PhaserJS, and a Shopify e-commerce store."
+    }
   },
   "hero": {
     "greeting": "Hello, I'm",

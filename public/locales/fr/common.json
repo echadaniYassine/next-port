@@ -20,7 +20,12 @@
     "title": "À Propos de Moi",
     "subtitle": "Développeur passionné par la création d'expériences numériques exceptionnelles",
     "description": "Je suis un <span>Développeur Full Stack</span> compétent en frontend et backend, animé par la passion de créer des applications efficaces et centrées sur l'utilisateur.",
+    "roleLabel": "À propos",
+    "headline": "Développeur Web Full Stack",
     "coreSkills": "Compétences Clés",
+    "status": "Disponible pour travailler",
+    "remoteLabel": "Télétravail possible",
+    "Download": "Télécharger le CV",
     "skills": {
       "frontendDevelopment": "Développement Frontend",
       "backendDevelopment": "Développement Backend",
@@ -32,9 +37,45 @@
       "experience": "Années d'Expérience",
       "projects": "Projets Réalisés",
       "clients": "Clients Satisfaits"
+    }
+  },
+  "academie": {
+    "eyebrow": "Formation",
+    "title": "Parcours Académique",
+    "subtitle": "Mon parcours académique et mes formations.",
+    "current": "En cours"
+  },
+  "cv": {
+    "popupSubtitle": "Sélectionnez la version à télécharger."
+  },
+  "experience": {
+    "title": "Expérience",
+    "subtitle": "Postes professionnels et stages que j'ai occupés.",
+    "typeFullTime": "Temps plein",
+    "typeInternship": "Stage",
+    "asic": {
+      "company": "ASIC",
+      "role": "Développeur Full Stack",
+      "period": "Octobre 2025 – Aujourd'hui",
+      "location": "Rabat, Maroc",
+      "task1": "Développement et maintenance d'applications web d'entreprise avec PHP, HMVC et Laravel.",
+      "task2": "Conception de nouvelles fonctionnalités, optimisation des performances et amélioration de la qualité du code.",
+      "task3": "Collaboration avec les équipes afin de concevoir et maintenir des solutions logicielles évolutives."
     },
-    "Download": "Télécharger le CV",
-    "status": "Disponible pour travailler"
+    "stationA": {
+      "company": "Station A Corporation",
+      "role": "Stagiaire · Développeur Full Stack",
+      "period": "Mars 2025 – Juil. 2025",
+      "location": "Rabat, Maroc",
+      "task1": "Développement WooCommerce, sites vitrines, gestion de contenu et plateforme de blog magazine sous Laravel."
+    },
+    "thinkGroup": {
+      "company": "Think Group",
+      "role": "Stagiaire · Développeur Full Stack",
+      "period": "Avril 2024 – Juil. 2024",
+      "location": "Rabat, Maroc",
+      "task1": "Landing page interactive avec ReactJS, jeu dynamique avec PhaserJS, et boutique e-commerce sur Shopify."
+    }
   },
   "hero": {
     "greeting": "Bonjour, je suis",
@@ -232,7 +273,7 @@
     }
   },
   "schema": {
-        "jobTitle": "Développeur Full Stack",
-        "description": "Développeur Full Stack expérimenté, spécialisé en React, Next.js et Laravel"
-      }
+    "jobTitle": "Développeur Full Stack",
+    "description": "Développeur Full Stack expérimenté, spécialisé en React, Next.js et Laravel"
   }
+}

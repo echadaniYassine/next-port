@@ -1,81 +1,81 @@
 "use client"
 
-import Image from "next/image"
 import { useState, useEffect, useRef, useMemo } from "react"
 import { SectionDecorator } from "./SectionDecorator"
 import { useTranslation } from '../lib/i18n/client'
 import { type Language } from '../lib/i18n-config'
+import { AcademieInline } from "./academie"
+import CvDownloadPopup from "./CvDownloadPopup"
 
-const FINAL_COUNTS = { experience: 5, projects: 50, clients: 30 } as const
+const FINAL_COUNTS = { experience: 1, projects: 12, clients: 30 } as const
 
 interface AboutProps {
   locale: Language
 }
 
+// ─── About ────────────────────────────────────────────────────────────────────
 export default function About({ locale }: AboutProps) {
   const { t } = useTranslation(locale, 'common')
-  const [isVisible, setIsVisible] = useState(false)
-  const [counters, setCounters] = useState({ experience: 0, projects: 0, clients: 0 })
+  const [isVisible, setIsVisible]       = useState(false)
+  const [cvPopupOpen, setCvPopupOpen]   = useState(false)
+  const [counters, setCounters]         = useState({ experience: 0, projects: 0, clients: 0 })
   const aboutRef = useRef<HTMLElement>(null)
 
-  // OPTIMIZED: Memoized to prevent array creation on counter state ticks
   const SKILLS = useMemo(() => [
     { name: t('about.skills.frontendDevelopment' as any), level: 95 },
-    { name: t('about.skills.backendDevelopment' as any), level: 95 },
-    { name: t('about.skills.mobileDevelopment' as any), level: 75 },
-    { name: t('about.skills.uiUxDesign' as any), level: 80 },
-    { name: t('about.skills.cms' as any), level: 90 },
+    { name: t('about.skills.backendDevelopment'  as any), level: 95 },
+    { name: t('about.skills.mobileDevelopment'   as any), level: 75 },
+    { name: t('about.skills.uiUxDesign'          as any), level: 80 },
+    { name: t('about.skills.cms'                 as any), level: 90 },
   ], [t])
 
-  // OPTIMIZED: High performance requestAnimationFrame ticking for seamless counting interpolation
+  // Counter animation
   useEffect(() => {
     if (!isVisible) return
-
     let startTime: number | null = null
-    const duration = 2000
-    let animationFrameId: number
+    const duration = 1600
+    let raf: number
 
-    const updateCounters = (timestamp: number) => {
-      if (!startTime) startTime = timestamp
-      const progress = Math.min((timestamp - startTime) / duration, 1)
-
+    const tick = (ts: number) => {
+      if (!startTime) startTime = ts
+      const p = Math.min((ts - startTime) / duration, 1)
       setCounters({
-        experience: Math.floor(progress * FINAL_COUNTS.experience),
-        projects: Math.floor(progress * FINAL_COUNTS.projects),
-        clients: Math.floor(progress * FINAL_COUNTS.clients),
+        experience: Math.floor(p * FINAL_COUNTS.experience),
+        projects:   Math.floor(p * FINAL_COUNTS.projects),
+        clients:    Math.floor(p * FINAL_COUNTS.clients),
       })
-
-      if (progress < 1) {
-        animationFrameId = requestAnimationFrame(updateCounters)
-      }
+      if (p < 1) raf = requestAnimationFrame(tick)
     }
 
-    animationFrameId = requestAnimationFrame(updateCounters)
-    return () => cancelAnimationFrame(animationFrameId)
+    raf = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(raf)
   }, [isVisible])
 
+  // Intersection observer
   useEffect(() => {
     const target = aboutRef.current
     if (!target) return
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true)
-          observer.unobserve(target) // Stop listening once triggered to preserve runtime memory
-        }
-      },
-      { threshold: 0.2, rootMargin: "0px 0px -50px 0px" },
+    const obs = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setIsVisible(true); obs.unobserve(target) } },
+      { threshold: 0.2, rootMargin: "0px 0px -50px 0px" }
     )
-
-    observer.observe(target)
-    return () => observer.disconnect()
+    obs.observe(target)
+    return () => obs.disconnect()
   }, [])
 
   return (
     <section id="about" ref={aboutRef} className="relative py-20 bg-transparent transition-colors duration-300">
+
+      {/* CV language popup — rendered in a portal-like fixed overlay */}
+    <CvDownloadPopup                               // ← was <CvPopup>
+        open={cvPopupOpen}
+        onClose={() => setCvPopupOpen(false)}
+        label={t('about.Download' as any) || "Download CV"}
+        locale={locale}                              // ← new prop
+      />
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
+
         {/* Section Header */}
         <header className="text-center mb-16">
           <SectionDecorator variant="default">
@@ -91,95 +91,76 @@ export default function About({ locale }: AboutProps) {
           </p>
         </header>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-          
-          {/* Image Component Block Wrapper */}
-          <div className={`relative transition-all duration-1000 ${isVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-10"}`}>
-            <SectionDecorator variant="card">
-              <div className="relative group">
-                {/* Visual Background Accent Details */}
-                <div className="absolute -top-6 -left-6 w-24 h-24 bg-gradient-to-br from-blue-200 to-blue-300 dark:from-blue-900/30 dark:to-blue-800/50 rounded-3xl -rotate-6 shadow-lg transition-transform duration-500 group-hover:rotate-3" />
-                <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-gradient-to-br from-purple-200 to-pink-300 dark:from-purple-900/30 dark:to-pink-800/50 rounded-3xl rotate-12 shadow-lg transition-transform duration-500 group-hover:-rotate-6" />
+        {/* Two-column grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
 
-                {/* Main Framed Graphics Frame */}
-                <div className="relative aspect-square max-w-md w-full mx-auto bg-gradient-to-br from-white/90 to-gray-50/90 dark:from-gray-800/90 dark:to-gray-900/90 rounded-3xl shadow-2xl overflow-hidden border border-gray-200/50 dark:border-gray-700/50 backdrop-blur-sm transition-all duration-500 group-hover:shadow-3xl group-hover:scale-[1.02]">
-                  
-                  {/* OPTIMIZED: Native responsive class dark toggle to eliminate flash shifts */}
-                  <div className="relative w-full h-full dark:hidden">
-                    <Image
-                      src="/images/image_pic_light.png"
-                      alt="Profile Graphic Light"
-                      fill
-                      className="object-cover transition-transform duration-300 group-hover:scale-105"
-                      priority
-                    />
-                  </div>
-                  <div className="relative w-full h-full hidden dark:block">
-                    <Image
-                      src="/images/image_pic_dark.png"
-                      alt="Profile Graphic Dark"
-                      fill
-                      className="object-cover transition-transform duration-300 group-hover:scale-105"
-                      priority
-                    />
-                  </div>
-
-                  {/* Petite Status Floating Badge */}
-                  <div className="absolute bottom-3 left-3 text-white px-3 py-1.5 rounded-full text-xs font-medium shadow-md backdrop-blur-md border border-white/20 dark:border-white/10 bg-gradient-to-r from-[#6b4c52] to-[#5a4148]">
-                    <div className="flex items-center gap-1.5">
-                      <div className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse" />
-                      {t('about.status' as any)}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </SectionDecorator>
-          </div>
-
-          {/* Copy Writing & Metric Counters Dashboard Area */}
-          <div className={`space-y-8 transition-all duration-1000 delay-200 ${isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-10"}`}>
-            
-            {/* Rich Biography Column */}
-            <div className="space-y-6">
-              <div
-                className="text-lg text-muted-foreground leading-relaxed"
-                dangerouslySetInnerHTML={{ __html: t('about.description' as any) || "" }}
-              />
-            </div>
-
-            {/* Metric Counters Dashboard Area */}
-            <div className="grid grid-cols-3 gap-4 py-2 text-center bg-accent/10 rounded-2xl border border-border/20 p-4">
-              <div>
-                <p className="text-2xl sm:text-3xl font-black text-purple-600 dark:text-purple-400">{counters.experience}+</p>
-                <p className="text-xs sm:text-sm font-medium text-muted-foreground">{t('about.stats.experience' as any) || 'Years Experience'}</p>
-              </div>
-              <div>
-                <p className="text-2xl sm:text-3xl font-black text-pink-600 dark:text-pink-400">{counters.projects}+</p>
-                <p className="text-xs sm:text-sm font-medium text-muted-foreground">{t('about.stats.projects' as any) || 'Projects Completed'}</p>
-              </div>
-              <div>
-                <p className="text-2xl sm:text-3xl font-black text-blue-600 dark:text-blue-400">{counters.clients}+</p>
-                <p className="text-xs sm:text-sm font-medium text-muted-foreground">{t('about.stats.clients' as any) || 'Happy Clients'}</p>
-              </div>
-            </div>
-
-            {/* Skills Track Bars */}
-            <div className="space-y-4">
-              <h3 className="text-xl font-semibold text-foreground">
-                {t('about.coreSkills' as any)}
+          {/* ── LEFT ── */}
+          <div
+            className={`space-y-8 transition-all duration-1000 ${
+              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+            }`}
+          >
+            {/* Eyebrow + headline */}
+            <div>
+              <span className="text-xs font-semibold uppercase tracking-widest text-purple-500">
+                {t('about.roleLabel' as any)}
+              </span>
+              <h3 className="text-3xl font-bold text-foreground mt-1 leading-tight">
+                {t('about.headline' as any)}
               </h3>
+            </div>
+
+            {/* Bio */}
+            <div
+              className="text-base text-muted-foreground leading-relaxed [&_span]:text-foreground [&_span]:font-semibold"
+              dangerouslySetInnerHTML={{ __html: t('about.description' as any) || "" }}
+            />
+
+            {/* Status pills */}
+            <div className="flex flex-wrap gap-2">
+              <span className="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1 rounded-full bg-green-500/10 text-green-600 dark:text-green-400 border border-green-500/20">
+                <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+                {t('about.status' as any)}
+              </span>
+              <span className="text-xs px-3 py-1 rounded-full border border-border text-muted-foreground">
+                Témara, Maroc
+              </span>
+              <span className="text-xs px-3 py-1 rounded-full border border-border text-muted-foreground">
+                {t('about.remoteLabel' as any)}
+              </span>
+            </div>
+
+            {/* Counters */}
+            <div className="grid grid-cols-3 gap-4">
+              {[
+                { value: counters.experience, label: t('about.stats.experience' as any) },
+                { value: counters.projects,   label: t('about.stats.projects'   as any) },
+                { value: counters.clients,    label: t('about.stats.clients'    as any) },
+              ].map((stat) => (
+                <div key={stat.label} className="rounded-xl border border-border bg-accent/5 p-4 text-center">
+                  <p className="text-2xl font-bold text-purple-600 dark:text-purple-400">{stat.value}+</p>
+                  <p className="text-xs text-muted-foreground mt-1">{stat.label}</p>
+                </div>
+              ))}
+            </div>
+
+            {/* Skill bars */}
+            <div className="space-y-3">
+              <h4 className="text-sm font-semibold text-foreground">
+                {t('about.coreSkills' as any)}
+              </h4>
               {SKILLS.map((skill, index) => (
-                <div key={skill.name} className="space-y-2">
-                  <div className="flex justify-between">
-                    <span className="text-sm font-medium text-foreground/80">{skill.name}</span>
-                    <span className="text-sm text-muted-foreground">{skill.level}%</span>
+                <div key={skill.name} className="space-y-1.5">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-foreground/80 font-medium">{skill.name}</span>
+                    <span className="text-muted-foreground">{skill.level}%</span>
                   </div>
-                  <div className="w-full bg-muted rounded-full h-2.5 overflow-hidden">
+                  <div className="w-full bg-muted rounded-full h-1.5 overflow-hidden">
                     <div
-                      className="bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 h-2.5 rounded-full transition-all duration-1000 ease-out"
+                      className="bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 h-1.5 rounded-full transition-all duration-1000 ease-out"
                       style={{
                         width: isVisible ? `${skill.level}%` : "0%",
-                        transitionDelay: `${index * 100}ms`,
+                        transitionDelay: `${index * 80}ms`,
                       }}
                     />
                   </div>
@@ -187,35 +168,53 @@ export default function About({ locale }: AboutProps) {
               ))}
             </div>
 
-            {/* Call to Action Interactive Anchors */}
-            <div className="flex flex-row flex-wrap gap-4 pt-4 justify-center sm:justify-start">
-              <SectionDecorator variant="card">
-                <a
-                  href="./cv/Echadani_yassine_fr.pdf"
-                  download="Echadani_Yassine_Resume.pdf"
-                  className="inline-flex items-center gap-2 cursor-pointer px-6 py-3 bg-gradient-to-r from-purple-600 to-red-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-purple-500/40 hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-purple-300/50"
-                >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                  </svg>
-                  {t('about.Download' as any)}
-                </a>
-              </SectionDecorator>
-              
-              <SectionDecorator variant="card">
-                <a
-                  href="#contact"
-                  className="inline-flex items-center gap-2 cursor-pointer px-6 py-3 border-2 border-foreground text-foreground font-semibold rounded-xl shadow-lg hover:shadow-purple-500/40 hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-foreground/30"
-                >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                  </svg>
-                  {t('nav.contact' as any)}
-                </a>
-              </SectionDecorator>
+            {/* ── CTAs: equal width, side by side ── */}
+            <div className="grid grid-cols-2 gap-3 pt-2">
+
+              {/* Download CV — opens popup */}
+              <button
+                type="button"
+                onClick={() => setCvPopupOpen(true)}
+                className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-gradient-to-r from-purple-600 to-red-600 text-white font-semibold rounded-xl text-sm shadow-md hover:shadow-purple-500/40 hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-purple-300/50"
+              >
+                <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                {t('about.Download' as any)}
+              </button>
+
+              {/* Contact */}
+              <a
+                href="#contact"
+                className="inline-flex items-center justify-center gap-2 px-5 py-2.5 border border-foreground text-foreground font-semibold rounded-xl text-sm hover:bg-foreground hover:text-background transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-foreground/30"
+              >
+                <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+                {t('nav.contact' as any)}
+              </a>
+
+            </div>
+          </div>
+
+          {/* ── RIGHT: Education timeline ── */}
+          <div
+            className={`transition-all duration-1000 delay-150 ${
+              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+            }`}
+          >
+            <div className="mb-6">
+              <span className="text-xs font-semibold uppercase tracking-widest text-purple-500">
+                {t('academie.eyebrow' as any)}
+              </span>
+              <h3 className="text-2xl font-bold text-foreground mt-1">
+                {t('academie.title' as any)}
+              </h3>
             </div>
 
+            <AcademieInline locale={locale} isVisible={isVisible} />
           </div>
+
         </div>
       </div>
     </section>
